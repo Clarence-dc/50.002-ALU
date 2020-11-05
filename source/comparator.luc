@@ -1,0 +1,21 @@
+module comparator (
+    input z,  
+    input v,  
+    input n,
+    input alufn[6],
+    output cmp
+  ) {
+
+  always {
+    cmp = 0; // default when alufn = 00
+    case (alufn[2:1]){
+    b01: // eq
+    cmp = z;
+    b10: // l
+    cmp = n ^ v;
+    b11: // le
+    cmp = z | (n ^ v);
+    
+  }
+}
+}

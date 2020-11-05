@@ -1,0 +1,19 @@
+module shifter (
+    input a[16],  // 16-bit input to be shifted
+    input b[16],  // number of bits to shift by (only need 5 bits for shift by 16)
+    input alufn[6],
+    output out[16]
+  ) {
+
+  always {
+    out = 0;
+    case (alufn[1:0]){
+    b00: // Shift left SHL
+    out = (a << b[5:0]);
+    b01: // Shift right SHR
+    out = (a >> b[5:0]);
+    b11: // Signed shift right SRA
+    out = ($signed(a) >>> b[5:0]);
+  }
+}
+}

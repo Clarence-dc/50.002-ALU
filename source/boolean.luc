@@ -1,0 +1,23 @@
+module boolean (
+    input a[16],  
+    input b[16],  
+    input alufn[6],
+    output boole[16]
+  ) {
+  
+  always {
+    boole = 0;
+    case (alufn[3:0]){
+    
+      b1000: // AND
+      boole = a & b;
+      b1110: // OR
+      boole = a | b;
+      b0110: // XOR
+      boole = a ^ b;
+      b1010: // "A"/LDR
+      boole = a;
+    
+  }
+}
+}
