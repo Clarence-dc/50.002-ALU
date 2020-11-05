@@ -1,4 +1,3 @@
-
 module au_top (
     input clk,              // 100MHz clock
     input rst_n,            // reset button (active low)
@@ -77,6 +76,8 @@ module au_top (
       io_led[0] = io_dip[0];
       if (buttondetector.out[4]){
         input_controller.d = input_controller.S1;
+      }else if(buttondetector.out[3]){
+        input_controller.d = input_controller.S2;
       }else{
         input_controller.d = input_controller.S0;
       }
@@ -90,6 +91,8 @@ module au_top (
       io_led[0] = io_dip[0];
       if (buttondetector.out[4]){
         input_controller.d = input_controller.S2;
+      }else if(buttondetector.out[3]){
+        input_controller.d = input_controller.S0;
       }else{
         input_controller.d = input_controller.S1;
       }  
@@ -103,21 +106,15 @@ module au_top (
           case(alufn[1:0]){
               b00:// add
                 seg.values = {b00010,17,b00011,b00000}; // o _ A. A
-                io_led[1] = adder.s[15:8];
-                io_led[0] = adder.s[7:0];
               b01:// subtract
                 seg.values = {b00010,17,b00011,b00100}; // o _ A. S
-                io_led[1] = adder.s[15:8];
-                io_led[0] = adder.s[7:0];  
               b10:// multiply
                 seg.values = {b00010,17,b00011,b00101}; // o _ A. X
-                io_led[1] = adder.m[15:8];
-                io_led[0] = adder.m[7:0];
               b11:// divide
                 seg.values = {b00010,17,b00011,b00110}; // o _ A. d
-                io_led[1] = adder.m[15:8];
-                io_led[0] = adder.m[7:0];
             }
+          io_led[1] = adder.s[15:8];
+          io_led[0] = adder.s[7:0];
           b01:// boolean
           bool.a = a_mem.q;
           bool.b = b_mem.q;
@@ -155,12 +152,12 @@ module au_top (
           comp.v = adder.v;
           comp.n = adder.n;  
           seg.values = {b00010,17,b01101,17}; // o _ C. _
-          case (alufn[2:1]){
-            b01:// A = B
+          case (alufn[3:0]){
+            b0101:// A == B
             seg.values = {b00010,17,b01101,b01110}; // o _ C. E
-            b10:// A < B
+            b1001:// A < B
             seg.values = {b00010,17,b01101,b01001}; // o _ C. L
-            b11:// A <= B
+            b1101:// A <= B
             seg.values = {b00010,17,b01101,b01111}; // o _ C. L.
             }
           io_led[1] = 0;
@@ -170,6 +167,8 @@ module au_top (
         
       if (buttondetector.out[4]){
         input_controller.d = input_controller.S0;
+      }else if(buttondetector.out[3]){
+        input_controller.d = input_controller.S1;
       }else{
         input_controller.d = input_controller.S2;
       }  	

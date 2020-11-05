@@ -14,18 +14,23 @@ module comparator_8 (
   
   
   
+  reg i;
+  reg j;
+  
   always @* begin
+    i = n ^ v;
+    j = i | z;
     cmp = 1'h0;
     
-    case (alufn[1+1-:2])
-      2'h1: begin
+    case (alufn[0+3-:4])
+      4'h5: begin
         cmp = z;
       end
-      2'h2: begin
-        cmp = n ^ v;
+      4'h9: begin
+        cmp = i;
       end
-      2'h3: begin
-        cmp = n ^ v;
+      4'hd: begin
+        cmp = j;
       end
     endcase
   end

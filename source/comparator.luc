@@ -5,17 +5,19 @@ module comparator (
     input alufn[6],
     output cmp
   ) {
+  sig i, j;
 
   always {
+    i = n ^ v; 
+    j = i | z;
     cmp = 0; // default when alufn = 00
-    case (alufn[2:1]){
-    b01: // eq
-    cmp = z;
-    b10: // l
-    cmp = n ^ v;
-    b11: // le
-    cmp = z | (n ^ v);
-    
-  }
+    case (alufn[3:0]) {
+      b0101:  // A == B
+        cmp = z;
+      b1001:  // A < B
+        cmp = i;
+      b1101:  // A <= B
+        cmp = j;
+      }
 }
 }

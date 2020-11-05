@@ -77,7 +77,6 @@ module au_top_0 (
   wire [1-1:0] M_adder_z;
   wire [1-1:0] M_adder_v;
   wire [1-1:0] M_adder_n;
-  wire [16-1:0] M_adder_m;
   reg [16-1:0] M_adder_a;
   reg [16-1:0] M_adder_b;
   reg [6-1:0] M_adder_alufn;
@@ -88,8 +87,7 @@ module au_top_0 (
     .s(M_adder_s),
     .z(M_adder_z),
     .v(M_adder_v),
-    .n(M_adder_n),
-    .m(M_adder_m)
+    .n(M_adder_n)
   );
   
   wire [16-1:0] M_bool_boole;
@@ -172,7 +170,11 @@ module au_top_0 (
         if (M_buttondetector_out[4+0-:1]) begin
           M_input_controller_d = S1_input_controller;
         end else begin
-          M_input_controller_d = S0_input_controller;
+          if (M_buttondetector_out[3+0-:1]) begin
+            M_input_controller_d = S2_input_controller;
+          end else begin
+            M_input_controller_d = S0_input_controller;
+          end
         end
       end
       S1_input_controller: begin
@@ -186,7 +188,11 @@ module au_top_0 (
         if (M_buttondetector_out[4+0-:1]) begin
           M_input_controller_d = S2_input_controller;
         end else begin
-          M_input_controller_d = S1_input_controller;
+          if (M_buttondetector_out[3+0-:1]) begin
+            M_input_controller_d = S0_input_controller;
+          end else begin
+            M_input_controller_d = S1_input_controller;
+          end
         end
       end
       S2_input_controller: begin
@@ -201,25 +207,19 @@ module au_top_0 (
             case (alufn[0+1-:2])
               2'h0: begin
                 M_seg_values = 20'h14460;
-                io_led[8+7-:8] = M_adder_s[8+7-:8];
-                io_led[0+7-:8] = M_adder_s[0+7-:8];
               end
               2'h1: begin
                 M_seg_values = 20'h14464;
-                io_led[8+7-:8] = M_adder_s[8+7-:8];
-                io_led[0+7-:8] = M_adder_s[0+7-:8];
               end
               2'h2: begin
                 M_seg_values = 20'h14465;
-                io_led[8+7-:8] = M_adder_m[8+7-:8];
-                io_led[0+7-:8] = M_adder_m[0+7-:8];
               end
               2'h3: begin
                 M_seg_values = 20'h14466;
-                io_led[8+7-:8] = M_adder_m[8+7-:8];
-                io_led[0+7-:8] = M_adder_m[0+7-:8];
               end
             endcase
+            io_led[8+7-:8] = M_adder_s[8+7-:8];
+            io_led[0+7-:8] = M_adder_s[0+7-:8];
           end
           2'h1: begin
             M_bool_a = M_a_mem_q;
@@ -268,6 +268,19 @@ module au_top_0 (
             M_comp_z = M_adder_z;
             M_comp_v = M_adder_v;
             M_comp_n = M_adder_n;
+            M_seg_values = 20'h145b1;
+            
+            case (alufn[0+3-:4])
+              4'h5: begin
+                M_seg_values = 20'h145ae;
+              end
+              4'h9: begin
+                M_seg_values = 20'h145a9;
+              end
+              4'hd: begin
+                M_seg_values = 20'h145af;
+              end
+            endcase
             io_led[8+7-:8] = 1'h0;
             io_led[0+1+6-:7] = 1'h0;
             io_led[0+0+0-:1] = M_comp_cmp;
@@ -276,7 +289,11 @@ module au_top_0 (
         if (M_buttondetector_out[4+0-:1]) begin
           M_input_controller_d = S0_input_controller;
         end else begin
-          M_input_controller_d = S2_input_controller;
+          if (M_buttondetector_out[3+0-:1]) begin
+            M_input_controller_d = S1_input_controller;
+          end else begin
+            M_input_controller_d = S2_input_controller;
+          end
         end
       end
     endcase

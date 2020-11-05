@@ -17,7 +17,7 @@ proc create_report { reportName command } {
   }
 }
 namespace eval ::optrace {
-  variable script "D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.runs/impl_1/au_top_0.tcl"
+  variable script "D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/impl_1/au_top_0.tcl"
   variable category "vivado_impl"
 }
 
@@ -128,16 +128,16 @@ OPTRACE "create in-memory project" START { }
   set_param project.singleFileAddWarning.threshold 0
 OPTRACE "create in-memory project" END { }
 OPTRACE "set parameters" START { }
-  set_property webtalk.parent_dir {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.cache/wt} [current_project]
-  set_property parent.project_path {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.xpr} [current_project]
-  set_property ip_output_repo {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.cache/ip}} [current_project]
+  set_property webtalk.parent_dir {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.cache/wt} [current_project]
+  set_property parent.project_path {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.xpr} [current_project]
+  set_property ip_output_repo {{D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.cache/ip}} [current_project]
   set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
-  add_files -quiet {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.runs/synth_1/au_top_0.dcp}}
+  add_files -quiet {{D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/synth_1/au_top_0.dcp}}
 OPTRACE "read constraints: implementation" START { }
-  read_xdc {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/constraint/alchitry.xdc}}
-  read_xdc {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/constraint/io.xdc}}
+  read_xdc D:/GitHub/50.002-ALU/work/constraint/alchitry.xdc
+  read_xdc D:/GitHub/50.002-ALU/work/constraint/io.xdc
   read_xdc {{D:/Program Files/Alchitry/Alchitry Labs/library/components/au.xdc}}
 OPTRACE "read constraints: implementation" END { }
 OPTRACE "add files" END { }

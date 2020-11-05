@@ -2,11 +2,11 @@
 # Vivado v2020.1 (64-bit)
 # SW Build 2902540 on Wed May 27 19:54:49 MDT 2020
 # IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
-# Start of session at: Fri Nov  6 01:50:05 2020
-# Process ID: 15040
-# Current directory: D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.runs/impl_1
+# Start of session at: Fri Nov  6 04:21:27 2020
+# Process ID: 5268
+# Current directory: D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/impl_1
 # Command line: vivado.exe -log au_top_0.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source au_top_0.tcl -notrace
-# Log file: D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.runs/impl_1/au_top_0.vdi
-# Journal file: D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.runs/impl_1\vivado.jou
+# Log file: D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/impl_1/au_top_0.vdi
+# Journal file: D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/impl_1\vivado.jou
 #-----------------------------------------------------------
 source au_top_0.tcl -notrace

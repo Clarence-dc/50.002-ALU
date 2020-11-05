@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.runs/synth_1/au_top_0.tcl"
+  variable script "D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/synth_1/au_top_0.tcl"
   variable category "vivado_synth"
 }
 
@@ -76,28 +76,28 @@ create_project -in_memory -part xc7a35tftg256-1
 set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
-set_property webtalk.parent_dir {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.cache/wt} [current_project]
-set_property parent.project_path {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.xpr} [current_project]
+set_property webtalk.parent_dir {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.cache/wt} [current_project]
+set_property parent.project_path {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.xpr} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib {
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_5.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_13.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_6.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/button_conditioner_3.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_8.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_10.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_12.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_2.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_11.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/multi_seven_seg_4.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_9.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/reset_conditioner_1.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_7.v}
-  {D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/au_top_0.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_5.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_13.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_6.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/button_conditioner_3.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_8.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_10.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_12.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_2.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_11.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/multi_seven_seg_4.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_9.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/reset_conditioner_1.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_7.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/au_top_0.v}
 }
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -108,11 +108,11 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/constraint/alchitry.xdc}}
-set_property used_in_implementation false [get_files {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/constraint/alchitry.xdc}}]
+read_xdc D:/GitHub/50.002-ALU/work/constraint/alchitry.xdc
+set_property used_in_implementation false [get_files D:/GitHub/50.002-ALU/work/constraint/alchitry.xdc]
 
-read_xdc {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/constraint/io.xdc}}
-set_property used_in_implementation false [get_files {{D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/constraint/io.xdc}}]
+read_xdc D:/GitHub/50.002-ALU/work/constraint/io.xdc
+set_property used_in_implementation false [get_files D:/GitHub/50.002-ALU/work/constraint/io.xdc]
 
 read_xdc {{D:/Program Files/Alchitry/Alchitry Labs/library/components/au.xdc}}
 set_property used_in_implementation false [get_files {{D:/Program Files/Alchitry/Alchitry Labs/library/components/au.xdc}}]

@@ -24,7 +24,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='D:/SUTD/Term 4/50.002 Computation Structures/1D/50.002 1D/work/vivado/50.002 1D/50.002 1D.runs/impl_1'
+HD_PWD='D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/impl_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

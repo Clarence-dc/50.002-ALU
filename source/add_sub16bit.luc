@@ -5,8 +5,7 @@ module add_sub16bit (
     output s[16],
     output z, // z == true when all s = 0
     output v, // v == true when addition overflow (check 16th bit)
-    output n,  // N == true when s is negative (s16 is 1)
-    output m[16]
+    output n  // N == true when s is negative (s16 is 1)
   ) {
   
   // instantiate 16 1-bit full adders 
@@ -14,39 +13,43 @@ module add_sub16bit (
   
 
   always {
-    m = 0;
     // connect inputs into respective adders
     adder.x = a;
     adder.y = 16b0;
+    adder.cin = 16b0;
+    z = 0;
+    v = 0;
+    n = 0;
     // use alufn[1] to implement more operators
-    case(alufn[1:0]){
+    case(alufn[1]){
       // connect b inputs into respective adders
-      b00: // addition
-      adder.y = b;
-      
-      b01: // subtraction
+      b0: // addition and sub
       adder.y = 16x{alufn[0]}^b;
-        
-      b10: // multiplier
-      m = a * b;
-        
-      b11: // modulo
-      m = a/b;
-      
-    }
-    // connect cin and carry_out into adders
-    adder.cin[15:1] = adder.cout[14:0];
-    adder.cin[0] = alufn[0];
+      // connect cin and carry_out into adders
+      adder.cin[15:1] = adder.cout[14:0];
+      adder.cin[0] = alufn[0];
     
-    // z = 0 if all adder sum outputs are 1
-    z = ~(|adder.s);   
+      // z = 0 if all adder sum outputs are 1
+      z = ~|adder.s;   
     
-    // if MSB of s is different from a and b (both are the same), v = 1
-    v = (a[15] & (b[15] ^ alufn[0]) & ~adder.s[15]) | (~a[15] & ~(b[15] ^ alufn[0]) & adder.s[15]); 
+      // if MSB of s is different from a and b (both are the same), v = 1
+      v = (a[15] & (16x{alufn[0]}^b) & ~adder.s[15]) | (~a[15] & ~(16x{alufn[0]}^b) & adder.s[15]); 
 
-    n = adder.s[15];
+      n = adder.s[15];
     
-    s = adder.s;
+      s = adder.s;
+      
+      b1: // multiplier or modulo
+      if(alufn[0] == 0){
+        s = a * b;// multiplier
+        }else{
+        s = a/b; // modulo
+      }
+      z = 0;
+      v = 0;
+      n = 0;
+      
+    
     
     
     

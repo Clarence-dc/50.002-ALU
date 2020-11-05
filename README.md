@@ -1,6 +1,6 @@
 # 50.002-Checkoff 1
 ## Instructions
-- io_button[4] is used to switch between states in the fsm input_controller during manual testing
+- io_button[4] (next) and io_button[3] (back) are used to switch between states in the fsm input_controller during manual testing
 - io_led[1:0] is used to display the inputs A, B and corresponding outputs depending on the current state.
 - io_led[2][5:0] is used to display the current input of alufn
 - io_led[2][7:6] is used to display the current input state

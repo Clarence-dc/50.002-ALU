@@ -11,8 +11,7 @@ module add_sub16bit_5 (
     output reg [15:0] s,
     output reg z,
     output reg v,
-    output reg n,
-    output reg [15:0] m
+    output reg n
   );
   
   
@@ -37,29 +36,33 @@ module add_sub16bit_5 (
   endgenerate
   
   always @* begin
-    m = 1'h0;
     M_adder_x = a;
     M_adder_y = 16'h0000;
+    M_adder_cin = 16'h0000;
+    z = 1'h0;
+    v = 1'h0;
+    n = 1'h0;
     
-    case (alufn[0+1-:2])
-      2'h0: begin
-        M_adder_y = b;
-      end
-      2'h1: begin
+    case (alufn[1+0-:1])
+      1'h0: begin
         M_adder_y = {5'h10{alufn[0+0-:1]}} ^ b;
+        M_adder_cin[1+14-:15] = M_adder_cout[0+14-:15];
+        M_adder_cin[0+0-:1] = alufn[0+0-:1];
+        z = (~|M_adder_s);
+        v = (a[15+0-:1] & ({5'h10{alufn[0+0-:1]}} ^ b) & ~M_adder_s[15+0-:1]) | (~a[15+0-:1] & ~({5'h10{alufn[0+0-:1]}} ^ b) & M_adder_s[15+0-:1]);
+        n = M_adder_s[15+0-:1];
+        s = M_adder_s;
       end
-      2'h2: begin
-        m = a * b;
-      end
-      2'h3: begin
-        m = a / b;
+      1'h1: begin
+        if (alufn[0+0-:1] == 1'h0) begin
+          s = a * b;
+        end else begin
+          s = a / b;
+        end
+        z = 1'h0;
+        v = 1'h0;
+        n = 1'h0;
       end
     endcase
-    M_adder_cin[1+14-:15] = M_adder_cout[0+14-:15];
-    M_adder_cin[0+0-:1] = alufn[0+0-:1];
-    z = ~((|M_adder_s));
-    v = (a[15+0-:1] & (b[15+0-:1] ^ alufn[0+0-:1]) & ~M_adder_s[15+0-:1]) | (~a[15+0-:1] & ~(b[15+0-:1] ^ alufn[0+0-:1]) & M_adder_s[15+0-:1]);
-    n = M_adder_s[15+0-:1];
-    s = M_adder_s;
   end
 endmodule
