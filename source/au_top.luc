@@ -78,8 +78,6 @@ module au_top (
         input_controller.d = input_controller.S1;
       }else if(buttondetector.out[3]){
         input_controller.d = input_controller.S2;
-      }else{
-        input_controller.d = input_controller.S0;
       }
       input_controller.S1:
       seg.values = {b00001,17,17,17};
@@ -93,9 +91,7 @@ module au_top (
         input_controller.d = input_controller.S2;
       }else if(buttondetector.out[3]){
         input_controller.d = input_controller.S0;
-      }else{
-        input_controller.d = input_controller.S1;
-      }  
+      } 
       input_controller.S2:
       io_led [2][7] = h01;
       io_led [2][6] = h01;
@@ -169,9 +165,7 @@ module au_top (
         input_controller.d = input_controller.S0;
       }else if(buttondetector.out[3]){
         input_controller.d = input_controller.S1;
-      }else{
-        input_controller.d = input_controller.S2;
-      }  	
+      }
     }
     
   }

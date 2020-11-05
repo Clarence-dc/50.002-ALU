@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
-| Date         : Fri Nov  6 04:22:20 2020
+| Date         : Fri Nov  6 05:28:04 2020
 | Host         : Clarencedc running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file au_top_0_control_sets_placed.rpt
 | Design       : au_top_0
@@ -27,7 +27,7 @@ Table of Contents
 |    Minimum number of control sets                        |     7 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    17 |
+| Unused register locations in slices containing registers |    14 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -60,8 +60,8 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | No           | No                    | No                     |               6 |            5 |
 | No           | No                    | Yes                    |               0 |            0 |
-| No           | Yes                   | No                     |              25 |            8 |
-| Yes          | No                    | No                     |              32 |           22 |
+| No           | Yes                   | No                     |              28 |           11 |
+| Yes          | No                    | No                     |              32 |           20 |
 | Yes          | No                    | Yes                    |               0 |            0 |
 | Yes          | Yes                   | No                     |              40 |           10 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
@@ -73,13 +73,13 @@ Table of Contents
 +----------------+------------------------------------------------------+-------------------------------------------------------+------------------+----------------+--------------+
 |  Clock Signal  |                     Enable Signal                    |                    Set/Reset Signal                   | Slice Load Count | Bel Load Count | Bels / Slice |
 +----------------+------------------------------------------------------+-------------------------------------------------------+------------------+----------------+--------------+
-|  clk_IBUF_BUFG |                                                      | reset_cond/M_reset_cond_in                            |                3 |              4 |         1.33 |
+|  clk_IBUF_BUFG |                                                      | reset_cond/M_reset_cond_in                            |                2 |              4 |         2.00 |
 |  clk_IBUF_BUFG |                                                      |                                                       |                5 |              6 |         1.20 |
-|  clk_IBUF_BUFG | M_b_mem_d                                            |                                                       |                9 |             16 |         1.78 |
-|  clk_IBUF_BUFG | M_a_mem_d                                            |                                                       |               13 |             16 |         1.23 |
+|  clk_IBUF_BUFG | M_a_mem_d                                            |                                                       |               12 |             16 |         1.33 |
+|  clk_IBUF_BUFG | M_b_mem_d                                            |                                                       |                8 |             16 |         2.00 |
 |  clk_IBUF_BUFG | buttoncond_gen_0[3].buttoncond/M_ctr_q[0]_i_2__0_n_0 | buttoncond_gen_0[3].buttoncond/sync/M_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
 |  clk_IBUF_BUFG | buttoncond_gen_0[4].buttoncond/sel                   | buttoncond_gen_0[4].buttoncond/sync/clear             |                5 |             20 |         4.00 |
-|  clk_IBUF_BUFG |                                                      | reset_cond/Q[0]                                       |                5 |             21 |         4.20 |
+|  clk_IBUF_BUFG |                                                      | reset_cond/Q[0]                                       |                9 |             24 |         2.67 |
 +----------------+------------------------------------------------------+-------------------------------------------------------+------------------+----------------+--------------+
 
 

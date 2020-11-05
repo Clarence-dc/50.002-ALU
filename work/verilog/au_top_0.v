@@ -172,8 +172,6 @@ module au_top_0 (
         end else begin
           if (M_buttondetector_out[3+0-:1]) begin
             M_input_controller_d = S2_input_controller;
-          end else begin
-            M_input_controller_d = S0_input_controller;
           end
         end
       end
@@ -190,8 +188,6 @@ module au_top_0 (
         end else begin
           if (M_buttondetector_out[3+0-:1]) begin
             M_input_controller_d = S0_input_controller;
-          end else begin
-            M_input_controller_d = S1_input_controller;
           end
         end
       end
@@ -291,8 +287,6 @@ module au_top_0 (
         end else begin
           if (M_buttondetector_out[3+0-:1]) begin
             M_input_controller_d = S1_input_controller;
-          end else begin
-            M_input_controller_d = S2_input_controller;
           end
         end
       end
