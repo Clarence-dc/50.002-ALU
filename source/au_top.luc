@@ -22,11 +22,14 @@ module au_top (
     dff b_mem[16](#INIT(0));
     .rst(rst){
     fsm input_controller = {S0, S1,S2};
+    fsm mode_controller = {S0,S1};
     multi_seven_seg seg;
     }
   }
-  
-  
+  // slow the clock so that the fsm will not function too quickly
+  counter slowclk(#SIZE(1),#DIV(27), .clk(clk), .rst(rst));
+  edge_detector slowclkedge(.clk(clk));
+  fsm auto_controller(.clk(slowclkedge.out)) = {S0,S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,S12,S13,S14,ERROR};
   add_sub16bit adder;
   boolean bool;
   shifter shift;
@@ -45,128 +48,348 @@ module au_top (
     io_sel = 4hf;           // select no digits
     
     // initialise
+    slowclkedge.in = slowclk.value;    // use edge detector to slow clock
     seg.values = {17,17,17,17};
     buttoncond.in = io_button[4:0];
     buttondetector.in = buttoncond.out;
-    alufn = io_dip[2][5:0];
     adder.a = 0;
     adder.b = 0;
-    adder.alufn = alufn;
     bool.a = 0;
     bool.b = 0;
-    bool.alufn = alufn;
     shift.a = 0;
     shift.b = 0;
-    shift.alufn = alufn;
     comp.z = 0;
     comp.v = 0;
     comp.n = 0;
+    alufn = 0;
+    adder.alufn = alufn;
+    bool.alufn = alufn;
+    shift.alufn = alufn;
     comp.alufn = alufn;
-    io_led[2][5:0]  = io_dip[2][5:0];
     io_seg = ~seg.seg;   // connect segments to counter
     io_sel = ~seg.sel; // connect digit select to counter
-    case (input_controller.q){
-      input_controller.S0:
-      seg.values = {b00000,17,17,17};
-      io_led [2][7] = h01;
-      io_led [2][6] = h00;
-      a_mem.d[15:8] = io_dip[1];
-      a_mem.d[7:0] = io_dip[0];
-      io_led[1] = io_dip[1];
-      io_led[0] = io_dip[0];
-      if (buttondetector.out[4]){
-        input_controller.d = input_controller.S1;
-      }else if(buttondetector.out[3]){
-        input_controller.d = input_controller.S2;
+    case (mode_controller.q){
+      mode_controller.S0:// manual
+      alufn = io_dip[2][5:0];
+      adder.alufn = alufn;
+      bool.alufn = alufn;
+      shift.alufn = alufn;
+      comp.alufn = alufn;
+      io_led[2][5:0]  = io_dip[2][5:0];
+      case (input_controller.q){
+        input_controller.S0:
+        seg.values = {b00000,17,17,17};
+        io_led [2][7] = h01;
+        io_led [2][6] = h00;
+        a_mem.d[15:8] = io_dip[1];
+        a_mem.d[7:0] = io_dip[0];
+        io_led[1] = io_dip[1];
+        io_led[0] = io_dip[0];
+        if (buttondetector.out[4]){
+          input_controller.d = input_controller.S1;
+        }else if(buttondetector.out[3]){
+          input_controller.d = input_controller.S2;
+        }
+        input_controller.S1:
+        seg.values = {b00001,17,17,17};
+        io_led [2][7] = h00;
+        io_led [2][6] = h01;
+        b_mem.d[15:8] = io_dip[1];
+        b_mem.d[7:0] = io_dip[0];
+        io_led[1] = io_dip[1];
+        io_led[0] = io_dip[0];
+        if (buttondetector.out[4]){
+          input_controller.d = input_controller.S2;
+        }else if(buttondetector.out[3]){
+          input_controller.d = input_controller.S0;
+        } 
+        input_controller.S2:
+        io_led [2][7] = h01;
+        io_led [2][6] = h01;
+        case(alufn[5:4]){
+            b00: //add sub mult div
+            adder.a = a_mem.q;
+            adder.b = b_mem.q;
+            case(alufn[1:0]){
+                b00:// add
+                  seg.values = {b00010,17,b00011,b00000}; // o _ A. A
+                b01:// subtract
+                  seg.values = {b00010,17,b00011,b00100}; // o _ A. S
+                b10:// multiply
+                  seg.values = {b00010,17,b00011,b00101}; // o _ A. X
+                b11:// divide
+                  seg.values = {b00010,17,b00011,b00110}; // o _ A. d
+              }
+            io_led[1] = adder.s[15:8];
+            io_led[0] = adder.s[7:0];
+            b01:// boolean
+            bool.a = a_mem.q;
+            bool.b = b_mem.q;
+            seg.values = {b00010,17,b00111,17}; // o _ b. _
+            case (alufn[3:0]){
+                b1000: // AND
+                seg.values = {b00010,17,b00111,b01000}; // o _ b. n      
+                b1110: // OR
+                seg.values = {b00010,17,b00111,b00010}; // o _ b. o       
+                b0110: // XOR
+                seg.values = {b00010,17,b00111,b00101}; // o _ b. X  
+                b1010: // "A"/LDR
+                seg.values = {b00010,17,b00111,b01001}; // o _ b. L 
+              }
+            io_led[1] = bool.boole[15:8];
+            io_led[0] = bool.boole[7:0];
+            b10:// shifter
+            shift.a = a_mem.q;
+            shift.b = b_mem.q;
+            seg.values = {b00010,17,b01010,17}; // o _ S. _
+            case (alufn[1:0]){
+              b00: // Shift left SHL
+              seg.values = {b00010,17,b01010,b01001}; // o _ S. L
+              b01: // Shift right SHR
+              seg.values = {b00010,17,b01010,b01011}; // o _ S. r
+              b11: // Signed shift right SRA
+              seg.values = {b00010,17,b01010,b01100}; // o _ S. r.
+              }
+            io_led[1] = shift.out[15:8];
+            io_led[0] = shift.out[7:0];
+            b11:// comparator
+            adder.a = a_mem.q;
+            adder.b = b_mem.q;
+            comp.z = adder.z;
+            comp.v = adder.v;
+            comp.n = adder.n;  
+            seg.values = {b00010,17,b01101,17}; // o _ C. _
+            case (alufn[3:0]){
+              b0101:// A == B
+              seg.values = {b00010,17,b01101,b01110}; // o _ C. E
+              b1001:// A < B
+              seg.values = {b00010,17,b01101,b01001}; // o _ C. L
+              b1101:// A <= B
+              seg.values = {b00010,17,b01101,b01111}; // o _ C. L.
+              }
+            io_led[1] = 0;
+            io_led[0][7:1] = 0;
+            io_led[0][0] = comp.cmp;
+          }
+          
+        if (buttondetector.out[4]){
+          input_controller.d = input_controller.S0;
+        }else if(buttondetector.out[3]){
+          input_controller.d = input_controller.S1;
+        }
       }
-      input_controller.S1:
-      seg.values = {b00001,17,17,17};
-      io_led [2][7] = h00;
-      io_led [2][6] = h01;
-      b_mem.d[15:8] = io_dip[1];
-      b_mem.d[7:0] = io_dip[0];
-      io_led[1] = io_dip[1];
-      io_led[0] = io_dip[0];
-      if (buttondetector.out[4]){
-        input_controller.d = input_controller.S2;
-      }else if(buttondetector.out[3]){
-        input_controller.d = input_controller.S0;
-      } 
-      input_controller.S2:
-      io_led [2][7] = h01;
-      io_led [2][6] = h01;
-      case(alufn[5:4]){
-          b00: //add sub mult div
-          adder.a = a_mem.q;
-          adder.b = b_mem.q;
-          case(alufn[1:0]){
-              b00:// add
-                seg.values = {b00010,17,b00011,b00000}; // o _ A. A
-              b01:// subtract
-                seg.values = {b00010,17,b00011,b00100}; // o _ A. S
-              b10:// multiply
-                seg.values = {b00010,17,b00011,b00101}; // o _ A. X
-              b11:// divide
-                seg.values = {b00010,17,b00011,b00110}; // o _ A. d
-            }
+      if (buttondetector.out[1]){
+          mode_controller.d = mode_controller.S1;
+        }
+      mode_controller.S1:// auto 
+      if (buttondetector.out[1]){
+        mode_controller.d = mode_controller.S0;
+      }
+      case(auto_controller.q){
+          auto_controller.S0:// add
+          adder.a = b0000000000000001;
+          adder.b = b0000000000000001;
           io_led[1] = adder.s[15:8];
           io_led[0] = adder.s[7:0];
-          b01:// boolean
-          bool.a = a_mem.q;
-          bool.b = b_mem.q;
-          seg.values = {b00010,17,b00111,17}; // o _ b. _
-          case (alufn[3:0]){
-              b1000: // AND
-              seg.values = {b00010,17,b00111,b01000}; // o _ b. n      
-              b1110: // OR
-              seg.values = {b00010,17,b00111,b00010}; // o _ b. o       
-              b0110: // XOR
-              seg.values = {b00010,17,b00111,b00101}; // o _ b. X  
-              b1010: // "A"/LDR
-              seg.values = {b00010,17,b00111,b01001}; // o _ b. L 
+          adder.alufn = b000000;
+          seg.values = {b00010,17,b00011,b00000}; // o _ A. A
+          if(adder.s == b0000000000000010){
+            auto_controller.d = auto_controller.S1;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
             }
+          auto_controller.S1:// sub
+          adder.a = b0000000000010000;
+          adder.b = b0000000000000001;
+          io_led[1] = adder.s[15:8];
+          io_led[0] = adder.s[7:0];
+          adder.alufn = b000001;
+          seg.values = {b00010,17,b00011,b00100}; // o _ A. S
+          if(adder.s == b0000000000001111){
+            auto_controller.d = auto_controller.S2;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S2:// mult
+          adder.a = b0000000000000100;
+          adder.b = b0000000000000100;
+          io_led[1] = adder.s[15:8];
+          io_led[0] = adder.s[7:0];
+          adder.alufn = b000010;
+          seg.values = {b00010,17,b00011,b00101}; // o _ A. X
+          if(adder.s == b0000000000010000){
+            auto_controller.d = auto_controller.S3;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S3:// modulo
+          adder.a = b0000000000001010;
+          adder.b = b0000000000000011;
+          io_led[1] = adder.s[15:8];
+          io_led[0] = adder.s[7:0];
+          adder.alufn = b000011;
+          seg.values = {b00010,17,b00011,b00110}; // o _ A. d
+          if(adder.s == b0000000000000011){
+            auto_controller.d = auto_controller.S4;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S4:// AND
+          bool.a = b0000000000001010;
+          bool.b = b0000000000000011;
           io_led[1] = bool.boole[15:8];
           io_led[0] = bool.boole[7:0];
-          b10:// shifter
-          shift.a = a_mem.q;
-          shift.b = b_mem.q;
-          seg.values = {b00010,17,b01010,17}; // o _ S. _
-          case (alufn[1:0]){
-            b00: // Shift left SHL
-            seg.values = {b00010,17,b01010,b01001}; // o _ S. L
-            b01: // Shift right SHR
-            seg.values = {b00010,17,b01010,b01011}; // o _ S. r
-            b11: // Signed shift right SRA
-            seg.values = {b00010,17,b01010,b01100}; // o _ S. r.
+          bool.alufn = b011000;
+          seg.values = {b00010,17,b00111,b01000}; // o _ b. n
+          if(bool.boole == b0000000000000010){
+            auto_controller.d = auto_controller.S5;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
             }
+          auto_controller.S5:// OR
+          bool.a = b0000000000001010;
+          bool.b = b0000000000000011;
+          io_led[1] = bool.boole[15:8];
+          io_led[0] = bool.boole[7:0];
+          bool.alufn = b011110;
+          seg.values = {b00010,17,b00111,b00010}; // o _ b. o
+          if(bool.boole == b0000000000001011){
+            auto_controller.d = auto_controller.S6;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S6:// XOR
+          bool.a = b0000000000001010;
+          bool.b = b0000000000000011;
+          io_led[1] = bool.boole[15:8];
+          io_led[0] = bool.boole[7:0];
+          bool.alufn = b010110;
+          seg.values = {b00010,17,b00111,b00101}; // o _ b. X 
+          if(bool.boole == b0000000000001001){
+            auto_controller.d = auto_controller.S7;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S7:// LDR
+          bool.a = b0000000000001010;
+          bool.b = b0000000000000011;
+          io_led[1] = bool.boole[15:8];
+          io_led[0] = bool.boole[7:0];
+          bool.alufn = b011010;
+          seg.values = {b00010,17,b00111,b01001}; // o _ b. L
+          if(bool.boole == b0000000000001010){
+            auto_controller.d = auto_controller.S8;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S8:// SHL
+          shift.a = b0000000001001010;
+          shift.b = b0000000000000010;
           io_led[1] = shift.out[15:8];
           io_led[0] = shift.out[7:0];
-          b11:// comparator
-          adder.a = a_mem.q;
-          adder.b = b_mem.q;
-          comp.z = adder.z;
-          comp.v = adder.v;
-          comp.n = adder.n;  
-          seg.values = {b00010,17,b01101,17}; // o _ C. _
-          case (alufn[3:0]){
-            b0101:// A == B
-            seg.values = {b00010,17,b01101,b01110}; // o _ C. E
-            b1001:// A < B
-            seg.values = {b00010,17,b01101,b01001}; // o _ C. L
-            b1101:// A <= B
-            seg.values = {b00010,17,b01101,b01111}; // o _ C. L.
+          shift.alufn = b100000;
+          seg.values = {b00010,17,b01010,b01001}; // o _ S. L
+          if(shift.out == b0000000100101000){
+            auto_controller.d = auto_controller.S9;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
             }
+          auto_controller.S9:// SHR
+          shift.a = b0000000010110010;
+          shift.b = b0000000000000100;
+          io_led[1] = shift.out[15:8];
+          io_led[0] = shift.out[7:0];
+          shift.alufn = b100001;
+          seg.values = {b00010,17,b01010,b01011}; // o _ S. r
+          if(shift.out == b0000000000001011){
+            auto_controller.d = auto_controller.S10;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S10:// SRA
+          shift.a = b1000000010110010;
+          shift.b = b0000000000000100;
+          io_led[1] = shift.out[15:8];
+          io_led[0] = shift.out[7:0];
+          shift.alufn = b100011;
+          seg.values = {b00010,17,b01010,b01100}; // o _ S. r.
+          if(shift.out == b1111100000001011){
+            auto_controller.d = auto_controller.S11;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S11:// A == B
+          adder.a = b0000000000000100;
+          adder.b = b0000000000000100;
+          adder.alufn = b110101;
+          comp.v = adder.v;
+          comp.z = adder.z;
+          comp.n = adder.n;
+          comp.alufn = b110101;
           io_led[1] = 0;
           io_led[0][7:1] = 0;
           io_led[0][0] = comp.cmp;
+          seg.values = {b00010,17,b01101,b01110}; // o _ C. E
+          if(comp.cmp == b1){
+            auto_controller.d = auto_controller.S12;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S12:// A < B
+          adder.a = b0000000000000010;
+          adder.b = b0000000000000100;
+          adder.alufn = b111001;
+          comp.v = adder.v;
+          comp.z = adder.z;
+          comp.n = adder.n;
+          io_led[1] = 0;
+          io_led[0][7:1] = 0;
+          io_led[0][0] = comp.cmp;
+          comp.alufn = b111001;
+          seg.values = {b00010,17,b01101,b01001}; // o _ C. L
+          if(comp.cmp == b1){
+            auto_controller.d = auto_controller.S13;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S13:// A <= B
+          adder.a = b0000000000000100;
+          adder.b = b0000000000000100;
+          adder.alufn = b111101;
+          comp.v = adder.v;
+          comp.z = adder.z;
+          comp.n = adder.n;
+          io_led[1] = 0;
+          io_led[0][7:1] = 0;
+          io_led[0][0] = comp.cmp;
+          comp.alufn = b111101;
+          seg.values = {b00010,17,b01101,b01111}; // o _ C. L.
+          if(comp.cmp == b1){
+            auto_controller.d = auto_controller.S14;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.S14:// error
+          adder.a = b1000000000000100;
+          adder.b = b0000000000000100;
+          adder.alufn = b111101;
+          comp.v = adder.v;
+          comp.z = adder.z;
+          comp.n = adder.n;
+          io_led[1] = 0;
+          io_led[0][7:1] = 0;
+          io_led[0][0] = comp.cmp;
+          comp.alufn = b111101;
+          seg.values = {b00010,17,b01101,b01111}; // o _ C. L.
+          if(comp.cmp == b11){// error on purpose
+            auto_controller.d = auto_controller.S0;
+            } else{
+            auto_controller.d = auto_controller.ERROR;
+            }
+          auto_controller.ERROR:
+          seg.values = {b01110,b01011,b01011,17}; // E r r
+          auto_controller.d = auto_controller.S0;
         }
-        
-      if (buttondetector.out[4]){
-        input_controller.d = input_controller.S0;
-      }else if(buttondetector.out[3]){
-        input_controller.d = input_controller.S1;
-      }
     }
-    
   }
 }
