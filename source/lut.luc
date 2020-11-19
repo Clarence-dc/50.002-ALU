@@ -21,5 +21,6 @@ case (value) {
 14: segs = ~8b10000110; // "E"
 15: segs = ~8b01000111; // "L."
 16: segs = 8b0000000; // empty 
+17: segs = 8b11111111; // full
 default: segs = 8b0000000;
 }

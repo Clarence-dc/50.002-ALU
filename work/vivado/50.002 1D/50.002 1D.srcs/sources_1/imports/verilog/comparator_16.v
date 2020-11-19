@@ -4,30 +4,33 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module boolean_8 (
-    input [15:0] a,
-    input [15:0] b,
+module comparator_16 (
+    input z,
+    input v,
+    input n,
     input [5:0] alufn,
-    output reg [15:0] boole
+    output reg cmp
   );
   
   
   
+  reg i;
+  reg j;
+  
   always @* begin
-    boole = 1'h0;
+    i = n ^ v;
+    j = i | z;
+    cmp = 1'h0;
     
     case (alufn[0+3-:4])
-      4'h8: begin
-        boole = a & b;
+      4'h5: begin
+        cmp = z;
       end
-      4'he: begin
-        boole = a | b;
+      4'h9: begin
+        cmp = i;
       end
-      4'h6: begin
-        boole = a ^ b;
-      end
-      4'ha: begin
-        boole = a;
+      4'hd: begin
+        cmp = j;
       end
     endcase
   end

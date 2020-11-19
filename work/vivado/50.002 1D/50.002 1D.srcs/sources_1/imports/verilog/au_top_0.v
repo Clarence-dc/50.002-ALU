@@ -57,6 +57,16 @@ module au_top_0 (
   endgenerate
   reg [15:0] M_a_mem_d, M_a_mem_q = 1'h0;
   reg [15:0] M_b_mem_d, M_b_mem_q = 1'h0;
+  wire [16-1:0] M_auto_out;
+  wire [20-1:0] M_auto_seg;
+  wire [24-1:0] M_auto_io_led;
+  autotester_4 auto (
+    .clk(clk),
+    .rst(rst),
+    .out(M_auto_out),
+    .seg(M_auto_seg),
+    .io_led(M_auto_io_led)
+  );
   localparam S0_input_controller = 2'd0;
   localparam S1_input_controller = 2'd1;
   localparam S2_input_controller = 2'd2;
@@ -69,7 +79,7 @@ module au_top_0 (
   wire [8-1:0] M_seg_seg;
   wire [4-1:0] M_seg_sel;
   reg [20-1:0] M_seg_values;
-  multi_seven_seg_4 seg (
+  multi_seven_seg_5 seg (
     .clk(clk),
     .rst(rst),
     .values(M_seg_values),
@@ -77,97 +87,22 @@ module au_top_0 (
     .sel(M_seg_sel)
   );
   
-  wire [1-1:0] M_slowclk_value;
-  counter_5 slowclk (
-    .clk(clk),
-    .rst(rst),
-    .value(M_slowclk_value)
-  );
-  
-  wire [1-1:0] M_slowclkedge_out;
-  reg [1-1:0] M_slowclkedge_in;
-  edge_detector_6 slowclkedge (
-    .clk(clk),
-    .in(M_slowclkedge_in),
-    .out(M_slowclkedge_out)
-  );
-  
-  
-  localparam S0_auto_controller = 4'd0;
-  localparam S1_auto_controller = 4'd1;
-  localparam S2_auto_controller = 4'd2;
-  localparam S3_auto_controller = 4'd3;
-  localparam S4_auto_controller = 4'd4;
-  localparam S5_auto_controller = 4'd5;
-  localparam S6_auto_controller = 4'd6;
-  localparam S7_auto_controller = 4'd7;
-  localparam S8_auto_controller = 4'd8;
-  localparam S9_auto_controller = 4'd9;
-  localparam S10_auto_controller = 4'd10;
-  localparam S11_auto_controller = 4'd11;
-  localparam S12_auto_controller = 4'd12;
-  localparam S13_auto_controller = 4'd13;
-  localparam S14_auto_controller = 4'd14;
-  localparam ERROR_auto_controller = 4'd15;
-  
-  reg [3:0] M_auto_controller_d, M_auto_controller_q = S0_auto_controller;
-  
-  wire [16-1:0] M_adder_s;
-  wire [1-1:0] M_adder_z;
-  wire [1-1:0] M_adder_v;
-  wire [1-1:0] M_adder_n;
-  reg [16-1:0] M_adder_a;
-  reg [16-1:0] M_adder_b;
-  reg [6-1:0] M_adder_alufn;
-  add_sub16bit_7 adder (
-    .a(M_adder_a),
-    .b(M_adder_b),
-    .alufn(M_adder_alufn),
-    .s(M_adder_s),
-    .z(M_adder_z),
-    .v(M_adder_v),
-    .n(M_adder_n)
-  );
-  
-  wire [16-1:0] M_bool_boole;
-  reg [16-1:0] M_bool_a;
-  reg [16-1:0] M_bool_b;
-  reg [6-1:0] M_bool_alufn;
-  boolean_8 bool (
-    .a(M_bool_a),
-    .b(M_bool_b),
-    .alufn(M_bool_alufn),
-    .boole(M_bool_boole)
-  );
-  
-  wire [16-1:0] M_shift_out;
-  reg [16-1:0] M_shift_a;
-  reg [16-1:0] M_shift_b;
-  reg [6-1:0] M_shift_alufn;
-  shifter_9 shift (
-    .a(M_shift_a),
-    .b(M_shift_b),
-    .alufn(M_shift_alufn),
-    .out(M_shift_out)
-  );
-  
-  wire [1-1:0] M_comp_cmp;
-  reg [1-1:0] M_comp_z;
-  reg [1-1:0] M_comp_v;
-  reg [1-1:0] M_comp_n;
-  reg [6-1:0] M_comp_alufn;
-  comparator_10 comp (
-    .z(M_comp_z),
-    .v(M_comp_v),
-    .n(M_comp_n),
-    .alufn(M_comp_alufn),
-    .cmp(M_comp_cmp)
+  wire [16-1:0] M_alu_out;
+  wire [20-1:0] M_alu_seg;
+  reg [16-1:0] M_alu_a;
+  reg [16-1:0] M_alu_b;
+  reg [6-1:0] M_alu_alufn;
+  alu_6 alu (
+    .a(M_alu_a),
+    .b(M_alu_b),
+    .alufn(M_alu_alufn),
+    .out(M_alu_out),
+    .seg(M_alu_seg)
   );
   
   always @* begin
     M_input_controller_d = M_input_controller_q;
     M_mode_controller_d = M_mode_controller_q;
-    M_auto_controller_d = M_auto_controller_q;
     M_a_mem_d = M_a_mem_q;
     M_b_mem_d = M_b_mem_q;
     
@@ -178,39 +113,24 @@ module au_top_0 (
     io_led = 24'h000000;
     io_seg = 8'hff;
     io_sel = 4'hf;
-    M_slowclkedge_in = M_slowclk_value;
-    M_seg_values = 20'h8c631;
+    M_seg_values = 20'h84210;
     M_buttoncond_in = io_button[0+4-:5];
     M_buttondetector_in = M_buttoncond_out;
-    M_adder_a = 1'h0;
-    M_adder_b = 1'h0;
-    M_bool_a = 1'h0;
-    M_bool_b = 1'h0;
-    M_shift_a = 1'h0;
-    M_shift_b = 1'h0;
-    M_comp_z = 1'h0;
-    M_comp_v = 1'h0;
-    M_comp_n = 1'h0;
-    alufn = 1'h0;
-    M_adder_alufn = alufn;
-    M_bool_alufn = alufn;
-    M_shift_alufn = alufn;
-    M_comp_alufn = alufn;
+    M_alu_a = 1'h0;
+    M_alu_b = 1'h0;
+    M_alu_alufn = 1'h0;
     io_seg = ~M_seg_seg;
     io_sel = ~M_seg_sel;
     
     case (M_mode_controller_q)
       S0_mode_controller: begin
         alufn = io_dip[16+0+5-:6];
-        M_adder_alufn = alufn;
-        M_bool_alufn = alufn;
-        M_shift_alufn = alufn;
-        M_comp_alufn = alufn;
+        M_alu_alufn = alufn;
         io_led[16+0+5-:6] = io_dip[16+0+5-:6];
         
         case (M_input_controller_q)
           S0_input_controller: begin
-            M_seg_values = 20'h04631;
+            M_seg_values = 20'h04210;
             io_led[16+7+0-:1] = 8'h01;
             io_led[16+6+0-:1] = 8'h00;
             M_a_mem_d[8+7-:8] = io_dip[8+7-:8];
@@ -226,7 +146,7 @@ module au_top_0 (
             end
           end
           S1_input_controller: begin
-            M_seg_values = 20'h0c631;
+            M_seg_values = 20'h0c210;
             io_led[16+7+0-:1] = 8'h00;
             io_led[16+6+0-:1] = 8'h01;
             M_b_mem_d[8+7-:8] = io_dip[8+7-:8];
@@ -244,94 +164,11 @@ module au_top_0 (
           S2_input_controller: begin
             io_led[16+7+0-:1] = 8'h01;
             io_led[16+6+0-:1] = 8'h01;
-            
-            case (alufn[4+1-:2])
-              2'h0: begin
-                M_adder_a = M_a_mem_q;
-                M_adder_b = M_b_mem_q;
-                
-                case (alufn[0+1-:2])
-                  2'h0: begin
-                    M_seg_values = 20'h14460;
-                  end
-                  2'h1: begin
-                    M_seg_values = 20'h14464;
-                  end
-                  2'h2: begin
-                    M_seg_values = 20'h14465;
-                  end
-                  2'h3: begin
-                    M_seg_values = 20'h14466;
-                  end
-                endcase
-                io_led[8+7-:8] = M_adder_s[8+7-:8];
-                io_led[0+7-:8] = M_adder_s[0+7-:8];
-              end
-              2'h1: begin
-                M_bool_a = M_a_mem_q;
-                M_bool_b = M_b_mem_q;
-                M_seg_values = 20'h144f1;
-                
-                case (alufn[0+3-:4])
-                  4'h8: begin
-                    M_seg_values = 20'h144e8;
-                  end
-                  4'he: begin
-                    M_seg_values = 20'h144e2;
-                  end
-                  4'h6: begin
-                    M_seg_values = 20'h144e5;
-                  end
-                  4'ha: begin
-                    M_seg_values = 20'h144e9;
-                  end
-                endcase
-                io_led[8+7-:8] = M_bool_boole[8+7-:8];
-                io_led[0+7-:8] = M_bool_boole[0+7-:8];
-              end
-              2'h2: begin
-                M_shift_a = M_a_mem_q;
-                M_shift_b = M_b_mem_q;
-                M_seg_values = 20'h14551;
-                
-                case (alufn[0+1-:2])
-                  2'h0: begin
-                    M_seg_values = 20'h14549;
-                  end
-                  2'h1: begin
-                    M_seg_values = 20'h1454b;
-                  end
-                  2'h3: begin
-                    M_seg_values = 20'h1454c;
-                  end
-                endcase
-                io_led[8+7-:8] = M_shift_out[8+7-:8];
-                io_led[0+7-:8] = M_shift_out[0+7-:8];
-              end
-              2'h3: begin
-                M_adder_a = M_a_mem_q;
-                M_adder_b = M_b_mem_q;
-                M_comp_z = M_adder_z;
-                M_comp_v = M_adder_v;
-                M_comp_n = M_adder_n;
-                M_seg_values = 20'h145b1;
-                
-                case (alufn[0+3-:4])
-                  4'h5: begin
-                    M_seg_values = 20'h145ae;
-                  end
-                  4'h9: begin
-                    M_seg_values = 20'h145a9;
-                  end
-                  4'hd: begin
-                    M_seg_values = 20'h145af;
-                  end
-                endcase
-                io_led[8+7-:8] = 1'h0;
-                io_led[0+1+6-:7] = 1'h0;
-                io_led[0+0+0-:1] = M_comp_cmp;
-              end
-            endcase
+            M_alu_a = M_a_mem_q;
+            M_alu_b = M_b_mem_q;
+            io_led[8+7-:8] = M_alu_out[8+7-:8];
+            io_led[0+7-:8] = M_alu_out[0+7-:8];
+            M_seg_values = M_alu_seg;
             if (M_buttondetector_out[4+0-:1]) begin
               M_input_controller_d = S0_input_controller;
             end else begin
@@ -349,236 +186,13 @@ module au_top_0 (
         if (M_buttondetector_out[1+0-:1]) begin
           M_mode_controller_d = S0_mode_controller;
         end
-        
-        case (M_auto_controller_q)
-          S0_auto_controller: begin
-            M_adder_a = 16'h0001;
-            M_adder_b = 16'h0001;
-            io_led[8+7-:8] = M_adder_s[8+7-:8];
-            io_led[0+7-:8] = M_adder_s[0+7-:8];
-            M_adder_alufn = 6'h00;
-            M_seg_values = 20'h14460;
-            if (M_adder_s == 16'h0002) begin
-              M_auto_controller_d = S1_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S1_auto_controller: begin
-            M_adder_a = 16'h0010;
-            M_adder_b = 16'h0001;
-            io_led[8+7-:8] = M_adder_s[8+7-:8];
-            io_led[0+7-:8] = M_adder_s[0+7-:8];
-            M_adder_alufn = 6'h01;
-            M_seg_values = 20'h14464;
-            if (M_adder_s == 16'h000f) begin
-              M_auto_controller_d = S2_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S2_auto_controller: begin
-            M_adder_a = 16'h0004;
-            M_adder_b = 16'h0004;
-            io_led[8+7-:8] = M_adder_s[8+7-:8];
-            io_led[0+7-:8] = M_adder_s[0+7-:8];
-            M_adder_alufn = 6'h02;
-            M_seg_values = 20'h14465;
-            if (M_adder_s == 16'h0010) begin
-              M_auto_controller_d = S3_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S3_auto_controller: begin
-            M_adder_a = 16'h000a;
-            M_adder_b = 16'h0003;
-            io_led[8+7-:8] = M_adder_s[8+7-:8];
-            io_led[0+7-:8] = M_adder_s[0+7-:8];
-            M_adder_alufn = 6'h03;
-            M_seg_values = 20'h14466;
-            if (M_adder_s == 16'h0003) begin
-              M_auto_controller_d = S4_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S4_auto_controller: begin
-            M_bool_a = 16'h000a;
-            M_bool_b = 16'h0003;
-            io_led[8+7-:8] = M_bool_boole[8+7-:8];
-            io_led[0+7-:8] = M_bool_boole[0+7-:8];
-            M_bool_alufn = 6'h18;
-            M_seg_values = 20'h144e8;
-            if (M_bool_boole == 16'h0002) begin
-              M_auto_controller_d = S5_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S5_auto_controller: begin
-            M_bool_a = 16'h000a;
-            M_bool_b = 16'h0003;
-            io_led[8+7-:8] = M_bool_boole[8+7-:8];
-            io_led[0+7-:8] = M_bool_boole[0+7-:8];
-            M_bool_alufn = 6'h1e;
-            M_seg_values = 20'h144e2;
-            if (M_bool_boole == 16'h000b) begin
-              M_auto_controller_d = S6_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S6_auto_controller: begin
-            M_bool_a = 16'h000a;
-            M_bool_b = 16'h0003;
-            io_led[8+7-:8] = M_bool_boole[8+7-:8];
-            io_led[0+7-:8] = M_bool_boole[0+7-:8];
-            M_bool_alufn = 6'h16;
-            M_seg_values = 20'h144e5;
-            if (M_bool_boole == 16'h0009) begin
-              M_auto_controller_d = S7_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S7_auto_controller: begin
-            M_bool_a = 16'h000a;
-            M_bool_b = 16'h0003;
-            io_led[8+7-:8] = M_bool_boole[8+7-:8];
-            io_led[0+7-:8] = M_bool_boole[0+7-:8];
-            M_bool_alufn = 6'h1a;
-            M_seg_values = 20'h144e9;
-            if (M_bool_boole == 16'h000a) begin
-              M_auto_controller_d = S8_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S8_auto_controller: begin
-            M_shift_a = 16'h004a;
-            M_shift_b = 16'h0002;
-            io_led[8+7-:8] = M_shift_out[8+7-:8];
-            io_led[0+7-:8] = M_shift_out[0+7-:8];
-            M_shift_alufn = 6'h20;
-            M_seg_values = 20'h14549;
-            if (M_shift_out == 16'h0128) begin
-              M_auto_controller_d = S9_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S9_auto_controller: begin
-            M_shift_a = 16'h00b2;
-            M_shift_b = 16'h0004;
-            io_led[8+7-:8] = M_shift_out[8+7-:8];
-            io_led[0+7-:8] = M_shift_out[0+7-:8];
-            M_shift_alufn = 6'h21;
-            M_seg_values = 20'h1454b;
-            if (M_shift_out == 16'h000b) begin
-              M_auto_controller_d = S10_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S10_auto_controller: begin
-            M_shift_a = 16'h80b2;
-            M_shift_b = 16'h0004;
-            io_led[8+7-:8] = M_shift_out[8+7-:8];
-            io_led[0+7-:8] = M_shift_out[0+7-:8];
-            M_shift_alufn = 6'h23;
-            M_seg_values = 20'h1454c;
-            if (M_shift_out == 16'hf80b) begin
-              M_auto_controller_d = S11_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S11_auto_controller: begin
-            M_adder_a = 16'h0004;
-            M_adder_b = 16'h0004;
-            M_adder_alufn = 6'h35;
-            M_comp_v = M_adder_v;
-            M_comp_z = M_adder_z;
-            M_comp_n = M_adder_n;
-            M_comp_alufn = 6'h35;
-            io_led[8+7-:8] = 1'h0;
-            io_led[0+1+6-:7] = 1'h0;
-            io_led[0+0+0-:1] = M_comp_cmp;
-            M_seg_values = 20'h145ae;
-            if (M_comp_cmp == 1'h1) begin
-              M_auto_controller_d = S12_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S12_auto_controller: begin
-            M_adder_a = 16'h0002;
-            M_adder_b = 16'h0004;
-            M_adder_alufn = 6'h39;
-            M_comp_v = M_adder_v;
-            M_comp_z = M_adder_z;
-            M_comp_n = M_adder_n;
-            io_led[8+7-:8] = 1'h0;
-            io_led[0+1+6-:7] = 1'h0;
-            io_led[0+0+0-:1] = M_comp_cmp;
-            M_comp_alufn = 6'h39;
-            M_seg_values = 20'h145a9;
-            if (M_comp_cmp == 1'h1) begin
-              M_auto_controller_d = S13_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S13_auto_controller: begin
-            M_adder_a = 16'h0004;
-            M_adder_b = 16'h0004;
-            M_adder_alufn = 6'h3d;
-            M_comp_v = M_adder_v;
-            M_comp_z = M_adder_z;
-            M_comp_n = M_adder_n;
-            io_led[8+7-:8] = 1'h0;
-            io_led[0+1+6-:7] = 1'h0;
-            io_led[0+0+0-:1] = M_comp_cmp;
-            M_comp_alufn = 6'h3d;
-            M_seg_values = 20'h145af;
-            if (M_comp_cmp == 1'h1) begin
-              M_auto_controller_d = S14_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          S14_auto_controller: begin
-            M_adder_a = 16'h8004;
-            M_adder_b = 16'h0004;
-            M_adder_alufn = 6'h3d;
-            M_comp_v = M_adder_v;
-            M_comp_z = M_adder_z;
-            M_comp_n = M_adder_n;
-            io_led[8+7-:8] = 1'h0;
-            io_led[0+1+6-:7] = 1'h0;
-            io_led[0+0+0-:1] = M_comp_cmp;
-            M_comp_alufn = 6'h3d;
-            M_seg_values = 20'h145af;
-            if (M_comp_cmp == 2'h3) begin
-              M_auto_controller_d = S0_auto_controller;
-            end else begin
-              M_auto_controller_d = ERROR_auto_controller;
-            end
-          end
-          ERROR_auto_controller: begin
-            M_seg_values = 20'h72d71;
-            M_auto_controller_d = S0_auto_controller;
-          end
-        endcase
+        io_led[8+7-:8] = M_auto_out[8+7-:8];
+        io_led[0+7-:8] = M_auto_out[0+7-:8];
+        M_seg_values = M_auto_seg;
+        io_led = M_auto_io_led;
       end
     endcase
   end
-  
-  always @(posedge M_slowclkedge_out) begin
-    M_auto_controller_q <= M_auto_controller_d;
-  end
-  
   
   always @(posedge clk) begin
     M_a_mem_q <= M_a_mem_d;

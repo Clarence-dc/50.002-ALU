@@ -4,20 +4,25 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-/*
-   Parameters:
-     WIDTH = DIGIT_BITS
-*/
-module decoder_14 (
-    input [1:0] in,
-    output reg [3:0] out
+module adder1b_17 (
+    input x,
+    input y,
+    input cin,
+    output reg s,
+    output reg cout
   );
   
-  localparam WIDTH = 2'h2;
   
+  
+  reg i;
+  reg j;
+  reg k;
   
   always @* begin
-    out = 1'h0;
-    out[(in)*1+0-:1] = 1'h1;
+    s = x ^ y ^ cin;
+    i = x & y;
+    j = x & cin;
+    k = y & cin;
+    cout = i | j | k;
   end
 endmodule

@@ -4,27 +4,30 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module shifter_9 (
+module boolean_14 (
     input [15:0] a,
     input [15:0] b,
     input [5:0] alufn,
-    output reg [15:0] out
+    output reg [15:0] boole
   );
   
   
   
   always @* begin
-    out = 1'h0;
+    boole = 1'h0;
     
-    case (alufn[0+1-:2])
-      2'h0: begin
-        out = (a << b[0+5-:6]);
+    case (alufn[0+3-:4])
+      4'h8: begin
+        boole = a & b;
       end
-      2'h1: begin
-        out = (a >> b[0+5-:6]);
+      4'he: begin
+        boole = a | b;
       end
-      2'h3: begin
-        out = ($signed(a) >>> b[0+5-:6]);
+      4'h6: begin
+        boole = a ^ b;
+      end
+      4'ha: begin
+        boole = a;
       end
     endcase
   end

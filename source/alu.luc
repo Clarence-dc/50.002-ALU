@@ -1,0 +1,86 @@
+module alu (
+    input a[16],
+    input b[16],
+    input alufn[6],
+    output out[16],
+    output seg[4][5]
+  ) {
+  add_sub16bit adder;
+  boolean bool;
+  shifter shift;
+  comparator comp;
+  always {
+    adder.a = a;
+    adder.b = b;
+    bool.a = a;
+    bool.b = b;
+    shift.a = a;
+    shift.b = b;
+    comp.z = adder.z;
+    comp.v = adder.v;
+    comp.n = adder.n;  
+    adder.alufn = alufn;
+    bool.alufn = alufn;
+    shift.alufn = alufn;
+    comp.alufn = alufn;
+    out = 0;
+    seg = {16,16,16,16};
+    case(alufn[5:4]){
+            b00: //add sub mult div
+            case(alufn[1:0]){
+                b00:// add
+                  seg = {b00010,16,b00011,b00000}; // o _ A. A
+                b01:// subtract
+                  seg = {b00010,16,b00011,b00100}; // o _ A. S
+                b10:// multiply
+                  if(adder.s/b == a){
+                    seg = {b00010,16,b00011,b00101}; // o _ A. X
+                  }else{
+                    seg = {b00101,b00101,b00101,b00101}; // X X X X
+                  }
+                b11:// divide
+                  seg = {b00010,16,b00011,b00110}; // o _ A. d
+              }
+            out = adder.s;
+            
+            b01:// boolean
+            seg = {b00010,16,b00111,16}; // o _ b. _
+            case (alufn[3:0]){
+                b1000: // AND
+                seg = {b00010,16,b00111,b01000}; // o _ b. n      
+                b1110: // OR
+                seg = {b00010,16,b00111,b00010}; // o _ b. o       
+                b0110: // XOR
+                seg = {b00010,16,b00111,b00101}; // o _ b. X  
+                b1010: // "A"/LDR
+                seg = {b00010,16,b00111,b01001}; // o _ b. L 
+              }
+            out = bool.boole;
+            b10:// shifter
+            seg = {b00010,16,b01010,16}; // o _ S. _
+            case (alufn[1:0]){
+              b00: // Shift left SHL
+              seg = {b00010,16,b01010,b01001}; // o _ S. L
+              b01: // Shift right SHR
+              seg = {b00010,16,b01010,b01011}; // o _ S. r
+              b11: // Signed shift right SRA
+              seg = {b00010,16,b01010,b01100}; // o _ S. r.
+              }
+            out = shift.out;
+            b11:// comparator
+            seg = {b00010,16,b01101,16}; // o _ C. _
+            case (alufn[3:0]){
+              b0101:// A == B
+              seg = {b00010,16,b01101,b01110}; // o _ C. E
+              b1001:// A < B
+              seg = {b00010,16,b01101,b01001}; // o _ C. L
+              b1101:// A <= B
+              seg = {b00010,16,b01101,b01111}; // o _ C. L.
+              }
+            out[15:1] = 0;
+            out[0] = comp.cmp;
+          }
+    
+  }
+}
+

@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module lut_13 (
+module lut_11 (
     input [4:0] value,
     output reg [7:0] segs
   );
@@ -64,6 +64,9 @@ module lut_13 (
       end
       5'h10: begin
         segs = 8'h00;
+      end
+      5'h11: begin
+        segs = 8'hff;
       end
       default: begin
         segs = 8'h00;

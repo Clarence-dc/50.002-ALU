@@ -12,9 +12,11 @@
     <component>reset_conditioner.luc</component>
     <src>boolean.luc</src>
     <src top="true">au_top.luc</src>
+    <src>autotester.luc</src>
     <component>button_conditioner.luc</component>
     <src>add_sub16bit.luc</src>
     <src>adder1b.luc</src>
+    <src>alu.luc</src>
     <constraint lib="true">alchitry.acf</constraint>
     <constraint lib="true">io.acf</constraint>
     <constraint lib="true">au.xdc</constraint>
