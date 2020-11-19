@@ -1,0 +1,135 @@
+module controlunit (
+    input clk,
+    input irq, 
+    input z,
+    input reset,    
+    input opcode[6],
+    output pcsel[3], 
+    output wasel,
+    output asel,
+    output ra2sel,
+    output bsel,
+    output alufn[6],
+    output wdsel[2], 
+    output werf,
+    output moe, 
+    output xwr
+  ) {
+  
+  const CU_ROM = { 
+  b011100000000000100,	// opcode = 0b000000
+  b011100000000000100,	// opcode = 0b000001
+  b011100000000000100,	// opcode = 0b000010
+  b011100000000000100,	// opcode = 0b000011
+  b011100000000000100,	// opcode = 0b000100
+  b011100000000000100,	// opcode = 0b000101
+  b011100000000000100,	// opcode = 0b000110
+  b011100000000000100,	// opcode = 0b000111
+
+  b011100000000000100,	// opcode = 0b001000
+  b011100000000000100,	// opcode = 0b001001
+  b011100000000000100,	// opcode = 0b001010
+  b011100000000000100,	// opcode = 0b001011
+  b011100000000000100,	// opcode = 0b001100
+  b011100000000000100,	// opcode = 0b001101
+  b011100000000000100,	// opcode = 0b001110
+  b011100000000000100,	// opcode = 0b001111
+
+  b011100000000000100,	// opcode = 0b010000
+  b011100000000000100,	// opcode = 0b010001
+  b011100000000000100,	// opcode = 0b010010
+  b011100000000000100,	// opcode = 0b010011
+  b011100000000000100,	// opcode = 0b010100
+  b011100000000000100,	// opcode = 0b010101
+  b011100000000000100,	// opcode = 0b010110
+  b011100000000000100,	// opcode = 0b010111
+
+  b000000100000010110,	// opcode = 0b011000 LD
+  b000001100000000001,	// opcode = 0b011001 ST
+  b011100000000000100,	// opcode = 0b011010
+  b010000000000000100,	// opcode = 0b011011 JMP
+  b011100000000000100,	// opcode = 0b011100
+  b001000000000000100,	// opcode = 0b011101 BEQ
+  b000000000000000100,	// opcode = 0b011110 BNE
+  b000010001101010110,	// opcode = 0b011111 LDR (011010)
+
+  b000000000000001100,	// opcode = 0b100000 ADD (000000)
+  b000000000000101100,	// opcode = 0b100001 SUB (000001)
+  b000000000001001100,	// opcode = 0b100010 MUL (000010)
+  b000000000001101100,	// opcode = 0b100011 DIV (000011)
+  b000000011010101100,	// opcode = 0b100100 CMPEQ (110101)
+  b000000011100101100,	// opcode = 0b100101 CMPLT (111001)
+  b000000011110101100,	// opcode = 0b100110 CMPLE (111101)
+  b011100000000000100,	// opcode = 0b100111
+
+  b000000001100001100,	// opcode = 0b101000 AND (011000)
+  b000000001111001100,	// opcode = 0b101001 OR (011110)
+  b000000001011001100,	// opcode = 0b101010 XOR (010110)
+  b000000001101001100,	// opcode = 0b101011 "A"(011010)
+  b000000010000001100,	// opcode = 0b101100 SHL (010000)
+  b000000010000101100,	// opcode = 0b101101 SHR (010001)
+  b000000010001101100,	// opcode = 0b101110 SRA (010011)
+  b011100000000000100,	// opcode = 0b10111
+
+  b000000100000001100,	// opcode = 0b110000 ADDC (000000)
+  b000000100000101100,	// opcode = 0b110001 SUBC (000001)
+  b000000100001001100,	// opcode = 0b110010 MULC (000010)
+  b000000100001101100,	// opcode = 0b110011 DIVC (000011)
+  b000000111010101100,	// opcode = 0b110100 CMPEQC (110101)
+  b000000111100101100,	// opcode = 0b110101 CMPLTC (111001)
+  b000000111110101100,	// opcode = 0b110110 CMPLEC (111101)
+  b011100000000000100,	// opcode = 0b11011
+
+  b000000101100001100,	// opcode = 0b111000 ANDC (011000)
+  b000000101111001100,	// opcode = 0b111001 ORC (011110)
+  b000000101011001100,	// opcode = 0b111010 XORC (010110)
+  b011100000000000100,	// opcode = 0b111011
+  b000000110000001100,	// opcode = 0b111100 SHLC (010000)
+  b000000110000101100,	// opcode = 0b111101 SHRC (010001)
+  b000000110001101100,	// opcode = 0b111110 SRAC (010011)
+  b011100000000000100};	// opcode = 0b111111
+    
+  dff irq_sampler(#INIT(0), .clk(clk));
+
+  always {
+  
+    irq_sampler.d = irq;
+    pcsel = CU_ROM[opcode][17:15]; 
+    wasel = CU_ROM[opcode][14]; 
+    asel = CU_ROM[opcode][13]; 
+    ra2sel = CU_ROM[opcode][12]; 
+    bsel = CU_ROM[opcode][11]; 
+    alufn = CU_ROM[opcode][10:5]; 
+    wdsel = CU_ROM[opcode][4:3];  
+    werf= CU_ROM[opcode][2]; 
+    moe = CU_ROM[opcode][1]; 
+    xwr = CU_ROM[opcode][0]; 
+    
+    
+    // beq bne handling 
+    if (opcode == b011101 && z == 1){//BEQ, branch if z == 1
+      pcsel = b001;
+    }
+    else if (opcode == b011110 && z == 0){ //BNE, branch if z != 1
+      pcsel = b001;
+    }
+    
+    // force xwr = 0 when reset == 1 
+    if (reset){
+      xwr = 0;
+      werf = 0;
+    }
+    
+    // interrupt checker, will overwrite everything hence we put at the bottom    
+    if (irq_sampler.q == 1){
+      pcsel = b100;
+      wasel = 1;
+      werf = 1;
+      wdsel = b00;
+      xwr = 0;
+    }
+    
+    
+
+  }
+}

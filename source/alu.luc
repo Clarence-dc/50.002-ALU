@@ -3,6 +3,7 @@ module alu (
     input b[16],
     input alufn[6],
     output out[16],
+    output zvn[3],
     output seg[4][5]
   ) {
   add_sub16bit adder;
@@ -24,6 +25,10 @@ module alu (
     shift.alufn = alufn;
     comp.alufn = alufn;
     out = 0;
+    zvn[0] = adder.z;
+    zvn[1] = adder.v;
+    zvn[2] = adder.n;
+
     seg = {16,16,16,16};
     case(alufn[5:4]){
             b00: //add sub mult div
