@@ -195,7 +195,7 @@ module autotester (
             auto_controller.d = auto_controller.ERROR;
             }
           auto_controller.ERROR:
-          seg = {b01110,b01011,b01011,17}; // E r r
+          seg = {b01110,b01011,b01011,16}; // E r r
           auto_controller.d = auto_controller.S0;
         }
 }
