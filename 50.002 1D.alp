@@ -22,6 +22,8 @@
     <src>add_sub16bit.luc</src>
     <src>adder1b.luc</src>
     <src>regfile.luc</src>
+    <src>randgen_autotester.luc</src>
+    <src>rand_gen.luc</src>
     <src>alu.luc</src>
     <constraint lib="true">alchitry.acf</constraint>
     <constraint lib="true">io.acf</constraint>

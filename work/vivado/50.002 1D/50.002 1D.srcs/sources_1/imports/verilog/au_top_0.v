@@ -54,6 +54,13 @@ module au_top_0 (
     );
   end
   endgenerate
+  localparam S0_mode_controller = 3'd0;
+  localparam S1_mode_controller = 3'd1;
+  localparam S2_mode_controller = 3'd2;
+  localparam S3_mode_controller = 3'd3;
+  localparam S4_mode_controller = 3'd4;
+  
+  reg [2:0] M_mode_controller_d, M_mode_controller_q = S0_mode_controller;
   wire [16-1:0] M_auto_out;
   wire [20-1:0] M_auto_seg;
   wire [24-1:0] M_auto_io_led;
@@ -78,12 +85,6 @@ module au_top_0 (
     .seg(M_manual_seg),
     .io_led(M_manual_io_led)
   );
-  localparam S0_mode_controller = 2'd0;
-  localparam S1_mode_controller = 2'd1;
-  localparam S2_mode_controller = 2'd2;
-  localparam S3_mode_controller = 2'd3;
-  
-  reg [1:0] M_mode_controller_d, M_mode_controller_q = S0_mode_controller;
   wire [20-1:0] M_segtest_seg;
   reg [5-1:0] M_segtest_button;
   segtest_6 segtest (
@@ -101,6 +102,24 @@ module au_top_0 (
     .values(M_seg_values),
     .seg(M_seg_seg),
     .sel(M_seg_sel)
+  );
+  wire [90-1:0] M_game_seg;
+  wire [20-1:0] M_game_io_seg;
+  reg [5-1:0] M_game_button;
+  game_8 game (
+    .clk(clk),
+    .rst(rst),
+    .button(M_game_button),
+    .seg(M_game_seg),
+    .io_seg(M_game_io_seg)
+  );
+  wire [20-1:0] M_rand_auto_seg;
+  reg [5-1:0] M_rand_auto_button;
+  randgen_autotester_9 rand_auto (
+    .clk(clk),
+    .rst(rst),
+    .button(M_rand_auto_button),
+    .seg(M_rand_auto_seg)
   );
   
   always @* begin
@@ -120,6 +139,8 @@ module au_top_0 (
     M_manual_button = 5'h00;
     M_segtest_button = 5'h00;
     M_auto_button = 5'h00;
+    M_game_button = 5'h00;
+    M_rand_auto_button = 5'h00;
     io_seg = ~M_seg_seg;
     io_sel = ~M_seg_sel;
     
@@ -131,7 +152,7 @@ module au_top_0 (
         io_led = M_manual_io_led;
         M_seg_values = M_manual_seg;
         if (M_buttondetector_out[0+0-:1]) begin
-          M_mode_controller_d = S3_mode_controller;
+          M_mode_controller_d = S4_mode_controller;
         end else begin
           if (M_buttondetector_out[2+0-:1]) begin
             M_mode_controller_d = S1_mode_controller;
@@ -164,8 +185,23 @@ module au_top_0 (
         M_seg_values = M_segtest_seg;
       end
       S3_mode_controller: begin
+        if (M_game_seg != 90'h21084210842108421084210) begin
+          M_mode_controller_d = S3_mode_controller;
+        end else begin
+          if (M_buttondetector_out[0+0-:1]) begin
+            M_mode_controller_d = S2_mode_controller;
+          end else begin
+            if (M_buttondetector_out[2+0-:1]) begin
+              M_mode_controller_d = S4_mode_controller;
+            end
+          end
+        end
+      end
+      S4_mode_controller: begin
+        M_rand_auto_button = M_buttondetector_out;
+        M_seg_values = M_rand_auto_seg;
         if (M_buttondetector_out[0+0-:1]) begin
-          M_mode_controller_d = S2_mode_controller;
+          M_mode_controller_d = S3_mode_controller;
         end else begin
           if (M_buttondetector_out[2+0-:1]) begin
             M_mode_controller_d = S0_mode_controller;

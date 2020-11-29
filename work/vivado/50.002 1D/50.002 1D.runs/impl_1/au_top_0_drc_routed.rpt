@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
-| Date         : Fri Nov 27 21:47:31 2020
+| Date         : Mon Nov 30 04:29:21 2020
 | Host         : Clarencedc running 64-bit major release  (build 9200)
 | Command      : report_drc -file au_top_0_drc_routed.rpt -pb au_top_0_drc_routed.pb -rpx au_top_0_drc_routed.rpx
 | Design       : au_top_0
@@ -24,13 +24,14 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 12
+             Violations found: 32
 +-------------+----------+-------------------------------------------------------------+------------+
 | Rule        | Severity | Description                                                 | Violations |
 +-------------+----------+-------------------------------------------------------------+------------+
-| DPIP-1      | Warning  | Input pipelining                                            | 4          |
-| DPOP-1      | Warning  | PREG Output pipelining                                      | 2          |
-| DPOP-2      | Warning  | MREG Output pipelining                                      | 2          |
+| DPIP-1      | Warning  | Input pipelining                                            | 6          |
+| DPOP-1      | Warning  | PREG Output pipelining                                      | 3          |
+| DPOP-2      | Warning  | MREG Output pipelining                                      | 3          |
+| IOSR-1      | Warning  | IOB set reset sharing                                       | 16         |
 | PDRC-153    | Warning  | Gated clock check                                           | 2          |
 | PLHOLDVIO-2 | Warning  | Non-Optimal connections which could lead to hold violations | 2          |
 +-------------+----------+-------------------------------------------------------------+------------+
@@ -57,6 +58,16 @@ Input pipelining
 DSP manual/alu/adder/s0 input manual/alu/adder/s0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
+DPIP-1#5 Warning
+Input pipelining  
+DSP rand_auto/rand_gen/alu/adder/s0 input rand_auto/rand_gen/alu/adder/s0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-1#6 Warning
+Input pipelining  
+DSP rand_auto/rand_gen/alu/adder/s0 input rand_auto/rand_gen/alu/adder/s0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
 DPOP-1#1 Warning
 PREG Output pipelining  
 DSP auto/alu/adder/s0 output auto/alu/adder/s0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
@@ -65,6 +76,11 @@ Related violations: <none>
 DPOP-1#2 Warning
 PREG Output pipelining  
 DSP manual/alu/adder/s0 output manual/alu/adder/s0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
+Related violations: <none>
+
+DPOP-1#3 Warning
+PREG Output pipelining  
+DSP rand_auto/rand_gen/alu/adder/s0 output rand_auto/rand_gen/alu/adder/s0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
 Related violations: <none>
 
 DPOP-2#1 Warning
@@ -77,19 +93,104 @@ MREG Output pipelining
 DSP manual/alu/adder/s0 multiplier stage manual/alu/adder/s0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
 Related violations: <none>
 
+DPOP-2#3 Warning
+MREG Output pipelining  
+DSP rand_auto/rand_gen/alu/adder/s0 multiplier stage rand_auto/rand_gen/alu/adder/s0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+IOSR-1#1 Warning
+IOB set reset sharing  
+IO io_dip[0] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#2 Warning
+IOB set reset sharing  
+IO io_dip[10] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#3 Warning
+IOB set reset sharing  
+IO io_dip[11] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#4 Warning
+IOB set reset sharing  
+IO io_dip[12] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#5 Warning
+IOB set reset sharing  
+IO io_dip[13] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#6 Warning
+IOB set reset sharing  
+IO io_dip[14] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#7 Warning
+IOB set reset sharing  
+IO io_dip[15] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#8 Warning
+IOB set reset sharing  
+IO io_dip[1] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#9 Warning
+IOB set reset sharing  
+IO io_dip[2] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#10 Warning
+IOB set reset sharing  
+IO io_dip[3] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#11 Warning
+IOB set reset sharing  
+IO io_dip[4] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#12 Warning
+IOB set reset sharing  
+IO io_dip[5] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#13 Warning
+IOB set reset sharing  
+IO io_dip[6] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#14 Warning
+IOB set reset sharing  
+IO io_dip[7] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#15 Warning
+IOB set reset sharing  
+IO io_dip[8] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
+IOSR-1#16 Warning
+IOB set reset sharing  
+IO io_dip[9] connects to flops which have these manual/M_b_mem_q[15]_i_1_n_0, manual/M_a_mem_q[15]_i_1_n_0 set/reset signals.  For optimal IOB flop packing there should be only one set/reset signal coming into the IOB.
+Related violations: <none>
+
 PDRC-153#1 Warning
 Gated clock check  
-Net auto/slowclkedge/M_slowclkedge_out is a gated clock net sourced by a combinational pin auto/slowclkedge/M_last_q_i_2/O, cell auto/slowclkedge/M_last_q_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net auto/slowclk/M_slowclkedge_out is a gated clock net sourced by a combinational pin auto/slowclk/M_last_q_i_2/O, cell auto/slowclk/M_last_q_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PDRC-153#2 Warning
 Gated clock check  
-Net segtest/slowclkedge/M_slowclkedge_out is a gated clock net sourced by a combinational pin segtest/slowclkedge/M_last_q_i_2__2/O, cell segtest/slowclkedge/M_last_q_i_2__2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+Net segtest/slowclkedge/M_slowclkedge_out is a gated clock net sourced by a combinational pin segtest/slowclkedge/M_last_q_i_2__0/O, cell segtest/slowclkedge/M_last_q_i_2__0. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 Related violations: <none>
 
 PLHOLDVIO-2#1 Warning
 Non-Optimal connections which could lead to hold violations  
-A LUT auto/slowclkedge/M_last_q_i_2 is driving clock pin of 6 cells. This could lead to large hold time violations. Involved cells are:
+A LUT auto/slowclk/M_last_q_i_2 is driving clock pin of 6 cells. This could lead to large hold time violations. Involved cells are:
 auto/M_auto_controller_q_reg[0], auto/M_auto_controller_q_reg[1],
 auto/M_auto_controller_q_reg[2], auto/M_auto_controller_q_reg[3],
 auto/M_auto_controller_q_reg[4],
@@ -98,7 +199,7 @@ Related violations: <none>
 
 PLHOLDVIO-2#2 Warning
 Non-Optimal connections which could lead to hold violations  
-A LUT segtest/slowclkedge/M_last_q_i_2__2 is driving clock pin of 4 cells. This could lead to large hold time violations. Involved cells are:
+A LUT segtest/slowclkedge/M_last_q_i_2__0 is driving clock pin of 4 cells. This could lead to large hold time violations. Involved cells are:
 segtest/M_auto_controller_q_reg[0], segtest/M_auto_controller_q_reg[1],
 segtest/M_auto_controller_q_reg[2],
 segtest/buttondetector_gen_0[1].buttondetector/M_last_q_reg

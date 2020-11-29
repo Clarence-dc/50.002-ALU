@@ -7,7 +7,7 @@ module autotester (
     output io_led[3][8]
   ) {
   alu alu;
-  counter slowclk(#SIZE(1),#DIV(27), .clk(clk), .rst(rst));
+  counter slowclk(#SIZE(1),#DIV(24), .clk(clk), .rst(rst));
   edge_detector slowclkedge(.clk(clk));
   edge_detector buttondetector[5](.clk(slowclkedge.out), #RISE(1), #FALL(0)); //detect on rising edge only
   button_conditioner buttoncond[5](.clk(clk));

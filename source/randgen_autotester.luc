@@ -1,0 +1,67 @@
+
+module randgen_autotester (
+    input clk,  // clock
+    input rst,  // reset
+    input button[5], // use to start testing
+    output seg[4][5]
+  ) {
+  
+  //Declaring all the state to be checked
+  .clk(clk) {
+    .rst(rst) {
+      
+      
+    }
+  }
+  rand_gen rand_gen(.clk(clk),.rst(button[1]));
+  fsm state(.clk(clk)) = {FULL,EMPTY,THREE}; // default will be IDLE
+  sig i[5],j[5],s[5];
+  //Declaring all the I/O for test cases
+  always {
+    seg = 4x{{16}};
+    s = 16;
+    i = 16;
+    j = 16;
+    rand_gen.reg_array = b0;
+    //Idle case
+    case(state.q) {
+      //state.IDLE:
+      //  seg = 4x{{16}};
+      //  if (button.) {
+      //    state.d = state.START;
+      //  }
+
+    //Checking adding whether 
+      state.FULL:
+        rand_gen.reg_array = b111111111;
+        s = 5d17;
+        if (button[4]){
+          state.d = state.EMPTY;
+        }else if(button[3]){
+          state.d = state.THREE;
+        } 
+      state.EMPTY:
+         rand_gen.reg_array = b000000000;
+         s = 5d14;
+         if (button[4]){
+          state.d = state.THREE;
+        }else if(button[3]){
+          state.d = state.FULL;
+        } 
+      state.THREE:
+         rand_gen.reg_array = b111000000;
+         s = 5d23;
+         if (button[4]){
+          state.d = state.FULL;
+        }else if(button[3]){
+          state.d = state.EMPTY;
+        } 
+    }
+        if (rand_gen.rand1>=b10000 && rand_gen.rand2>=b10000){
+        i = rand_gen.rand1[2:0]+20;
+        j = rand_gen.rand2[3:0]+20;
+        seg = {s,i,16,j};
+        }
+    
+  }
+}

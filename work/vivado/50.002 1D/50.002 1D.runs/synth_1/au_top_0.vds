@@ -2,8 +2,8 @@
 # Vivado v2020.1 (64-bit)
 # SW Build 2902540 on Wed May 27 19:54:49 MDT 2020
 # IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
-# Start of session at: Fri Nov 27 21:45:08 2020
-# Process ID: 29892
+# Start of session at: Mon Nov 30 04:25:41 2020
+# Process ID: 26564
 # Current directory: D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/synth_1
 # Command line: vivado.exe -log au_top_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source au_top_0.tcl
 # Log file: D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/synth_1/au_top_0.vds
@@ -17,15 +17,16 @@ INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a35t
 INFO: [Device 21-403] Loading part xc7a35tftg256-1
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 4316
+INFO: [Synth 8-7075] Helper process launched with PID 26004
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Starting RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:09 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'au_top_0' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/au_top_0.v:7]
-	Parameter S0_mode_controller bound to: 2'b00 
-	Parameter S1_mode_controller bound to: 2'b01 
-	Parameter S2_mode_controller bound to: 2'b10 
-	Parameter S3_mode_controller bound to: 2'b11 
+	Parameter S0_mode_controller bound to: 3'b000 
+	Parameter S1_mode_controller bound to: 3'b001 
+	Parameter S2_mode_controller bound to: 3'b010 
+	Parameter S3_mode_controller bound to: 3'b011 
+	Parameter S4_mode_controller bound to: 3'b100 
 INFO: [Synth 8-6157] synthesizing module 'edge_detector_2' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_2.v:12]
 	Parameter RISE bound to: 1'b1 
 	Parameter FALL bound to: 1'b0 
@@ -34,9 +35,9 @@ INFO: [Synth 8-6157] synthesizing module 'button_conditioner_3' [D:/GitHub/50.00
 	Parameter CLK_FREQ bound to: 26'b10111110101111000010000000 
 	Parameter MIN_DELAY bound to: 5'b10100 
 	Parameter NUM_SYNC bound to: 2'b10 
-INFO: [Synth 8-6157] synthesizing module 'pipeline_8' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_8.v:11]
+INFO: [Synth 8-6157] synthesizing module 'pipeline_10' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_10.v:11]
 	Parameter DEPTH bound to: 2'b10 
-INFO: [Synth 8-6155] done synthesizing module 'pipeline_8' (2#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_8.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'pipeline_10' (2#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_10.v:11]
 INFO: [Synth 8-6155] done synthesizing module 'button_conditioner_3' (3#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/button_conditioner_3.v:13]
 INFO: [Synth 8-6157] synthesizing module 'reset_conditioner_1' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/reset_conditioner_1.v:11]
 	Parameter STAGES bound to: 3'b100 
@@ -60,35 +61,35 @@ INFO: [Synth 8-6157] synthesizing module 'autotester_4' [D:/GitHub/50.002-ALU/wo
 	Parameter S14_auto_controller bound to: 5'b01111 
 	Parameter S15_auto_controller bound to: 5'b10000 
 	Parameter ERROR_auto_controller bound to: 5'b10001 
-INFO: [Synth 8-6157] synthesizing module 'alu_9' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_9.v:7]
-INFO: [Synth 8-6157] synthesizing module 'add_sub16bit_15' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_15.v:7]
-INFO: [Synth 8-6157] synthesizing module 'adder1b_19' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_19.v:7]
-INFO: [Synth 8-6155] done synthesizing module 'adder1b_19' (5#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_19.v:7]
-INFO: [Synth 8-6155] done synthesizing module 'add_sub16bit_15' (6#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_15.v:7]
-INFO: [Synth 8-6157] synthesizing module 'boolean_16' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_16.v:7]
-INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_16.v:19]
-INFO: [Synth 8-6155] done synthesizing module 'boolean_16' (7#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_16.v:7]
-INFO: [Synth 8-6157] synthesizing module 'shifter_17' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_17.v:7]
-INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_17.v:19]
-INFO: [Synth 8-6155] done synthesizing module 'shifter_17' (8#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_17.v:7]
-INFO: [Synth 8-6157] synthesizing module 'comparator_18' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_18.v:7]
-INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_18.v:25]
-INFO: [Synth 8-6155] done synthesizing module 'comparator_18' (9#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_18.v:7]
-INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_9.v:116]
-INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_9.v:135]
-INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_9.v:151]
-INFO: [Synth 8-6155] done synthesizing module 'alu_9' (10#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_9.v:7]
-INFO: [Synth 8-6157] synthesizing module 'counter_10' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_10.v:14]
+INFO: [Synth 8-6157] synthesizing module 'alu_11' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_11.v:7]
+INFO: [Synth 8-6157] synthesizing module 'add_sub16bit_21' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_21.v:7]
+INFO: [Synth 8-6157] synthesizing module 'adder1b_27' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_27.v:7]
+INFO: [Synth 8-6155] done synthesizing module 'adder1b_27' (5#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_27.v:7]
+INFO: [Synth 8-6155] done synthesizing module 'add_sub16bit_21' (6#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_21.v:7]
+INFO: [Synth 8-6157] synthesizing module 'boolean_22' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_22.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_22.v:19]
+INFO: [Synth 8-6155] done synthesizing module 'boolean_22' (7#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_22.v:7]
+INFO: [Synth 8-6157] synthesizing module 'shifter_23' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_23.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_23.v:19]
+INFO: [Synth 8-6155] done synthesizing module 'shifter_23' (8#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_23.v:7]
+INFO: [Synth 8-6157] synthesizing module 'comparator_24' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_24.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_24.v:25]
+INFO: [Synth 8-6155] done synthesizing module 'comparator_24' (9#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_24.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_11.v:116]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_11.v:135]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_11.v:151]
+INFO: [Synth 8-6155] done synthesizing module 'alu_11' (10#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_11.v:7]
+INFO: [Synth 8-6157] synthesizing module 'counter_12' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_12.v:14]
 	Parameter SIZE bound to: 1'b1 
-	Parameter DIV bound to: 5'b11011 
+	Parameter DIV bound to: 5'b11000 
 	Parameter TOP bound to: 1'b0 
 	Parameter UP bound to: 1'b1 
-	Parameter MAX_VALUE bound to: 28'b0111111111111111111111111111 
-INFO: [Synth 8-6155] done synthesizing module 'counter_10' (11#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_10.v:14]
-INFO: [Synth 8-6157] synthesizing module 'edge_detector_11' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_11.v:12]
+	Parameter MAX_VALUE bound to: 25'b0111111111111111111111111 
+INFO: [Synth 8-6155] done synthesizing module 'counter_12' (11#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_12.v:14]
+INFO: [Synth 8-6157] synthesizing module 'edge_detector_13' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_13.v:12]
 	Parameter RISE bound to: 1'b1 
 	Parameter FALL bound to: 1'b1 
-INFO: [Synth 8-6155] done synthesizing module 'edge_detector_11' (12#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_11.v:12]
+INFO: [Synth 8-6155] done synthesizing module 'edge_detector_13' (12#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_13.v:12]
 INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/autotester_4.v:111]
 INFO: [Synth 8-6155] done synthesizing module 'autotester_4' (13#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/autotester_4.v:7]
 INFO: [Synth 8-6157] synthesizing module 'manualtester_5' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/manualtester_5.v:7]
@@ -106,38 +107,94 @@ INFO: [Synth 8-6157] synthesizing module 'segtest_6' [D:/GitHub/50.002-ALU/work/
 	Parameter S4_auto_controller bound to: 3'b101 
 	Parameter S5_auto_controller bound to: 3'b110 
 	Parameter S6_auto_controller bound to: 3'b111 
-INFO: [Synth 8-6155] done synthesizing module 'segtest_6' (15#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/segtest_6.v:7]
+INFO: [Synth 8-6157] synthesizing module 'counter_14' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_14.v:14]
+	Parameter SIZE bound to: 1'b1 
+	Parameter DIV bound to: 5'b11011 
+	Parameter TOP bound to: 1'b0 
+	Parameter UP bound to: 1'b1 
+	Parameter MAX_VALUE bound to: 28'b0111111111111111111111111111 
+INFO: [Synth 8-6155] done synthesizing module 'counter_14' (15#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_14.v:14]
+INFO: [Synth 8-6155] done synthesizing module 'segtest_6' (16#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/segtest_6.v:7]
 INFO: [Synth 8-6157] synthesizing module 'multi_seven_seg_7' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/multi_seven_seg_7.v:12]
 	Parameter DIGITS bound to: 3'b100 
 	Parameter DIV bound to: 5'b10000 
 	Parameter DIGIT_BITS bound to: 2'b10 
-INFO: [Synth 8-6157] synthesizing module 'counter_12' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_12.v:14]
+INFO: [Synth 8-6157] synthesizing module 'counter_15' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_15.v:14]
 	Parameter SIZE bound to: 2'b10 
 	Parameter DIV bound to: 5'b10000 
 	Parameter TOP bound to: 4'b0011 
 	Parameter UP bound to: 1'b1 
 	Parameter MAX_VALUE bound to: 20'b00111111111111111111 
-INFO: [Synth 8-6155] done synthesizing module 'counter_12' (16#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_12.v:14]
-INFO: [Synth 8-6157] synthesizing module 'lut_13' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_13.v:7]
-INFO: [Synth 8-6155] done synthesizing module 'lut_13' (17#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_13.v:7]
-INFO: [Synth 8-6157] synthesizing module 'decoder_14' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_14.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'counter_15' (17#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_15.v:14]
+INFO: [Synth 8-6157] synthesizing module 'lut_16' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_16.v:7]
+INFO: [Synth 8-6155] done synthesizing module 'lut_16' (18#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_16.v:7]
+INFO: [Synth 8-6157] synthesizing module 'decoder_17' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_17.v:11]
 	Parameter WIDTH bound to: 2'b10 
-INFO: [Synth 8-6155] done synthesizing module 'decoder_14' (18#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_14.v:11]
-INFO: [Synth 8-6155] done synthesizing module 'multi_seven_seg_7' (19#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/multi_seven_seg_7.v:12]
-INFO: [Synth 8-6155] done synthesizing module 'au_top_0' (20#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/au_top_0.v:7]
+INFO: [Synth 8-6155] done synthesizing module 'decoder_17' (19#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_17.v:11]
+INFO: [Synth 8-6155] done synthesizing module 'multi_seven_seg_7' (20#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/multi_seven_seg_7.v:12]
+INFO: [Synth 8-6157] synthesizing module 'game_8' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_8.v:7]
+	Parameter IDLE_game_controller bound to: 4'b0000 
+	Parameter START_game_controller bound to: 4'b0001 
+	Parameter ERROR_game_controller bound to: 4'b0010 
+	Parameter MERGE_game_controller bound to: 4'b0011 
+	Parameter ADD_NUM_game_controller bound to: 4'b0100 
+	Parameter CHECK_WIN_game_controller bound to: 4'b0101 
+	Parameter CHECK_LOSE_game_controller bound to: 4'b0110 
+	Parameter LOSE_game_controller bound to: 4'b0111 
+	Parameter WIN_game_controller bound to: 4'b1000 
+	Parameter GAMEOVER_game_controller bound to: 4'b1001 
+INFO: [Synth 8-6157] synthesizing module 'regfile_18' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/regfile_18.v:7]
+INFO: [Synth 8-6155] done synthesizing module 'regfile_18' (21#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/regfile_18.v:7]
+INFO: [Synth 8-6157] synthesizing module 'controlunit_19' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/controlunit_19.v:7]
+	Parameter CU_ROM bound to: 1152'b011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100011100000000000100000000100000010110000001100000000001011100000000000100010000000000000100011100000000000100001000000000000100000000000000000100000010001101010110000000000000001100000000000000101100000000000001001100000000000001101100000000011010101100000000011100101100000000011110101100011100000000000100000000001100001100000000001111001100000000001011001100000000001101001100000000010000001100000000010000101100000000010001101100011100000000000100000000100000001100000000100000101100000000100001001100000000100001101100000000111010101100000000111100101100000000111110101100011100000000000100000000101100001100000000101111001100000000101011001100011100000000000100000000110000001100000000110000101100000000110001101100011100000000000100 
+INFO: [Synth 8-6155] done synthesizing module 'controlunit_19' (22#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/controlunit_19.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_8.v:153]
+WARNING: [Synth 8-151] case item 2'b10 is unreachable [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_8.v:184]
+WARNING: [Synth 8-151] case item 2'b11 is unreachable [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_8.v:187]
+WARNING: [Synth 8-151] case item 2'b10 is unreachable [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_8.v:199]
+WARNING: [Synth 8-151] case item 2'b11 is unreachable [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_8.v:202]
+INFO: [Synth 8-6155] done synthesizing module 'game_8' (23#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_8.v:7]
+INFO: [Synth 8-6157] synthesizing module 'randgen_autotester_9' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/randgen_autotester_9.v:7]
+	Parameter FULL_state bound to: 2'b00 
+	Parameter EMPTY_state bound to: 2'b01 
+	Parameter THREE_state bound to: 2'b10 
+INFO: [Synth 8-6157] synthesizing module 'rand_gen_20' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/rand_gen_20.v:7]
+	Parameter START_game_step bound to: 2'b00 
+	Parameter RAND1_game_step bound to: 2'b01 
+	Parameter RAND2_game_step bound to: 2'b10 
+	Parameter DONE_game_step bound to: 2'b11 
+	Parameter BITMASK_rand_step bound to: 2'b00 
+	Parameter MULTIPLY_rand_step bound to: 2'b01 
+	Parameter EXTRACT_rand_step bound to: 2'b10 
+INFO: [Synth 8-6157] synthesizing module 'counter_25' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_25.v:14]
+	Parameter SIZE bound to: 6'b100000 
+	Parameter DIV bound to: 1'b0 
+	Parameter TOP bound to: 1'b0 
+	Parameter UP bound to: 1'b1 
+	Parameter MAX_VALUE bound to: 1'b0 
+INFO: [Synth 8-6155] done synthesizing module 'counter_25' (24#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_25.v:14]
+INFO: [Synth 8-6157] synthesizing module 'pn_gen_26' [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pn_gen_26.v:11]
+	Parameter SEED bound to: 128'b10000100001100100011001101010010001110100110000100111001011001100100001000111011011000100010010101100010010110010010110001100010 
+INFO: [Synth 8-6155] done synthesizing module 'pn_gen_26' (25#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pn_gen_26.v:11]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/rand_gen_20.v:107]
+INFO: [Synth 8-6155] done synthesizing module 'rand_gen_20' (26#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/rand_gen_20.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/randgen_autotester_9.v:48]
+INFO: [Synth 8-6155] done synthesizing module 'randgen_autotester_9' (27#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/randgen_autotester_9.v:7]
+INFO: [Synth 8-155] case statement is not full and has no default [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/au_top_0.v:147]
+INFO: [Synth 8-6155] done synthesizing module 'au_top_0' (28#1) [D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/au_top_0.v:7]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.031 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.156 . Memory (MB): peak = 1013.063 ; gain = 0.000
 INFO: [Project 1-570] Preparing netlist for logic optimization
 
 Processing XDC Constraints
@@ -154,28 +211,30 @@ Parsing XDC File [D:/Program Files/Alchitry/Alchitry Labs/library/components/au.
 Finished Parsing XDC File [D:/Program Files/Alchitry/Alchitry Labs/library/components/au.xdc]
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.003 . Memory (MB): peak = 1013.063 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.013 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.030 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished Constraint Validation : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a35tftg256-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:24 ; elapsed = 00:00:26 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:15 ; elapsed = 00:00:15 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:24 ; elapsed = 00:00:27 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'M_input_controller_q_reg' in module 'manualtester_5'
+INFO: [Synth 8-802] inferred FSM for state register 'M_game_step_q_reg' in module 'rand_gen_20'
+INFO: [Synth 8-802] inferred FSM for state register 'M_state_q_reg' in module 'randgen_autotester_9'
 INFO: [Synth 8-802] inferred FSM for state register 'M_mode_controller_q_reg' in module 'au_top_0'
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
@@ -188,14 +247,32 @@ INFO: [Synth 8-3354] encoded FSM with state register 'M_input_controller_q_reg' 
 ---------------------------------------------------------------------------------------------------
                    State |                     New Encoding |                Previous Encoding 
 ---------------------------------------------------------------------------------------------------
-      S0_mode_controller |                               00 |                               00
-      S1_mode_controller |                               01 |                               01
-      S2_mode_controller |                               10 |                               10
-      S3_mode_controller |                               11 |                               11
+         START_game_step |                               00 |                               00
+         RAND1_game_step |                               01 |                               01
+         RAND2_game_step |                               10 |                               10
+          DONE_game_step |                               11 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'M_game_step_q_reg' using encoding 'sequential' in module 'rand_gen_20'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+              FULL_state |                              001 |                               00
+             THREE_state |                              010 |                               10
+             EMPTY_state |                              100 |                               01
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'M_state_q_reg' using encoding 'one-hot' in module 'randgen_autotester_9'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+      S0_mode_controller |                              000 |                              000
+      S1_mode_controller |                              001 |                              001
+      S2_mode_controller |                              010 |                              010
+      S3_mode_controller |                              011 |                              011
+      S4_mode_controller |                              100 |                              100
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'M_mode_controller_q_reg' using encoding 'sequential' in module 'au_top_0'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
@@ -203,44 +280,66 @@ Start RTL Component Statistics
 Detailed RTL Component Info : 
 +---Adders : 
 	   2 Input   18 Bit       Adders := 1     
+	   2 Input    5 Bit       Adders := 2     
+	   3 Input    4 Bit       Adders := 1     
+	   2 Input    4 Bit       Adders := 1     
 +---XORs : 
-	   2 Input     16 Bit         XORs := 4     
-	   3 Input      1 Bit         XORs := 32    
-	   2 Input      1 Bit         XORs := 4     
+	   2 Input     32 Bit         XORs := 2     
+	   4 Input     32 Bit         XORs := 1     
+	   2 Input     16 Bit         XORs := 8     
+	   3 Input      1 Bit         XORs := 64    
+	   2 Input      1 Bit         XORs := 8     
++---XORs : 
+	                5 Bit    Wide XORs := 1     
 +---Registers : 
+	              512 Bit    Registers := 1     
+	               32 Bit    Registers := 4     
 	               18 Bit    Registers := 1     
-	               16 Bit    Registers := 2     
+	               16 Bit    Registers := 3     
 	                5 Bit    Registers := 1     
-	                4 Bit    Registers := 1     
-	                3 Bit    Registers := 1     
-	                2 Bit    Registers := 15    
-	                1 Bit    Registers := 17    
+	                4 Bit    Registers := 5     
+	                3 Bit    Registers := 2     
+	                2 Bit    Registers := 21    
+	                1 Bit    Registers := 24    
 +---Muxes : 
+	   2 Input  512 Bit        Muxes := 1     
+	   2 Input   32 Bit        Muxes := 1     
 	  19 Input   24 Bit        Muxes := 1     
 	   3 Input   24 Bit        Muxes := 1     
-	   4 Input   24 Bit        Muxes := 2     
+	   5 Input   24 Bit        Muxes := 2     
 	  19 Input   20 Bit        Muxes := 1     
 	   3 Input   20 Bit        Muxes := 1     
 	   8 Input   20 Bit        Muxes := 1     
-	   4 Input   20 Bit        Muxes := 1     
-	   8 Input   18 Bit        Muxes := 2     
+	   2 Input   20 Bit        Muxes := 1     
+	   5 Input   20 Bit        Muxes := 1     
+	   8 Input   18 Bit        Muxes := 4     
 	   2 Input   18 Bit        Muxes := 1     
-	   5 Input   17 Bit        Muxes := 2     
-	   4 Input   17 Bit        Muxes := 4     
-	   2 Input   16 Bit        Muxes := 8     
-	   4 Input   16 Bit        Muxes := 4     
+	   5 Input   17 Bit        Muxes := 4     
+	   4 Input   17 Bit        Muxes := 8     
+	   2 Input   16 Bit        Muxes := 18    
+	   4 Input   16 Bit        Muxes := 11    
 	  19 Input   16 Bit        Muxes := 2     
 	   3 Input   16 Bit        Muxes := 2     
+	  33 Input   16 Bit        Muxes := 2     
+	   4 Input   12 Bit        Muxes := 2     
+	   3 Input    9 Bit        Muxes := 1     
 	   2 Input    5 Bit        Muxes := 15    
-	   4 Input    5 Bit        Muxes := 4     
-	   3 Input    3 Bit        Muxes := 1     
-	   2 Input    3 Bit        Muxes := 4     
+	   4 Input    5 Bit        Muxes := 5     
+	   3 Input    5 Bit        Muxes := 2     
+	   5 Input    5 Bit        Muxes := 4     
+	   4 Input    4 Bit        Muxes := 3     
+	   3 Input    3 Bit        Muxes := 2     
+	   2 Input    3 Bit        Muxes := 16    
 	   9 Input    3 Bit        Muxes := 1     
-	   4 Input    2 Bit        Muxes := 1     
-	   2 Input    2 Bit        Muxes := 5     
-	   2 Input    1 Bit        Muxes := 10    
+	   4 Input    3 Bit        Muxes := 1     
+	   5 Input    3 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 1     
+	   4 Input    2 Bit        Muxes := 3     
+	   2 Input    1 Bit        Muxes := 22    
 	  20 Input    1 Bit        Muxes := 1     
 	   9 Input    1 Bit        Muxes := 1     
+	   4 Input    1 Bit        Muxes := 8     
+	   5 Input    1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -260,8 +359,12 @@ DSP Report: Generating DSP adder/s0, operation Mode is: A*B.
 DSP Report: operator adder/s0 is absorbed into DSP adder/s0.
 DSP Report: Generating DSP alu/adder/s0, operation Mode is: A*B.
 DSP Report: operator alu/adder/s0 is absorbed into DSP alu/adder/s0.
+DSP Report: Generating DSP alu/adder/s0, operation Mode is: A*B.
+DSP Report: operator alu/adder/s0 is absorbed into DSP alu/adder/s0.
+DSP Report: Generating DSP adder/s0, operation Mode is: A*B.
+DSP Report: operator adder/s0 is absorbed into DSP adder/s0.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:50 ; elapsed = 00:00:54 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP and Shift Register Reporting
@@ -272,7 +375,7 @@ ROM: Preliminary Mapping	Report
 |Module Name       | RTL Object   | Depth x Width | Implemented As | 
 +------------------+--------------+---------------+----------------+
 |autotester_4      | M_alu_alufn  | 32x6          | LUT            | 
-|lut_13            | segs         | 32x8          | LUT            | 
+|lut_16            | segs         | 32x8          | LUT            | 
 |autotester_4      | M_alu_alufn  | 32x6          | LUT            | 
 |multi_seven_seg_7 | seg_dec/segs | 32x8          | LUT            | 
 +------------------+--------------+---------------+----------------+
@@ -282,8 +385,10 @@ DSP: Preliminary Mapping	Report (see note below)
 +----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 |Module Name     | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
 +----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
-|add_sub16bit_15 | A*B         | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
-|add_sub16bit_15 | A*B         | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|add_sub16bit_21 | A*B         | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|add_sub16bit_21 | A*B         | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|add_sub16bit_21 | A*B         | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|add_sub16bit_21 | A*B         | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
 +----------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
 
 Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
@@ -294,19 +399,19 @@ Finished ROM, RAM, DSP and Shift Register Reporting
 Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:41 ; elapsed = 00:00:42 . Memory (MB): peak = 1032.820 ; gain = 0.000
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:11 ; elapsed = 00:01:16 . Memory (MB): peak = 1013.063 ; gain = 0.000
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:48 ; elapsed = 00:00:49 . Memory (MB): peak = 1113.688 ; gain = 80.867
+Finished Timing Optimization : Time (s): cpu = 00:01:13 ; elapsed = 00:01:18 . Memory (MB): peak = 1023.555 ; gain = 10.492
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:49 ; elapsed = 00:00:50 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished Technology Mapping : Time (s): cpu = 00:01:15 ; elapsed = 00:01:20 . Memory (MB): peak = 1066.441 ; gain = 53.379
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -324,37 +429,37 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:54 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished IO Insertion : Time (s): cpu = 00:01:23 ; elapsed = 00:01:28 . Memory (MB): peak = 1072.043 ; gain = 58.980
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:54 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:23 ; elapsed = 00:01:28 . Memory (MB): peak = 1072.043 ; gain = 58.980
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:54 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:23 ; elapsed = 00:01:28 . Memory (MB): peak = 1072.043 ; gain = 58.980
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:54 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:23 ; elapsed = 00:01:28 . Memory (MB): peak = 1072.043 ; gain = 58.980
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:54 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1072.043 ; gain = 58.980
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:54 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1072.043 ; gain = 58.980
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -371,39 +476,40 @@ Report Cell Usage:
 |      |Cell    |Count |
 +------+--------+------+
 |1     |BUFG    |     1|
-|2     |CARRY4  |   369|
-|3     |DSP48E1 |     2|
-|4     |LUT1    |    22|
-|5     |LUT2    |   488|
-|6     |LUT3    |   196|
-|7     |LUT4    |   595|
-|8     |LUT5    |   132|
-|9     |LUT6    |   455|
-|10    |FDRE    |   264|
-|11    |FDSE    |     5|
-|12    |IBUF    |    30|
-|13    |OBUF    |    45|
+|2     |CARRY4  |   382|
+|3     |DSP48E1 |     3|
+|4     |LUT1    |    26|
+|5     |LUT2    |   521|
+|6     |LUT3    |   223|
+|7     |LUT4    |   571|
+|8     |LUT5    |   165|
+|9     |LUT6    |   537|
+|10    |MUXF7   |     3|
+|11    |FDRE    |   440|
+|12    |FDSE    |    48|
+|13    |IBUF    |    30|
+|14    |OBUF    |    45|
 +------+--------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:54 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:23 ; elapsed = 00:01:29 . Memory (MB): peak = 1072.043 ; gain = 58.980
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:45 ; elapsed = 00:00:52 . Memory (MB): peak = 1122.727 ; gain = 89.906
-Synthesis Optimization Complete : Time (s): cpu = 00:00:55 ; elapsed = 00:00:55 . Memory (MB): peak = 1122.727 ; gain = 89.906
+Synthesis Optimization Runtime : Time (s): cpu = 00:01:07 ; elapsed = 00:01:23 . Memory (MB): peak = 1072.043 ; gain = 58.980
+Synthesis Optimization Complete : Time (s): cpu = 00:01:24 ; elapsed = 00:01:29 . Memory (MB): peak = 1072.043 ; gain = 58.980
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.087 . Memory (MB): peak = 1122.727 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 371 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.227 . Memory (MB): peak = 1072.043 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 388 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1122.727 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1072.043 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 INFO: [Common 17-83] Releasing license: Synthesis
-68 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+92 Infos, 4 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:01:02 ; elapsed = 00:01:04 . Memory (MB): peak = 1122.727 ; gain = 107.559
+synth_design: Time (s): cpu = 00:01:35 ; elapsed = 00:01:41 . Memory (MB): peak = 1072.043 ; gain = 58.980
 INFO: [Common 17-1381] The checkpoint 'D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/synth_1/au_top_0.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file au_top_0_utilization_synth.rpt -pb au_top_0_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Fri Nov 27 21:46:15 2020...
+INFO: [Common 17-206] Exiting Vivado at Mon Nov 30 04:27:27 2020...

@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
-| Date         : Fri Nov 27 21:47:32 2020
+| Date         : Mon Nov 30 04:29:24 2020
 | Host         : Clarencedc running 64-bit major release  (build 9200)
 | Command      : report_methodology -file au_top_0_methodology_drc_routed.rpt -pb au_top_0_methodology_drc_routed.pb -rpx au_top_0_methodology_drc_routed.rpx
 | Design       : au_top_0
@@ -23,11 +23,12 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 76
+             Violations found: 77
 +-----------+------------------+-------------------------------+------------+
 | Rule      | Severity         | Description                   | Violations |
 +-----------+------------------+-------------------------------+------------+
 | TIMING-17 | Critical Warning | Non-clocked sequential cell   | 10         |
+| SYNTH-13  | Warning          | combinational multiplier      | 1          |
 | TIMING-18 | Warning          | Missing input or output delay | 66         |
 +-----------+------------------+-------------------------------+------------+
 
@@ -81,6 +82,11 @@ Related violations: <none>
 TIMING-17#10 Critical Warning
 Non-clocked sequential cell  
 The clock pin segtest/buttondetector_gen_0[1].buttondetector/M_last_q_reg/C is not reached by a timing clock
+Related violations: <none>
+
+SYNTH-13#1 Warning
+combinational multiplier  
+Detected combinational multiplier in DSP instance rand_auto/rand_gen/alu/adder/s0.
 Related violations: <none>
 
 TIMING-18#1 Warning

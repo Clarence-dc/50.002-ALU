@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module lut_13 (
+module lut_16 (
     input [4:0] value,
     output reg [7:0] segs
   );
