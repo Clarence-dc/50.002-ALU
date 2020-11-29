@@ -1,6 +1,7 @@
 module autotester (
     input clk,  // clock
     input rst,  // reset
+    input button[5],
     output out[16],
     output seg[4][5],
     output io_led[3][8]
@@ -8,16 +9,22 @@ module autotester (
   alu alu;
   counter slowclk(#SIZE(1),#DIV(27), .clk(clk), .rst(rst));
   edge_detector slowclkedge(.clk(clk));
-  fsm auto_controller(.clk(slowclkedge.out)) = {S0,S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,S12,S13,S14,S15,ERROR};
+  edge_detector buttondetector[5](.clk(slowclkedge.out), #RISE(1), #FALL(0)); //detect on rising edge only
+  button_conditioner buttoncond[5](.clk(clk));
+  fsm auto_controller(.clk(slowclkedge.out)) = {IDLE,S0,S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,S12,S13,S14,S15,ERROR};
   always {
     alu.a = 0;
     alu.b = 0;
     alu.alufn = 0;
     slowclkedge.in = slowclk.value;    // use edge detector to slow clock
+    buttoncond.in = button;
+    buttondetector.in = buttoncond.out;
     out = 0;
     seg = alu.seg;
     io_led = 3x{{8h00}};
     case(auto_controller.q){
+          auto_controller.IDLE:
+          seg = {21,b00110,b01001,b01110};
           auto_controller.S0:// add -56 & 55 = -1
           alu.a = b1111111111001000;
           alu.b = b0000000000110111;
@@ -198,6 +205,13 @@ module autotester (
           seg = {b01110,b01011,b01011,16}; // E r r
           auto_controller.d = auto_controller.S0;
         }
+    if (buttondetector.out[1]){
+      if(auto_controller.q!=auto_controller.IDLE){
+        auto_controller.d = auto_controller.IDLE; //reset
+      }else{
+        auto_controller.d = auto_controller.S0; //start
+      }
+    }
 }
 
   }

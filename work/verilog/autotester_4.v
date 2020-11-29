@@ -7,6 +7,7 @@
 module autotester_4 (
     input clk,
     input rst,
+    input [4:0] button,
     output reg [15:0] out,
     output reg [19:0] seg,
     output reg [23:0] io_led
@@ -15,20 +16,22 @@ module autotester_4 (
   
   
   wire [16-1:0] M_alu_out;
+  wire [3-1:0] M_alu_zvn;
   wire [20-1:0] M_alu_seg;
   reg [16-1:0] M_alu_a;
   reg [16-1:0] M_alu_b;
   reg [6-1:0] M_alu_alufn;
-  alu_6 alu (
+  alu_9 alu (
     .a(M_alu_a),
     .b(M_alu_b),
     .alufn(M_alu_alufn),
     .out(M_alu_out),
+    .zvn(M_alu_zvn),
     .seg(M_alu_seg)
   );
   
   wire [1-1:0] M_slowclk_value;
-  counter_8 slowclk (
+  counter_10 slowclk (
     .clk(clk),
     .rst(rst),
     .value(M_slowclk_value)
@@ -36,32 +39,61 @@ module autotester_4 (
   
   wire [1-1:0] M_slowclkedge_out;
   reg [1-1:0] M_slowclkedge_in;
-  edge_detector_9 slowclkedge (
+  edge_detector_11 slowclkedge (
     .clk(clk),
     .in(M_slowclkedge_in),
     .out(M_slowclkedge_out)
   );
   
+  wire [(3'h5+0)-1:0] M_buttondetector_out;
+  reg [(3'h5+0)-1:0] M_buttondetector_in;
   
-  localparam S0_auto_controller = 5'd0;
-  localparam S1_auto_controller = 5'd1;
-  localparam S2_auto_controller = 5'd2;
-  localparam S3_auto_controller = 5'd3;
-  localparam S4_auto_controller = 5'd4;
-  localparam S5_auto_controller = 5'd5;
-  localparam S6_auto_controller = 5'd6;
-  localparam S7_auto_controller = 5'd7;
-  localparam S8_auto_controller = 5'd8;
-  localparam S9_auto_controller = 5'd9;
-  localparam S10_auto_controller = 5'd10;
-  localparam S11_auto_controller = 5'd11;
-  localparam S12_auto_controller = 5'd12;
-  localparam S13_auto_controller = 5'd13;
-  localparam S14_auto_controller = 5'd14;
-  localparam S15_auto_controller = 5'd15;
-  localparam ERROR_auto_controller = 5'd16;
+  genvar GEN_buttondetector0;
+  generate
+  for (GEN_buttondetector0=0;GEN_buttondetector0<3'h5;GEN_buttondetector0=GEN_buttondetector0+1) begin: buttondetector_gen_0
+    edge_detector_2 buttondetector (
+      .clk(M_slowclkedge_out),
+      .in(M_buttondetector_in[GEN_buttondetector0*(1)+(1)-1-:(1)]),
+      .out(M_buttondetector_out[GEN_buttondetector0*(1)+(1)-1-:(1)])
+    );
+  end
+  endgenerate
   
-  reg [4:0] M_auto_controller_d, M_auto_controller_q = S0_auto_controller;
+  wire [(3'h5+0)-1:0] M_buttoncond_out;
+  reg [(3'h5+0)-1:0] M_buttoncond_in;
+  
+  genvar GEN_buttoncond0;
+  generate
+  for (GEN_buttoncond0=0;GEN_buttoncond0<3'h5;GEN_buttoncond0=GEN_buttoncond0+1) begin: buttoncond_gen_0
+    button_conditioner_3 buttoncond (
+      .clk(clk),
+      .in(M_buttoncond_in[GEN_buttoncond0*(1)+(1)-1-:(1)]),
+      .out(M_buttoncond_out[GEN_buttoncond0*(1)+(1)-1-:(1)])
+    );
+  end
+  endgenerate
+  
+  
+  localparam IDLE_auto_controller = 5'd0;
+  localparam S0_auto_controller = 5'd1;
+  localparam S1_auto_controller = 5'd2;
+  localparam S2_auto_controller = 5'd3;
+  localparam S3_auto_controller = 5'd4;
+  localparam S4_auto_controller = 5'd5;
+  localparam S5_auto_controller = 5'd6;
+  localparam S6_auto_controller = 5'd7;
+  localparam S7_auto_controller = 5'd8;
+  localparam S8_auto_controller = 5'd9;
+  localparam S9_auto_controller = 5'd10;
+  localparam S10_auto_controller = 5'd11;
+  localparam S11_auto_controller = 5'd12;
+  localparam S12_auto_controller = 5'd13;
+  localparam S13_auto_controller = 5'd14;
+  localparam S14_auto_controller = 5'd15;
+  localparam S15_auto_controller = 5'd16;
+  localparam ERROR_auto_controller = 5'd17;
+  
+  reg [4:0] M_auto_controller_d, M_auto_controller_q = IDLE_auto_controller;
   
   always @* begin
     M_auto_controller_d = M_auto_controller_q;
@@ -70,11 +102,16 @@ module autotester_4 (
     M_alu_b = 1'h0;
     M_alu_alufn = 1'h0;
     M_slowclkedge_in = M_slowclk_value;
+    M_buttoncond_in = button;
+    M_buttondetector_in = M_buttoncond_out;
     out = 1'h0;
     seg = M_alu_seg;
     io_led = 24'h000000;
     
     case (M_auto_controller_q)
+      IDLE_auto_controller: begin
+        seg = 20'ha992e;
+      end
       S0_auto_controller: begin
         M_alu_a = 16'hffc8;
         M_alu_b = 16'h0037;
@@ -268,10 +305,17 @@ module autotester_4 (
         end
       end
       ERROR_auto_controller: begin
-        seg = 20'h72d71;
+        seg = 20'h72d70;
         M_auto_controller_d = S0_auto_controller;
       end
     endcase
+    if (M_buttondetector_out[1+0-:1]) begin
+      if (M_auto_controller_q != IDLE_auto_controller) begin
+        M_auto_controller_d = IDLE_auto_controller;
+      end else begin
+        M_auto_controller_d = S0_auto_controller;
+      end
+    end
   end
   
   always @(posedge M_slowclkedge_out) begin

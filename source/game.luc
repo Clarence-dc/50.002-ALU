@@ -1,0 +1,27 @@
+module game (
+    input clk,  // clock
+    input rst,  // reset
+    input button[5],
+    output seg[9][2][5],
+    output io_seg[4][5]
+  ) {
+                  // reset signal
+    .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    edge_detector buttondetector[5](#RISE(1), #FALL(0)); //detect on rising edge only
+    button_conditioner buttoncond[5];
+    regfile regfile;
+    controlunit ctrl;
+    .rst(rst){
+    fsm game_controller = {START,IDLE,ERROR,LOSE,WIN,GAMEOVER};
+    }
+  }
+  always {
+    seg = 9x{{2x{{16}}}};
+    io_seg = 4x{{16}};
+    buttoncond.in = button[4:0];
+    buttondetector.in = buttoncond.out;
+    
+  }
+}

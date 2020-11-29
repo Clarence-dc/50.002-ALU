@@ -20,7 +20,6 @@ module au_top_0 (
   
   
   reg rst;
-  reg [5:0] alufn;
   
   wire [1-1:0] M_reset_cond_out;
   reg [1-1:0] M_reset_cond_in;
@@ -55,31 +54,48 @@ module au_top_0 (
     );
   end
   endgenerate
-  reg [15:0] M_a_mem_d, M_a_mem_q = 1'h0;
-  reg [15:0] M_b_mem_d, M_b_mem_q = 1'h0;
   wire [16-1:0] M_auto_out;
   wire [20-1:0] M_auto_seg;
   wire [24-1:0] M_auto_io_led;
+  reg [5-1:0] M_auto_button;
   autotester_4 auto (
     .clk(clk),
     .rst(rst),
+    .button(M_auto_button),
     .out(M_auto_out),
     .seg(M_auto_seg),
     .io_led(M_auto_io_led)
   );
-  localparam S0_input_controller = 2'd0;
-  localparam S1_input_controller = 2'd1;
-  localparam S2_input_controller = 2'd2;
+  wire [20-1:0] M_manual_seg;
+  wire [24-1:0] M_manual_io_led;
+  reg [5-1:0] M_manual_button;
+  reg [24-1:0] M_manual_io_dip;
+  manualtester_5 manual (
+    .clk(clk),
+    .rst(rst),
+    .button(M_manual_button),
+    .io_dip(M_manual_io_dip),
+    .seg(M_manual_seg),
+    .io_led(M_manual_io_led)
+  );
+  localparam S0_mode_controller = 2'd0;
+  localparam S1_mode_controller = 2'd1;
+  localparam S2_mode_controller = 2'd2;
+  localparam S3_mode_controller = 2'd3;
   
-  reg [1:0] M_input_controller_d, M_input_controller_q = S0_input_controller;
-  localparam S0_mode_controller = 1'd0;
-  localparam S1_mode_controller = 1'd1;
-  
-  reg M_mode_controller_d, M_mode_controller_q = S0_mode_controller;
+  reg [1:0] M_mode_controller_d, M_mode_controller_q = S0_mode_controller;
+  wire [20-1:0] M_segtest_seg;
+  reg [5-1:0] M_segtest_button;
+  segtest_6 segtest (
+    .clk(clk),
+    .rst(rst),
+    .button(M_segtest_button),
+    .seg(M_segtest_seg)
+  );
   wire [8-1:0] M_seg_seg;
   wire [4-1:0] M_seg_sel;
   reg [20-1:0] M_seg_values;
-  multi_seven_seg_5 seg (
+  multi_seven_seg_7 seg (
     .clk(clk),
     .rst(rst),
     .values(M_seg_values),
@@ -87,24 +103,8 @@ module au_top_0 (
     .sel(M_seg_sel)
   );
   
-  wire [16-1:0] M_alu_out;
-  wire [20-1:0] M_alu_seg;
-  reg [16-1:0] M_alu_a;
-  reg [16-1:0] M_alu_b;
-  reg [6-1:0] M_alu_alufn;
-  alu_6 alu (
-    .a(M_alu_a),
-    .b(M_alu_b),
-    .alufn(M_alu_alufn),
-    .out(M_alu_out),
-    .seg(M_alu_seg)
-  );
-  
   always @* begin
-    M_input_controller_d = M_input_controller_q;
     M_mode_controller_d = M_mode_controller_q;
-    M_a_mem_d = M_a_mem_q;
-    M_b_mem_d = M_b_mem_q;
     
     M_reset_cond_in = ~rst_n;
     rst = M_reset_cond_out;
@@ -116,93 +116,69 @@ module au_top_0 (
     M_seg_values = 20'h84210;
     M_buttoncond_in = io_button[0+4-:5];
     M_buttondetector_in = M_buttoncond_out;
-    M_alu_a = 1'h0;
-    M_alu_b = 1'h0;
-    M_alu_alufn = 1'h0;
+    M_manual_io_dip = 24'h000000;
+    M_manual_button = 5'h00;
+    M_segtest_button = 5'h00;
+    M_auto_button = 5'h00;
     io_seg = ~M_seg_seg;
     io_sel = ~M_seg_sel;
     
     case (M_mode_controller_q)
       S0_mode_controller: begin
-        alufn = io_dip[16+0+5-:6];
-        M_alu_alufn = alufn;
+        M_manual_io_dip = io_dip;
+        M_manual_button = M_buttondetector_out;
         io_led[16+0+5-:6] = io_dip[16+0+5-:6];
-        
-        case (M_input_controller_q)
-          S0_input_controller: begin
-            M_seg_values = 20'h04210;
-            io_led[16+7+0-:1] = 8'h01;
-            io_led[16+6+0-:1] = 8'h00;
-            M_a_mem_d[8+7-:8] = io_dip[8+7-:8];
-            M_a_mem_d[0+7-:8] = io_dip[0+7-:8];
-            io_led[8+7-:8] = io_dip[8+7-:8];
-            io_led[0+7-:8] = io_dip[0+7-:8];
-            if (M_buttondetector_out[4+0-:1]) begin
-              M_input_controller_d = S1_input_controller;
-            end else begin
-              if (M_buttondetector_out[3+0-:1]) begin
-                M_input_controller_d = S2_input_controller;
-              end
-            end
+        io_led = M_manual_io_led;
+        M_seg_values = M_manual_seg;
+        if (M_buttondetector_out[0+0-:1]) begin
+          M_mode_controller_d = S3_mode_controller;
+        end else begin
+          if (M_buttondetector_out[2+0-:1]) begin
+            M_mode_controller_d = S1_mode_controller;
           end
-          S1_input_controller: begin
-            M_seg_values = 20'h0c210;
-            io_led[16+7+0-:1] = 8'h00;
-            io_led[16+6+0-:1] = 8'h01;
-            M_b_mem_d[8+7-:8] = io_dip[8+7-:8];
-            M_b_mem_d[0+7-:8] = io_dip[0+7-:8];
-            io_led[8+7-:8] = io_dip[8+7-:8];
-            io_led[0+7-:8] = io_dip[0+7-:8];
-            if (M_buttondetector_out[4+0-:1]) begin
-              M_input_controller_d = S2_input_controller;
-            end else begin
-              if (M_buttondetector_out[3+0-:1]) begin
-                M_input_controller_d = S0_input_controller;
-              end
-            end
-          end
-          S2_input_controller: begin
-            io_led[16+7+0-:1] = 8'h01;
-            io_led[16+6+0-:1] = 8'h01;
-            M_alu_a = M_a_mem_q;
-            M_alu_b = M_b_mem_q;
-            io_led[8+7-:8] = M_alu_out[8+7-:8];
-            io_led[0+7-:8] = M_alu_out[0+7-:8];
-            M_seg_values = M_alu_seg;
-            if (M_buttondetector_out[4+0-:1]) begin
-              M_input_controller_d = S0_input_controller;
-            end else begin
-              if (M_buttondetector_out[3+0-:1]) begin
-                M_input_controller_d = S1_input_controller;
-              end
-            end
-          end
-        endcase
-        if (M_buttondetector_out[1+0-:1]) begin
-          M_mode_controller_d = S1_mode_controller;
         end
       end
       S1_mode_controller: begin
-        if (M_buttondetector_out[1+0-:1]) begin
+        M_auto_button = io_button;
+        if (M_buttondetector_out[0+0-:1]) begin
           M_mode_controller_d = S0_mode_controller;
+        end else begin
+          if (M_buttondetector_out[2+0-:1]) begin
+            M_mode_controller_d = S2_mode_controller;
+          end
         end
         io_led[8+7-:8] = M_auto_out[8+7-:8];
         io_led[0+7-:8] = M_auto_out[0+7-:8];
         M_seg_values = M_auto_seg;
         io_led = M_auto_io_led;
       end
+      S2_mode_controller: begin
+        M_segtest_button = io_button;
+        if (M_buttondetector_out[0+0-:1]) begin
+          M_mode_controller_d = S1_mode_controller;
+        end else begin
+          if (M_buttondetector_out[2+0-:1]) begin
+            M_mode_controller_d = S3_mode_controller;
+          end
+        end
+        M_seg_values = M_segtest_seg;
+      end
+      S3_mode_controller: begin
+        if (M_buttondetector_out[0+0-:1]) begin
+          M_mode_controller_d = S2_mode_controller;
+        end else begin
+          if (M_buttondetector_out[2+0-:1]) begin
+            M_mode_controller_d = S0_mode_controller;
+          end
+        end
+      end
     endcase
   end
   
   always @(posedge clk) begin
-    M_a_mem_q <= M_a_mem_d;
-    M_b_mem_q <= M_b_mem_d;
-    
     if (rst == 1'b1) begin
-      M_input_controller_q <= 1'h0;
       M_mode_controller_q <= 1'h0;
     end else begin
-      M_input_controller_q <= M_input_controller_d;
       M_mode_controller_q <= M_mode_controller_d;
     end
   end
