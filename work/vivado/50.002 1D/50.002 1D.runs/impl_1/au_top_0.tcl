@@ -136,9 +136,8 @@ OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
   add_files -quiet {{D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/synth_1/au_top_0.dcp}}
 OPTRACE "read constraints: implementation" START { }
-  read_xdc D:/GitHub/50.002-ALU/work/constraint/alchitry.xdc
-  read_xdc D:/GitHub/50.002-ALU/work/constraint/io.xdc
-  read_xdc {{D:/Program Files/Alchitry/Alchitry Labs/library/components/au.xdc}}
+  read_xdc D:/GitHub/50.002-ALU/constraint/override.xdc
+  read_xdc D:/GitHub/50.002-ALU/work/constraint/custom.xdc
 OPTRACE "read constraints: implementation" END { }
 OPTRACE "add files" END { }
 OPTRACE "link_design" START { }

@@ -2,7 +2,8 @@ module game (
     input clk,  // clock
     input rst,  // reset
     input button[5],
-    output seg[9][2][5],
+    output seg18[18][5],
+    output arr[9][16],
     output io_seg[4][5]
   ) {
                   // reset signal
@@ -10,90 +11,45 @@ module game (
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     button_conditioner buttoncond[5];
-    regfile reg;
-    controlunit ctrl;
-    
-    
+    controlunit control;
     edge_detector slowclkedge;
-    
     .rst(rst){
-    fsm game_controller = {IDLE,START,ERROR,MERGE,ADD_NUM,CHECK_WIN,CHECK_LOSE,LOSE,WIN,GAMEOVER};
+    
     counter slowclk(#SIZE(1),#DIV(24));
     }
   }
     edge_detector buttondetector[5](.clk(slowclkedge.out), #RISE(1), #FALL(0)); //detect on rising edge only
-    alu alu;
+    sig r91[4],r90[4],r81[4],r80[4],r71[4],r70[4],r61[4],r60[4],r51[4],r50[4],r41[4],r40[4],r31[4],r30[4],r21[4],r20[4],r11[4],r10[4];
     
   always {
     // initialise all inputs
     slowclkedge.in = slowclk.value;
     buttoncond.in = button;
-    seg = 9x{{2x{{16}}}};
-    io_seg = 4x{{16}};
     buttoncond.in = button[4:0];
     buttondetector.in = buttoncond.out;
-    ctrl.opcode = 6b0;
-    ctrl.z = 0;
-    ctrl.irq = 0;
-    ctrl.reset = 0;
-    reg.read_address_1 = 0;
-    reg.read_address_2 = 0;
-    reg.write_address = 0;
-    reg.write_data = 0;
-    reg.write_enable = ctrl.werf;
-    alu.a = 0;
-    alu.b = 0;
-    alu.alufn = ctrl.alufn;
-    
-    case(game_controller.q){
-      game_controller.IDLE:
-        seg = 9x{{2x{{16}}}};
-        if (^buttondetector.out){
-          reg.write_address = 16d11;
-          if (buttondetector.out[0]){
-            reg.write_data = 16b110;
-          } else if (buttondetector.out[2]){
-            reg.write_data = 16b111;
-          } else if (buttondetector.out[3]){
-            reg.write_data = 16b100;
-          } else if (buttondetector.out[4]){
-            reg.write_data = 16b101;
-          } 
-        }
-          
-    }
-    //asel
-    case(ctrl.asel){
-      b00:
-        alu.a = reg.read_data_1;
-      b01:
-        alu.a = 16b10;
-      b10:
-        alu.a = 16b11;
-      b11:
-        alu.a = 16hffff;
-      }
-    case(ctrl.bsel){
-      b00:
-        alu.b = reg.read_data_2;
-      b01:
-        alu.b = 16b00;
-      b10:
-        alu.b = 16b01;
-      b11:
-        alu.b = 16d64;
-      }
-    case(ctrl.wdsel){
-      b00:
-        reg.write_data = alu.out;
-      b01:
-        reg.write_data = 16b0;
-      b10:
-        reg.write_data = 16h000F;
-      b11:
-        reg.write_data = 16hFFFF;
-      }
-    
-    
-  }
+    control.button = buttondetector.out;
+    arr = control.arr;
+    io_seg = control.io_seg;
+    r91 = control.arr[8]/10;
+    r90 = control.arr[8]-r91*10;
+    r81 = control.arr[7]/10;
+    r80 = control.arr[7]-r81*10;
+    r71 = control.arr[6]/10;
+    r70 = control.arr[6]-r71*10;
+    r61 = control.arr[5]/10;
+    r60 = control.arr[5]-r61*10;
+    r51 = control.arr[4]/10;
+    r50 = control.arr[4]-r51*10;
+    r41 = control.arr[3]/10;
+    r40 = control.arr[3]-r41*10;
+    r31 = control.arr[2]/10;
+    r30 = control.arr[2]-r31*10;
+    r21 = control.arr[1]/10;
+    r20 = control.arr[1]-r21*10;
+    r11 = control.arr[0]/10;
+    r10 = control.arr[0]-r11*10;
+    seg18 = {29,29,28,28,27,27,26,26,25,25,24,24,23,23,22,22,21,21};
+    //seg18 = {{r91+20,r90[4:0]+20},{r81+20,r80[4:0]+20},{r71+20,r70[4:0]+20},{r61+20,r60[4:0]+20},{r51+20,r50[4:0]+20},{r41+20,r40[4:0]+20},{r31+20,r30[4:0]+20},{r21+20,r20[4:0]+20},{r11+20,r10[4:0]+20}}
+    //seg18 = {{r91+20,r90[4:0]+20},{r81+20,r80[4:0]+20},{r71+20,r70[4:0]+20},{r61+20,r60[4:0]+20},{r51+20,r50[4:0]+20},{r41+20,r40[4:0]+20},{r31+20,r30[4:0]+20},{r21+20,r20[4:0]+20},{r11+20,r10[4:0]+20}};
+}
 }

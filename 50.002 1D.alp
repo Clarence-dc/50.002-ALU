@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="50.002 1D" board="Alchitry Au" language="Lucid" version="3">
   <files>
-    <component>pn_gen.luc</component>
     <component>edge_detector.luc</component>
+    <src>comparator.luc</src>
+    <component>counter.luc</component>
+    <src>controlunit.luc</src>
+    <src>eighteen_seven_seg.luc</src>
+    <src>boolean.luc</src>
+    <component>button_conditioner.luc</component>
+    <src>regfile.luc</src>
+    <src>alu.luc</src>
+    <component>pn_gen.luc</component>
     <src>shifter.luc</src>
     <component>pipeline.luc</component>
-    <src>comparator.luc</src>
     <src>multi_seven_seg.luc</src>
-    <component>counter.luc</component>
     <src>segtest.luc</src>
-    <src>controlunit.luc</src>
     <src>lut.luc</src>
     <component>decoder.luc</component>
     <src>game.luc</src>
     <component>reset_conditioner.luc</component>
-    <src>boolean.luc</src>
     <src top="true">au_top.luc</src>
     <src>autotester.luc</src>
     <src>manualtester.luc</src>
-    <component>button_conditioner.luc</component>
     <src>add_sub16bit.luc</src>
     <src>adder1b.luc</src>
-    <src>regfile.luc</src>
     <src>randgen_autotester.luc</src>
     <src>rand_gen.luc</src>
-    <src>alu.luc</src>
-    <constraint lib="true">alchitry.acf</constraint>
-    <constraint lib="true">io.acf</constraint>
-    <constraint lib="true">au.xdc</constraint>
+    <constraint>override.xdc</constraint>
+    <constraint>custom.acf</constraint>
   </files>
 </project>

@@ -1,27 +1,42 @@
  module regfile (
+    input rst,
     input clk,  // clock
-    input read_address_1[5],
-    input read_address_2[5],
-    output read_data_1[16],
-    output read_data_2[16],
-    input write_address[5],
-    input write_data[16],
-    input write_enable
+    input write_address_1[5],
+    input write_data_1[16],
+    input write_enable_1,
+    input write_address_2[5],
+    input write_data_2[16],
+    input write_enable_2,
+    input write_address_3[5],
+    input write_data_3[16],
+    input write_enable_3,
+    input write_address_4[5],
+    input write_data_4[16],
+    input write_enable_4,
+    output out[32][16]
   ){
   dff registers[32][16](.clk(clk)); 
   
   always {
     //always read 
-    read_data_1 = registers.q[read_address_1];
-    read_data_2 = registers.q[read_address_2];
     
     // check if write_en and its not R0 
-    if (write_address != b0000 && write_enable){
-        registers.d[write_address] = write_data;
+    if (write_address_1 != b00000 && write_enable_1){
+        registers.d[write_address_1] = write_data_1;
     }
-    
-    // check if its not R0 
-    if (read_address_1 == b0000) read_data_1 = 0;
-    if (read_address_2 == b0000) read_data_2 = 0; 
+    if (write_address_2 != b00000 && write_enable_2){
+        registers.d[write_address_2] = write_data_2;
+    }
+    if (write_address_3 != b00000 && write_enable_3){
+        registers.d[write_address_3] = write_data_3;
+    }
+    if (write_address_4 != b00000 && write_enable_4){
+        registers.d[write_address_4] = write_data_4;
+    }
+    registers.d[9:1] = {16d2,16d4,16d8,16d16,16d32,16d64,16d2,16d4,16d8};
+    out = registers.q;
+    if (rst){
+      registers.d = 32x{{16b0}};
+    }
   }
 }

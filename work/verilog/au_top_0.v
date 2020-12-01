@@ -13,7 +13,10 @@ module au_top_0 (
     output reg [23:0] io_led,
     output reg [7:0] io_seg,
     output reg [3:0] io_sel,
+    output reg [17:0] r,
+    output reg [7:0] sevenseg,
     input [4:0] io_button,
+    input [4:0] gamebutton,
     input [23:0] io_dip
   );
   
@@ -103,19 +106,31 @@ module au_top_0 (
     .seg(M_seg_seg),
     .sel(M_seg_sel)
   );
-  wire [90-1:0] M_game_seg;
+  wire [8-1:0] M_seg18_seg;
+  wire [18-1:0] M_seg18_sel;
+  reg [90-1:0] M_seg18_values;
+  eighteen_seven_seg_8 seg18 (
+    .clk(clk),
+    .rst(rst),
+    .values(M_seg18_values),
+    .seg(M_seg18_seg),
+    .sel(M_seg18_sel)
+  );
+  wire [90-1:0] M_game_seg18;
+  wire [144-1:0] M_game_arr;
   wire [20-1:0] M_game_io_seg;
   reg [5-1:0] M_game_button;
-  game_8 game (
+  game_9 game (
     .clk(clk),
     .rst(rst),
     .button(M_game_button),
-    .seg(M_game_seg),
+    .seg18(M_game_seg18),
+    .arr(M_game_arr),
     .io_seg(M_game_io_seg)
   );
   wire [20-1:0] M_rand_auto_seg;
   reg [5-1:0] M_rand_auto_button;
-  randgen_autotester_9 rand_auto (
+  randgen_autotester_10 rand_auto (
     .clk(clk),
     .rst(rst),
     .button(M_rand_auto_button),
@@ -132,6 +147,9 @@ module au_top_0 (
     io_led = 24'h000000;
     io_seg = 8'hff;
     io_sel = 4'hf;
+    sevenseg = ~M_seg18_seg;
+    r = ~M_seg18_sel;
+    M_seg18_values = 90'h21084210842108421084210;
     M_seg_values = 20'h84210;
     M_buttoncond_in = io_button[0+4-:5];
     M_buttondetector_in = M_buttoncond_out;
@@ -185,7 +203,10 @@ module au_top_0 (
         M_seg_values = M_segtest_seg;
       end
       S3_mode_controller: begin
-        if (M_game_seg != 90'h21084210842108421084210) begin
+        M_game_button = gamebutton;
+        M_seg_values = M_game_io_seg;
+        M_seg18_values = M_game_seg18;
+        if (M_game_arr != 144'h000000000000000000000000000000000000) begin
           M_mode_controller_d = S3_mode_controller;
         end else begin
           if (M_buttondetector_out[0+0-:1]) begin

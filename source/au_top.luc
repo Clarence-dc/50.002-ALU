@@ -7,7 +7,10 @@ module au_top (
     output io_led [3][8],   // LEDs on IO Shield
     output io_seg [8],      // 7-segment LEDs on IO Shield
     output io_sel [4],      // Digit select on IO Shield
+    output r[18],
+    output sevenseg[8],     // 7-segment LEDs on game
     input io_button [5],    // 5 buttons on IO Shield
+    input gamebutton[5],    // 5 buttons on Game
     input io_dip [3][8]     // DIP switches on IO Shield
   )  {
   
@@ -25,6 +28,7 @@ module au_top (
     manualtester manual;  
     segtest segtest;
     multi_seven_seg seg;
+    eighteen_seven_seg seg18;
     game game;
       
       
@@ -47,7 +51,9 @@ module au_top (
     io_sel = 4hf;           // select no digits
     
     // initialise
-    
+    sevenseg = ~seg18.seg;
+    r = ~seg18.sel;
+    seg18.values = 9x{{16,16}};
     
     seg.values = {16,16,16,16};
     buttoncond.in = io_button[4:0];
@@ -96,8 +102,10 @@ module au_top (
       }
       seg.values = segtest.seg;
       mode_controller.S3:// game
-      //game.button = io_button;
-      if (game.seg != 9x{{2x{{16}}}}){
+      game.button = gamebutton;
+      seg.values = game.io_seg;
+      seg18.values = game.seg18;
+      if (game.arr != 9x{{16b0}}){
         mode_controller.d = mode_controller.S3;
       }else if (buttondetector.out[0]){
         mode_controller.d = mode_controller.S2;

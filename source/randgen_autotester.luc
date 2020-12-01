@@ -22,7 +22,7 @@ module randgen_autotester (
     s = 16;
     i = 16;
     j = 16;
-    rand_gen.reg_array = b0;
+    rand_gen.num = 0;
     //Idle case
     case(state.q) {
       //state.IDLE:
@@ -33,7 +33,7 @@ module randgen_autotester (
 
     //Checking adding whether 
       state.FULL:
-        rand_gen.reg_array = b111111111;
+        rand_gen.num = 0;
         s = 5d17;
         if (button[4]){
           state.d = state.EMPTY;
@@ -41,7 +41,7 @@ module randgen_autotester (
           state.d = state.THREE;
         } 
       state.EMPTY:
-         rand_gen.reg_array = b000000000;
+         rand_gen.num = 9;
          s = 5d14;
          if (button[4]){
           state.d = state.THREE;
@@ -49,7 +49,7 @@ module randgen_autotester (
           state.d = state.FULL;
         } 
       state.THREE:
-         rand_gen.reg_array = b111000000;
+         rand_gen.num = 3;
          s = 5d23;
          if (button[4]){
           state.d = state.FULL;
@@ -57,10 +57,9 @@ module randgen_autotester (
           state.d = state.EMPTY;
         } 
     }
-        if (rand_gen.rand1>=b10000 && rand_gen.rand2>=b10000){
-        i = rand_gen.rand1[2:0]+20;
-        j = rand_gen.rand2[3:0]+20;
-        seg = {s,i,16,j};
+        if (rand_gen.randint>=b10000){
+        j = rand_gen.randint[3:0]+20;
+        seg = {s,16,16,j};
         }
     
   }

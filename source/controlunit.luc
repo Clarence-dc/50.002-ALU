@@ -1,135 +1,346 @@
 module controlunit (
-    input clk,
-    input irq, 
-    input z,
-    input reset,    
-    input opcode[6],
-    output pcsel[3], 
-    output wasel,
-    output asel,
-    output ra2sel,
-    output bsel,
-    output alufn[6],
-    output wdsel[2], 
-    output werf,
-    output moe, 
-    output xwr
+    input clk,  // clock
+    input button[5],
+    output arr[9][16],
+    output io_seg[4][5]
   ) {
-  
-  const CU_ROM = { 
-  b011100000000000100,	// opcode = 0b000000
-  b011100000000000100,	// opcode = 0b000001
-  b011100000000000100,	// opcode = 0b000010
-  b011100000000000100,	// opcode = 0b000011
-  b011100000000000100,	// opcode = 0b000100
-  b011100000000000100,	// opcode = 0b000101
-  b011100000000000100,	// opcode = 0b000110
-  b011100000000000100,	// opcode = 0b000111
-
-  b011100000000000100,	// opcode = 0b001000
-  b011100000000000100,	// opcode = 0b001001
-  b011100000000000100,	// opcode = 0b001010
-  b011100000000000100,	// opcode = 0b001011
-  b011100000000000100,	// opcode = 0b001100
-  b011100000000000100,	// opcode = 0b001101
-  b011100000000000100,	// opcode = 0b001110
-  b011100000000000100,	// opcode = 0b001111
-
-  b011100000000000100,	// opcode = 0b010000
-  b011100000000000100,	// opcode = 0b010001
-  b011100000000000100,	// opcode = 0b010010
-  b011100000000000100,	// opcode = 0b010011
-  b011100000000000100,	// opcode = 0b010100
-  b011100000000000100,	// opcode = 0b010101
-  b011100000000000100,	// opcode = 0b010110
-  b011100000000000100,	// opcode = 0b010111
-
-  b000000100000010110,	// opcode = 0b011000 LD
-  b000001100000000001,	// opcode = 0b011001 ST
-  b011100000000000100,	// opcode = 0b011010
-  b010000000000000100,	// opcode = 0b011011 JMP
-  b011100000000000100,	// opcode = 0b011100
-  b001000000000000100,	// opcode = 0b011101 BEQ
-  b000000000000000100,	// opcode = 0b011110 BNE
-  b000010001101010110,	// opcode = 0b011111 LDR (011010)
-
-  b000000000000001100,	// opcode = 0b100000 ADD (000000)
-  b000000000000101100,	// opcode = 0b100001 SUB (000001)
-  b000000000001001100,	// opcode = 0b100010 MUL (000010)
-  b000000000001101100,	// opcode = 0b100011 DIV (000011)
-  b000000011010101100,	// opcode = 0b100100 CMPEQ (110101)
-  b000000011100101100,	// opcode = 0b100101 CMPLT (111001)
-  b000000011110101100,	// opcode = 0b100110 CMPLE (111101)
-  b011100000000000100,	// opcode = 0b100111
-
-  b000000001100001100,	// opcode = 0b101000 AND (011000)
-  b000000001111001100,	// opcode = 0b101001 OR (011110)
-  b000000001011001100,	// opcode = 0b101010 XOR (010110)
-  b000000001101001100,	// opcode = 0b101011 "A"(011010)
-  b000000010000001100,	// opcode = 0b101100 SHL (010000)
-  b000000010000101100,	// opcode = 0b101101 SHR (010001)
-  b000000010001101100,	// opcode = 0b101110 SRA (010011)
-  b011100000000000100,	// opcode = 0b10111
-
-  b000000100000001100,	// opcode = 0b110000 ADDC (000000)
-  b000000100000101100,	// opcode = 0b110001 SUBC (000001)
-  b000000100001001100,	// opcode = 0b110010 MULC (000010)
-  b000000100001101100,	// opcode = 0b110011 DIVC (000011)
-  b000000111010101100,	// opcode = 0b110100 CMPEQC (110101)
-  b000000111100101100,	// opcode = 0b110101 CMPLTC (111001)
-  b000000111110101100,	// opcode = 0b110110 CMPLEC (111101)
-  b011100000000000100,	// opcode = 0b11011
-
-  b000000101100001100,	// opcode = 0b111000 ANDC (011000)
-  b000000101111001100,	// opcode = 0b111001 ORC (011110)
-  b000000101011001100,	// opcode = 0b111010 XORC (010110)
-  b011100000000000100,	// opcode = 0b111011
-  b000000110000001100,	// opcode = 0b111100 SHLC (010000)
-  b000000110000101100,	// opcode = 0b111101 SHRC (010001)
-  b000000110001101100,	// opcode = 0b111110 SRAC (010011)
-  b011100000000000100};	// opcode = 0b111111
-    
-  dff irq_sampler(#INIT(0), .clk(clk));
-
-  always {
-  
-    irq_sampler.d = irq;
-    pcsel = CU_ROM[opcode][17:15]; 
-    wasel = CU_ROM[opcode][14]; 
-    asel = CU_ROM[opcode][13]; 
-    ra2sel = CU_ROM[opcode][12]; 
-    bsel = CU_ROM[opcode][11]; 
-    alufn = CU_ROM[opcode][10:5]; 
-    wdsel = CU_ROM[opcode][4:3];  
-    werf= CU_ROM[opcode][2]; 
-    moe = CU_ROM[opcode][1]; 
-    xwr = CU_ROM[opcode][0]; 
-    
-    
-    // beq bne handling 
-    if (opcode == b011101 && z == 1){//BEQ, branch if z == 1
-      pcsel = b001;
+  .clk(clk) {
+  dff segment[4][5](#INIT(4x{{16}}));
+  regfile reg;
+  fsm game_controller = {START,WIPE,IDLE,ERROR,SET_RXYZ,CHECK1_2,CHECK2_3,CHECK1_3,CHECK2,MERGE_ADD_CLEAR,ALIGN1_2,ALIGN2_3,ALIGN1_3,CHECK_WIN,MAKE_LIST,ADD_NUM,CHECK_LOSE,LOSE,WIN,GAMEOVER};
+  rand_gen rand_gen;
     }
-    else if (opcode == b011110 && z == 0){ //BNE, branch if z != 1
-      pcsel = b001;
+  sig temp[16];
+  alu alu;
+  always{
+    rand_gen.num = 0;
+    rand_gen.rst = 0;
+    arr = reg.out[9:1];
+    io_seg = segment.q;
+    reg.write_address_1 = 0;
+    reg.write_data_1 = 0;
+    reg.write_enable_1 = 0;
+    reg.write_address_2 = 0;
+    reg.write_data_2 = 0;
+    reg.write_enable_2 = 0;
+    reg.write_address_3 = 0;
+    reg.write_data_3 = 0;
+    reg.write_enable_3 = 0;
+    reg.write_address_4 = 0;
+    reg.write_data_4 = 0;
+    reg.write_enable_4 = 0;
+    reg.rst = 0;
+    alu.a = 0;
+    alu.b = 0;
+    alu.alufn = 6b111111; //nothing
+  case(game_controller.q){
+      game_controller.START:
+        segment.d = {5d4,5d4,5d4,5d4};
+        if (^button){
+          game_controller.d = game_controller.MAKE_LIST;
+        }
+      game_controller.WIPE:
+        reg.rst = 1;   
+        game_controller.d = game_controller.START;
+      game_controller.IDLE:
+        if (^button){
+          reg.write_address_1 = 5d11;//R11
+          reg.write_enable_1 = 1;
+          if (button[0]){
+            segment.d = {5d18,5d16,5d16,5d16};
+            reg.write_data_1 = 16b110; // up
+          } else if (button[2]){
+            segment.d = {5d6,5d16,5d16,5d16};
+            reg.write_data_1 = 16b111; // down
+          } else if (button[3]){
+            segment.d = {5d9,5d16,5d16,5d16};
+            reg.write_data_1 = 16b100; // left
+          } else if (button[4]){
+            segment.d= {5d11,5d16,5d16,5d16};
+            reg.write_data_1 = 16b101; // right
+          }
+          game_controller.d = game_controller.SET_RXYZ;
+        }
+      game_controller.SET_RXYZ:
+        reg.write_address_1 = 5d14; //R14
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 5d15; //R15
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 5d16; //R16
+        reg.write_enable_3 = 1;
+        case(reg.out[5d13]){
+          16d0:
+            case(reg.out[5d11]){
+              16b110: // up
+                reg.write_data_1 = 16d1;
+                reg.write_data_2 = 16d4;
+                reg.write_data_3 = 16d7;
+              16b111: // down
+                reg.write_data_1 = 16d7;
+                reg.write_data_2 = 16d4;
+                reg.write_data_3 = 16d1;
+              16b100: // left
+                reg.write_data_1 = 16d1;
+                reg.write_data_2 = 16d2;
+                reg.write_data_3 = 16d3;
+              16b101: // right
+                reg.write_data_1 = 16d3;
+                reg.write_data_2 = 16d2;
+                reg.write_data_3 = 16d1;
+            }
+          16d1:
+            case(reg.out[5d11]){
+              16b110: // up
+                reg.write_data_1 = 16d2;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d8;
+              16b111: // down
+                reg.write_data_1 = 16d8;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d2;
+              16b100: // left
+                reg.write_data_1 = 16d4;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d6;
+              16b101: // right
+                reg.write_data_1 = 16d6;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d4;
+            }
+          16d2:
+            case(reg.out[5d11]){
+              16b110: // up
+                reg.write_data_1 = 16d3;
+                reg.write_data_2 = 16d6;
+                reg.write_data_3 = 16d9;
+              16b111: // down
+                reg.write_data_1 = 16d9;
+                reg.write_data_2 = 16d6;
+                reg.write_data_3 = 16d3;
+              16b100: // left
+                reg.write_data_1 = 16d7;
+                reg.write_data_2 = 16d8;
+                reg.write_data_3 = 16d9;
+              16b101: // right
+                reg.write_data_1 = 16d9;
+                reg.write_data_2 = 16d8;
+                reg.write_data_3 = 16d7;
+           16d3:
+              reg.write_data_1 = 16d0;
+              reg.write_data_2 = 16d0;
+              reg.write_data_3 = 16d0;
+            }
+            }
+        alu.a = reg.out[5d13];
+        alu.b = 16d2;
+        alu.alufn = Alufn.CMPLE;
+        case(alu.out){
+          0:
+            reg.write_address_4 = 5d19; //R19
+            reg.write_enable_4 = 1;
+            reg.write_data_4 = 1;
+            game_controller.d = game_controller.CHECK_WIN;
+          1:
+            reg.write_address_4 = 5d13; //R13
+            reg.write_enable_4 = 1;
+            reg.write_data_4 = reg.out[5d13]+1;
+            game_controller.d = game_controller.CHECK1_2;
+           
+        }
+      game_controller.CHECK1_2:
+         alu.a = reg.out[reg.out[5d14]]; //R[R14]
+         alu.b = reg.out[reg.out[5d15]]; //R[R15]
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         reg.write_address_1 = 5d17; //R17
+         reg.write_address_2 = 5d18; //R18
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.CHECK2_3;
+          1:
+            reg.write_enable_1 = 1;
+            reg.write_enable_2 = 1;
+            reg.write_data_1 = reg.out[5d14];
+            reg.write_data_2 = reg.out[5d15];
+            game_controller.d = game_controller.MERGE_ADD_CLEAR;
+        }
+      game_controller.CHECK2_3:
+         alu.a = reg.out[reg.out[5d15]]; //R[R15]
+         alu.b = reg.out[reg.out[5d16]]; //R[R16]
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         reg.write_address_1 = 5d17; //R17
+         reg.write_address_2 = 5d18; //R18
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.CHECK1_3;
+          1:
+            reg.write_enable_1 = 1;
+            reg.write_enable_2 = 1;
+            reg.write_data_1 = reg.out[5d15];
+            reg.write_data_2 = reg.out[5d16];
+            game_controller.d = game_controller.MERGE_ADD_CLEAR;
+        }
+      game_controller.CHECK1_3:
+         alu.a = reg.out[reg.out[5d14]]; //R[R14]
+         alu.b = reg.out[reg.out[5d16]]; //R[R16]
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.ALIGN1_2;
+          1:
+            game_controller.d = game_controller.CHECK2;
+        }
+      game_controller.CHECK2:
+         alu.a = reg.out[reg.out[5d15]]; //R[R15]
+         alu.b = reg.out[5d0];
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         reg.write_address_1 = 5d17; //R17
+         reg.write_address_2 = 5d18; //R18
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.ALIGN1_2;
+          1:
+            reg.write_enable_1 = 1;
+            reg.write_enable_2 = 1;
+            reg.write_data_1 = reg.out[5d14];
+            reg.write_data_2 = reg.out[5d16];
+            game_controller.d = game_controller.MERGE_ADD_CLEAR;
+        }
+      game_controller.MERGE_ADD_CLEAR:
+         alu.a = reg.out[reg.out[5d17]];
+         alu.b = reg.out[reg.out[5d18]];
+         alu.alufn = Alufn.ADD; //ADD
+         reg.write_address_1 = reg.out[5d17][4:0];
+         reg.write_data_1 = alu.out;
+         reg.write_enable_1 = 1;
+         reg.write_address_2 = reg.out[5d18][4:0];
+         reg.write_data_2 = reg.out[0]; // R0 = 0
+         reg.write_enable_2 = 1;
+         reg.write_address_3 = 5d17;
+         reg.write_data_3 = reg.out[0];
+         reg.write_enable_3 = 1;
+         reg.write_address_4 = 5d18;
+         reg.write_data_4 = reg.out[0]; // R0 = 0
+         reg.write_enable_4 = 1;
+         game_controller.d = game_controller.ALIGN1_2;
+      game_controller.ALIGN1_2:
+         if (reg.out[reg.out[5d14]] == 0 && reg.out[reg.out[5d15]]!=0){
+           reg.write_address_1 = reg.out[5d14][4:0];
+           reg.write_data_1 = reg.out[reg.out[5d15]];
+           reg.write_enable_1 = 1;
+           reg.write_address_2 = reg.out[5d15][4:0];
+           reg.write_data_2 = reg.out[0]; // R0 = 0
+           reg.write_enable_2 = 1;
+         }
+         game_controller.d = game_controller.ALIGN2_3;
+      game_controller.ALIGN2_3:
+        if (reg.out[reg.out[5d15]] == 0 && reg.out[reg.out[5d16]]!=0){
+           reg.write_address_1 = reg.out[5d15][4:0];
+           reg.write_data_1 = reg.out[reg.out[5d16]];
+           reg.write_enable_1 = 1;
+           reg.write_address_2 = reg.out[5d16][4:0];
+           reg.write_data_2 = reg.out[0]; // R0 = 0
+           reg.write_enable_2 = 1;
+         }
+         game_controller.d = game_controller.ALIGN1_3;
+      game_controller.ALIGN1_3:
+         if (reg.out[reg.out[5d14]] == 0 && reg.out[reg.out[5d15]]!=0){
+           reg.write_address_1 = reg.out[5d14][4:0];
+           reg.write_data_1 = reg.out[reg.out[5d15]];
+           reg.write_enable_1 = 1;
+           reg.write_address_2 = reg.out[5d15][4:0];
+           reg.write_data_2 = reg.out[0]; // R0 = 0
+           reg.write_enable_2 = 1;
+         }
+         game_controller.d = game_controller.SET_RXYZ;
+      game_controller.CHECK_WIN:
+        alu.a = reg.out[reg.out[5d19]];
+        alu.b = 64;
+        alu.alufn = Alufn.CMPEQ;
+        if(alu.out){
+        game_controller.d = game_controller.WIN;
+        }else if(reg.out[5d19]>=9){
+        reg.write_address_1 = 5d19;
+        reg.write_data_1 = 1;
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 5d20;
+        reg.write_data_2 = reg.out[0];
+        reg.write_enable_2 = 1;
+        game_controller.d = game_controller.MAKE_LIST;
+        }else{
+        reg.write_address_1 = 5d19;
+        reg.write_data_1 = reg.out[5d19]+1;
+        reg.write_enable_1 = 1;
+        }
+      game_controller.MAKE_LIST:
+       alu.a = reg.out[reg.out[5d19]];
+       alu.b = reg.out[0];
+       alu.alufn = Alufn.CMPEQ;
+       reg.write_address_1 = 5d20;
+       reg.write_enable_1 = 1;
+       if (alu.out){
+       }else{
+       temp = reg.out[5d20]+1;
+       reg.write_data_1 = temp;
+       reg.write_address_3 = temp[4:0]+20;
+       reg.write_data_3 = reg.out[5d19];
+       reg.write_enable_3 = 1;
+       }
+       reg.write_address_2 = 5d19;
+       reg.write_enable_2 = 1;
+       if(reg.out[5d19]>=9){
+       reg.write_data_2 = 1;
+       game_controller.d = game_controller.ADD_NUM;
+       }else{
+       reg.write_data_2 = reg.out[5d19]+1;
+       }
+       game_controller.ADD_NUM:
+       alu.a = reg.out[5d20];
+       alu.b = reg.out[5d0];
+       alu.alufn = Alufn.CMPEQ;
+       case (alu.out){
+          1:
+          game_controller.d = game_controller.CHECK_LOSE;
+          0:
+          rand_gen.num = reg.out[5d20][3:0];
+          rand_gen.rst = 1;
+          if (rand_gen.randint>=b10000){
+            reg.write_address_1 = reg.out[rand_gen.randint[3:0]+21][4:0];
+            reg.write_data_1 = 2;
+            reg.write_enable_1 = 1;
+            reg.write_address_2 = 5d20;
+            reg.write_data_2 = reg.out[5d20]-1;
+            reg.write_enable_2 = 1;
+            game_controller.d = game_controller.CHECK_LOSE;
+            }
+       }
+      game_controller.CHECK_LOSE:
+      alu.a = reg.out[5d20];
+      alu.b = reg.out[5d0];
+      alu.alufn = Alufn.CMPEQ;
+      case (alu.out){
+          0:
+          game_controller.d = game_controller.IDLE;
+          1:
+          if (reg.out[1] == reg.out[4] || reg.out[1] == reg.out[4] || reg.out[2] == reg.out[3] || reg.out[2] == reg.out[5] || reg.out[4] == reg.out[5] || reg.out[4] == reg.out[7] || reg.out[5] == reg.out[6] || reg.out[5] == reg.out[8] || reg.out[3] == reg.out[6] || reg.out[6] == reg.out[9] || reg.out[7] == reg.out[8] || reg.out[8] == reg.out[9]){
+          game_controller.d = game_controller.IDLE;
+          }else{
+          game_controller.d = game_controller.LOSE;
+          }  
     }
-    
-    // force xwr = 0 when reset == 1 
-    if (reset){
-      xwr = 0;
-      werf = 0;
-    }
-    
-    // interrupt checker, will overwrite everything hence we put at the bottom    
-    if (irq_sampler.q == 1){
-      pcsel = b100;
-      wasel = 1;
-      werf = 1;
-      wdsel = b00;
-      xwr = 0;
-    }
-    
-    
-
+      game_controller.WIN:
+      segment.d = {29,5d2,5d2,5d6};
+      if (^button){
+         game_controller.d = game_controller.WIPE;
+          }
+      game_controller.LOSE:
+      segment.d = {5d9,5d2,5d4,5d14};
+      if (^button){
+         game_controller.d = game_controller.WIPE;
+          }
   }
+  if (button[1]){
+      if(game_controller.q!=game_controller.IDLE && ^button){
+        game_controller.d = game_controller.WIPE; //reset
+      }
+    }
 }

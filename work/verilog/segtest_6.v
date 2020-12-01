@@ -14,7 +14,7 @@ module segtest_6 (
   
   
   wire [1-1:0] M_slowclk_value;
-  counter_14 slowclk (
+  counter_15 slowclk (
     .clk(clk),
     .rst(rst),
     .value(M_slowclk_value)
@@ -22,7 +22,7 @@ module segtest_6 (
   
   wire [1-1:0] M_slowclkedge_out;
   reg [1-1:0] M_slowclkedge_in;
-  edge_detector_13 slowclkedge (
+  edge_detector_14 slowclkedge (
     .clk(clk),
     .in(M_slowclkedge_in),
     .out(M_slowclkedge_out)

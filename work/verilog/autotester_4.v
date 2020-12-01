@@ -21,7 +21,7 @@ module autotester_4 (
   reg [16-1:0] M_alu_a;
   reg [16-1:0] M_alu_b;
   reg [6-1:0] M_alu_alufn;
-  alu_11 alu (
+  alu_12 alu (
     .a(M_alu_a),
     .b(M_alu_b),
     .alufn(M_alu_alufn),
@@ -31,7 +31,7 @@ module autotester_4 (
   );
   
   wire [1-1:0] M_slowclk_value;
-  counter_12 slowclk (
+  counter_13 slowclk (
     .clk(clk),
     .rst(rst),
     .value(M_slowclk_value)
@@ -39,7 +39,7 @@ module autotester_4 (
   
   wire [1-1:0] M_slowclkedge_out;
   reg [1-1:0] M_slowclkedge_in;
-  edge_detector_13 slowclkedge (
+  edge_detector_14 slowclkedge (
     .clk(clk),
     .in(M_slowclkedge_in),
     .out(M_slowclkedge_out)

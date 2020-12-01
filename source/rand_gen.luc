@@ -2,6 +2,7 @@ global Alufn{
   const ADD   = 6b000000;
   const SUB   = 6b000001;
   const MUL   = 6b000010;
+  const DIV   = 6b000011;
   const AND   = 6b011000;
   const OR    = 6b011110;
   const XOR   = 6b010110;
@@ -9,17 +10,16 @@ global Alufn{
   const SHL   = 6b100000;
   const SHR   = 6b100001;
   const SRA   = 6b100011;
-  const CMPEQ = 6b110011;
-  const CMPLT = 6b110101;
-  const CMPLE = 6b110111;
+  const CMPEQ = 6b110101;
+  const CMPLT = 6b111001;
+  const CMPLE = 6b111101;
 }
 
 module rand_gen (
     input clk,  // clock
     input rst,  // reset
-    input reg_array[9], // array of empty registers
-    output rand1[5],
-    output rand2[5]
+    input num[4], // number or empty registers
+    output randint[5]
   ) {
   
   alu alu;
@@ -27,11 +27,9 @@ module rand_gen (
   
   counter randseed(.rst(rst), #SIZE(32));
   .rst(rst){
-  dff empty_slots[4](#INIT(9));
   fsm game_step = {
     START,
-    RAND1,
-    RAND2,
+    RAND,
     DONE 
      };
      
@@ -40,10 +38,8 @@ module rand_gen (
     MULTIPLY,
     EXTRACT
     };
-   dff randint1[3];
-   dff randint2[4];
+   dff randint1[4];
    dff randint_temp[16];
-   dff index_count[4];
    pn_gen rand_gen;   
     }
   }
@@ -54,34 +50,19 @@ module rand_gen (
     alu.alufn = 6b000000;
     alu.a = 16b0;
     alu.b = 16b0;
-    rand1 = 0;
-    rand2 = 0;
+    randint = 0;
     
     
     case(game_step.q){
       game_step.START:
         randint1.d = 0;
-        randint2.d = 0;
         rand_gen.next = 1;
         alu.a = 0;
         alu.b = 0;
-        alu.alufn = 0;
-        index_count.d = index_count.q + 1;
-        empty_slots.d = empty_slots.q-reg_array[index_count.q];     
-        if (index_count.q >=8){
-        game_step.d = game_step.RAND1;
-        }
-      
-      game_step.RAND1:
-        rand_gen.next = 1;
-        alu.a = rand_gen.num[15:0];
-        alu.b = 16b111;
-        alu.alufn = Alufn.AND;
-        randint1.d = alu.out[2:0];
-        game_step.d = game_step.RAND2;
-        rand_step.d = rand_step.BITMASK;
+        alu.alufn = 0;   
+        game_step.d = game_step.RAND;
         
-      game_step.RAND2:
+      game_step.RAND:
          case(rand_step.q){
          rand_step.BITMASK: // Bitmask out upper 4 bits of PRNG.
             rand_gen.next = 1;
@@ -93,22 +74,22 @@ module rand_gen (
             
           rand_step.MULTIPLY: // Multiply by number of empty_slots.
             alu.a = randint_temp.q;
-            alu.b = empty_slots.q;
+            alu.b = num;
             alu.alufn = Alufn.MUL;
             randint_temp.d = alu.out[15:0];
             rand_step.d = rand_step.EXTRACT;
             
-          rand_step.EXTRACT: // Extract randint by shifting.          
-            randint2.d = randint_temp.q[15:12];
+          rand_step.EXTRACT: // Extract randint by shifting.  
+            alu.a = randint_temp.q;
+            alu.b = 16d12;  
+            alu.alufn = Alufn.SHR;    
+            randint1.d = alu.out[3:0];
             game_step.d = game_step.DONE;       
         }
       game_step.DONE:
-      rand1 = randint1.q+b10000;
-      rand2 = randint2.q+b10000;
+      randint = randint1.q+b10000;
             if(rst){
             game_step.d = game_step.START;
-            index_count.d = 0;
-            empty_slots.d = 9;
             }
   }
 }
