@@ -44,6 +44,7 @@ module controlunit (
         reg.rst = 1;   
         game_controller.d = game_controller.START;
       game_controller.IDLE:
+        segment.d =  {21,b00110,b01001,b01110};
         if (^button){
           reg.write_address_1 = 5d11;//R11
           reg.write_enable_1 = 1;
@@ -63,6 +64,7 @@ module controlunit (
           game_controller.d = game_controller.SET_RXYZ;
         }
       game_controller.SET_RXYZ:
+        segment.d = {5d4,5d11,5d16,5d16};
         reg.write_address_1 = 5d14; //R14
         reg.write_enable_1 = 1;
         reg.write_address_2 = 5d15; //R15
@@ -149,6 +151,7 @@ module controlunit (
            
         }
       game_controller.CHECK1_2:
+         segment.d = {5d13,5d21,5d22,5d16};
          alu.a = reg.out[reg.out[5d14]]; //R[R14]
          alu.b = reg.out[reg.out[5d15]]; //R[R15]
          alu.alufn = Alufn.CMPEQ; //CMPEQ
@@ -165,6 +168,7 @@ module controlunit (
             game_controller.d = game_controller.MERGE_ADD_CLEAR;
         }
       game_controller.CHECK2_3:
+         segment.d = {5d13,5d22,5d23,5d16};
          alu.a = reg.out[reg.out[5d15]]; //R[R15]
          alu.b = reg.out[reg.out[5d16]]; //R[R16]
          alu.alufn = Alufn.CMPEQ; //CMPEQ
@@ -181,6 +185,7 @@ module controlunit (
             game_controller.d = game_controller.MERGE_ADD_CLEAR;
         }
       game_controller.CHECK1_3:
+         segment.d = {5d13,5d21,5d23,5d16};
          alu.a = reg.out[reg.out[5d14]]; //R[R14]
          alu.b = reg.out[reg.out[5d16]]; //R[R16]
          alu.alufn = Alufn.CMPEQ; //CMPEQ
@@ -191,6 +196,7 @@ module controlunit (
             game_controller.d = game_controller.CHECK2;
         }
       game_controller.CHECK2:
+         segment.d = {5d13,5d22,5d16,5d16};
          alu.a = reg.out[reg.out[5d15]]; //R[R15]
          alu.b = reg.out[5d0];
          alu.alufn = Alufn.CMPEQ; //CMPEQ
@@ -207,6 +213,7 @@ module controlunit (
             game_controller.d = game_controller.MERGE_ADD_CLEAR;
         }
       game_controller.MERGE_ADD_CLEAR:
+         segment.d = {5d3,5d13,5d16,5d16};
          alu.a = reg.out[reg.out[5d17]];
          alu.b = reg.out[reg.out[5d18]];
          alu.alufn = Alufn.ADD; //ADD
@@ -224,6 +231,7 @@ module controlunit (
          reg.write_enable_4 = 1;
          game_controller.d = game_controller.ALIGN1_2;
       game_controller.ALIGN1_2:
+         segment.d = {5d3,5d21,5d22,5d16};
          if (reg.out[reg.out[5d14]] == 0 && reg.out[reg.out[5d15]]!=0){
            reg.write_address_1 = reg.out[5d14][4:0];
            reg.write_data_1 = reg.out[reg.out[5d15]];
@@ -234,6 +242,7 @@ module controlunit (
          }
          game_controller.d = game_controller.ALIGN2_3;
       game_controller.ALIGN2_3:
+        segment.d = {5d3,5d22,5d23,5d16};
         if (reg.out[reg.out[5d15]] == 0 && reg.out[reg.out[5d16]]!=0){
            reg.write_address_1 = reg.out[5d15][4:0];
            reg.write_data_1 = reg.out[reg.out[5d16]];
@@ -244,6 +253,7 @@ module controlunit (
          }
          game_controller.d = game_controller.ALIGN1_3;
       game_controller.ALIGN1_3:
+         segment.d = {5d3,5d21,5d23,5d16};
          if (reg.out[reg.out[5d14]] == 0 && reg.out[reg.out[5d15]]!=0){
            reg.write_address_1 = reg.out[5d14][4:0];
            reg.write_data_1 = reg.out[reg.out[5d15]];
@@ -254,9 +264,13 @@ module controlunit (
          }
          game_controller.d = game_controller.SET_RXYZ;
       game_controller.CHECK_WIN:
+        segment.d = {5d13,5d29,5d16,5d16};
         alu.a = reg.out[reg.out[5d19]];
         alu.b = 64;
         alu.alufn = Alufn.CMPEQ;
+        reg.write_address_3 = 5d13;
+        reg.write_data_3 = reg.out[0];
+        reg.write_enable_3 = 1;
         if(alu.out){
         game_controller.d = game_controller.WIN;
         }else if(reg.out[5d19]>=9){
@@ -273,7 +287,7 @@ module controlunit (
         reg.write_enable_1 = 1;
         }
       game_controller.MAKE_LIST:
-        segment.d = {5d9,5d21,5d16,5d16};
+       segment.d = {5d9,5d21,5d16,5d16};
        alu.a = reg.out[reg.out[5d19]];
        alu.b = reg.out[0];
        alu.alufn = Alufn.CMPEQ;
@@ -285,7 +299,6 @@ module controlunit (
        reg.write_address_3 = temp[4:0]+20;
        reg.write_data_3 = reg.out[5d19];
        reg.write_enable_3 = 1;
-       }else{
        }
        reg.write_address_2 = 5d19;
        reg.write_enable_2 = 1;
@@ -296,7 +309,7 @@ module controlunit (
        reg.write_data_2 = reg.out[5d19]+1;
        }
        game_controller.ADD_NUM:
-      segment.d = {5d0,5d6,5d6,5d16};
+       segment.d = {5d0,5d6,5d6,5d16};
        alu.a = reg.out[5d20];
        alu.b = reg.out[5d0];
        alu.alufn = Alufn.CMPEQ;
@@ -335,12 +348,12 @@ module controlunit (
     }
       game_controller.WIN:
       segment.d = {29,5d2,5d2,5d6};
-      if (^button){
+      if (button[1]){
          game_controller.d = game_controller.WIPE;
           }
       game_controller.LOSE:
       segment.d = {5d9,5d2,5d4,5d14};
-      if (^button){
+      if (button[1]){
          game_controller.d = game_controller.WIPE;
           }
   }

@@ -46,7 +46,7 @@ module game_9 (
   wire [20-1:0] M_control_io_seg;
   reg [5-1:0] M_control_button;
   controlunit_21 control (
-    .clk(clk),
+    .clk(M_slowclkedge_out),
     .button(M_control_button),
     .arr(M_control_arr),
     .io_seg(M_control_io_seg)
@@ -66,24 +66,24 @@ module game_9 (
   end
   endgenerate
   
-  reg [3:0] r91;
-  reg [3:0] r90;
-  reg [3:0] r81;
-  reg [3:0] r80;
-  reg [3:0] r71;
-  reg [3:0] r70;
-  reg [3:0] r61;
-  reg [3:0] r60;
-  reg [3:0] r51;
-  reg [3:0] r50;
-  reg [3:0] r41;
-  reg [3:0] r40;
-  reg [3:0] r31;
-  reg [3:0] r30;
-  reg [3:0] r21;
-  reg [3:0] r20;
-  reg [3:0] r11;
-  reg [3:0] r10;
+  reg [4:0] r91;
+  reg [4:0] r90;
+  reg [4:0] r81;
+  reg [4:0] r80;
+  reg [4:0] r71;
+  reg [4:0] r70;
+  reg [4:0] r61;
+  reg [4:0] r60;
+  reg [4:0] r51;
+  reg [4:0] r50;
+  reg [4:0] r41;
+  reg [4:0] r40;
+  reg [4:0] r31;
+  reg [4:0] r30;
+  reg [4:0] r21;
+  reg [4:0] r20;
+  reg [4:0] r11;
+  reg [4:0] r10;
   
   always @* begin
     M_slowclkedge_in = M_slowclk_value;
@@ -94,23 +94,32 @@ module game_9 (
     arr = M_control_arr;
     io_seg = M_control_io_seg;
     r91 = M_control_arr[128+15-:16] / 4'ha;
-    r90 = M_control_arr[128+15-:16] - r91 * 4'ha;
+    r90 = M_control_arr[128+15-:16] - r91 * 4'ha + 5'h14;
+    r91 = r91 + 5'h14;
     r81 = M_control_arr[112+15-:16] / 4'ha;
-    r80 = M_control_arr[112+15-:16] - r81 * 4'ha;
+    r80 = M_control_arr[112+15-:16] - r81 * 4'ha + 5'h14;
+    r81 = r81 + 5'h14;
     r71 = M_control_arr[96+15-:16] / 4'ha;
-    r70 = M_control_arr[96+15-:16] - r71 * 4'ha;
+    r70 = M_control_arr[96+15-:16] - r71 * 4'ha + 5'h14;
+    r71 = r71 + 5'h14;
     r61 = M_control_arr[80+15-:16] / 4'ha;
-    r60 = M_control_arr[80+15-:16] - r61 * 4'ha;
+    r60 = M_control_arr[80+15-:16] - r61 * 4'ha + 5'h14;
+    r61 = r61 + 5'h14;
     r51 = M_control_arr[64+15-:16] / 4'ha;
-    r50 = M_control_arr[64+15-:16] - r51 * 4'ha;
+    r50 = M_control_arr[64+15-:16] - r51 * 4'ha + 5'h14;
+    r51 = r51 + 5'h14;
     r41 = M_control_arr[48+15-:16] / 4'ha;
-    r40 = M_control_arr[48+15-:16] - r41 * 4'ha;
+    r40 = M_control_arr[48+15-:16] - r41 * 4'ha + 5'h14;
+    r41 = r41 + 5'h14;
     r31 = M_control_arr[32+15-:16] / 4'ha;
-    r30 = M_control_arr[32+15-:16] - r31 * 4'ha;
+    r30 = M_control_arr[32+15-:16] - r31 * 4'ha + 5'h14;
+    r31 = r31 + 5'h14;
     r21 = M_control_arr[16+15-:16] / 4'ha;
-    r20 = M_control_arr[16+15-:16] - r21 * 4'ha;
+    r20 = M_control_arr[16+15-:16] - r21 * 4'ha + 5'h14;
+    r21 = r21 + 5'h14;
     r11 = M_control_arr[0+15-:16] / 4'ha;
-    r10 = M_control_arr[0+15-:16] - r11 * 4'ha;
-    seg18 = 90'h3bde737bd6b39c62f7b5ab5;
+    r10 = M_control_arr[0+15-:16] - r11 * 4'ha + 5'h14;
+    r11 = r11 + 5'h14;
+    seg18 = {r91, r90, r81, r80, r71, r70, r61, r60, r51, r50, r41, r40, r31, r30, r21, r20, r11, r10};
   end
 endmodule
