@@ -28,15 +28,6 @@ module game_9 (
     );
   end
   endgenerate
-  wire [144-1:0] M_control_arr;
-  wire [20-1:0] M_control_io_seg;
-  reg [5-1:0] M_control_button;
-  controlunit_21 control (
-    .clk(clk),
-    .button(M_control_button),
-    .arr(M_control_arr),
-    .io_seg(M_control_io_seg)
-  );
   wire [1-1:0] M_slowclkedge_out;
   reg [1-1:0] M_slowclkedge_in;
   edge_detector_14 slowclkedge (
@@ -49,6 +40,16 @@ module game_9 (
     .clk(clk),
     .rst(rst),
     .value(M_slowclk_value)
+  );
+  
+  wire [144-1:0] M_control_arr;
+  wire [20-1:0] M_control_io_seg;
+  reg [5-1:0] M_control_button;
+  controlunit_21 control (
+    .clk(clk),
+    .button(M_control_button),
+    .arr(M_control_arr),
+    .io_seg(M_control_io_seg)
   );
   
   wire [(3'h5+0)-1:0] M_buttondetector_out;

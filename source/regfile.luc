@@ -33,7 +33,6 @@
     if (write_address_4 != b00000 && write_enable_4){
         registers.d[write_address_4] = write_data_4;
     }
-    registers.d[9:1] = {16d2,16d4,16d8,16d16,16d32,16d64,16d2,16d4,16d8};
     out = registers.q;
     if (rst){
       registers.d = 32x{{16b0}};

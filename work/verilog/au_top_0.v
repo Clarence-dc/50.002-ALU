@@ -147,7 +147,7 @@ module au_top_0 (
     io_led = 24'h000000;
     io_seg = 8'hff;
     io_sel = 4'hf;
-    sevenseg = ~M_seg18_seg;
+    sevenseg = M_seg18_seg;
     r = ~M_seg18_sel;
     M_seg18_values = 90'h21084210842108421084210;
     M_seg_values = 20'h84210;

@@ -41,7 +41,6 @@ module regfile_27 (
     if (write_address_4 != 5'h00 && write_enable_4) begin
       M_registers_d[(write_address_4)*16+15-:16] = write_data_4;
     end
-    M_registers_d[16+143-:144] = 144'h000200040008001000200040000200040008;
     out = M_registers_q;
     if (rst) begin
       M_registers_d = 512'h00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;

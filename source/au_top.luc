@@ -51,7 +51,7 @@ module au_top (
     io_sel = 4hf;           // select no digits
     
     // initialise
-    sevenseg = ~seg18.seg;
+    sevenseg = seg18.seg;
     r = ~seg18.sel;
     seg18.values = 9x{{16,16}};
     

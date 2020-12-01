@@ -11,13 +11,13 @@ module game (
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     button_conditioner buttoncond[5];
-    controlunit control;
     edge_detector slowclkedge;
     .rst(rst){
     
     counter slowclk(#SIZE(1),#DIV(24));
     }
-  }
+  } 
+    controlunit control(.clk(clk));
     edge_detector buttondetector[5](.clk(slowclkedge.out), #RISE(1), #FALL(0)); //detect on rising edge only
     sig r91[4],r90[4],r81[4],r80[4],r71[4],r70[4],r61[4],r60[4],r51[4],r50[4],r41[4],r40[4],r31[4],r30[4],r21[4],r20[4],r11[4],r10[4];
     

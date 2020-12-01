@@ -14,7 +14,7 @@ output sel [DIGITS] // Digit select
   counter ctr (#DIV(DIV), #SIZE(DIGIT_BITS), #TOP(DIGITS-1));
 }
   lut seg_dec; // segment decoder
-  decoder digit_dec (#WIDTH(DIGIT_BITS)); // digit decoder
+  decoder digit_dec  (#WIDTH(DIGIT_BITS)); // digit decoder
 always {
   seg_dec.value = values[ctr.value]; // select value for active digit
   seg = seg_dec.segs; // output the decoded value

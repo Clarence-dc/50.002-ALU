@@ -123,7 +123,8 @@ module controlunit_21 (
       START_game_controller: begin
         M_segment_d = 20'h21084;
         if ((^button)) begin
-          M_game_controller_d = MAKE_LIST_game_controller;
+          M_segment_d = 20'h0ca10;
+          M_game_controller_d = CHECK_WIN_game_controller;
         end
       end
       WIPE_game_controller: begin
@@ -413,19 +414,20 @@ module controlunit_21 (
         end
       end
       MAKE_LIST_game_controller: begin
+        M_segment_d = 20'h4d610;
         M_alu_a = M_reg_out[(M_reg_out[304+15-:16])*16+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
         M_reg_write_address_1 = 5'h14;
-        M_reg_write_enable_1 = 1'h1;
         if (M_alu_out) begin
-          
-        end else begin
           temp = M_reg_out[320+15-:16] + 1'h1;
           M_reg_write_data_1 = temp;
+          M_reg_write_enable_1 = 1'h1;
           M_reg_write_address_3 = temp[0+4-:5] + 5'h14;
           M_reg_write_data_3 = M_reg_out[304+15-:16];
           M_reg_write_enable_3 = 1'h1;
+        end else begin
+          
         end
         M_reg_write_address_2 = 5'h13;
         M_reg_write_enable_2 = 1'h1;
@@ -437,6 +439,7 @@ module controlunit_21 (
         end
       end
       ADD_NUM_game_controller: begin
+        M_segment_d = 20'h018d0;
         M_alu_a = M_reg_out[320+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
@@ -461,6 +464,7 @@ module controlunit_21 (
         endcase
       end
       CHECK_LOSE_game_controller: begin
+        M_segment_d = 20'h6a610;
         M_alu_a = M_reg_out[320+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
@@ -470,7 +474,7 @@ module controlunit_21 (
             M_game_controller_d = IDLE_game_controller;
           end
           1'h1: begin
-            if (M_reg_out[16+15-:16] == M_reg_out[64+15-:16] || M_reg_out[16+15-:16] == M_reg_out[64+15-:16] || M_reg_out[32+15-:16] == M_reg_out[48+15-:16] || M_reg_out[32+15-:16] == M_reg_out[80+15-:16] || M_reg_out[64+15-:16] == M_reg_out[80+15-:16] || M_reg_out[64+15-:16] == M_reg_out[112+15-:16] || M_reg_out[80+15-:16] == M_reg_out[96+15-:16] || M_reg_out[80+15-:16] == M_reg_out[128+15-:16] || M_reg_out[48+15-:16] == M_reg_out[96+15-:16] || M_reg_out[96+15-:16] == M_reg_out[144+15-:16] || M_reg_out[112+15-:16] == M_reg_out[128+15-:16] || M_reg_out[128+15-:16] == M_reg_out[144+15-:16]) begin
+            if (M_reg_out[16+15-:16] == M_reg_out[64+15-:16] || M_reg_out[16+15-:16] == M_reg_out[32+15-:16] || M_reg_out[32+15-:16] == M_reg_out[48+15-:16] || M_reg_out[32+15-:16] == M_reg_out[80+15-:16] || M_reg_out[64+15-:16] == M_reg_out[80+15-:16] || M_reg_out[64+15-:16] == M_reg_out[112+15-:16] || M_reg_out[80+15-:16] == M_reg_out[96+15-:16] || M_reg_out[80+15-:16] == M_reg_out[128+15-:16] || M_reg_out[48+15-:16] == M_reg_out[96+15-:16] || M_reg_out[96+15-:16] == M_reg_out[144+15-:16] || M_reg_out[112+15-:16] == M_reg_out[128+15-:16] || M_reg_out[128+15-:16] == M_reg_out[144+15-:16]) begin
               M_game_controller_d = IDLE_game_controller;
             end else begin
               M_game_controller_d = LOSE_game_controller;
