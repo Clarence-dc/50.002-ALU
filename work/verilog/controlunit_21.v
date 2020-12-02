@@ -140,6 +140,7 @@ module controlunit_21 (
         end
       end
       WIPE_game_controller: begin
+        M_rand_gen_rst = 1'h1;
         M_reg_rst = 1'h1;
         M_game_controller_d = START_game_controller;
       end
@@ -473,7 +474,6 @@ module controlunit_21 (
             M_game_controller_d = CHECK_LOSE_game_controller;
           end
           1'h0: begin
-            M_rand_gen_rst = 1'h1;
             M_rand_gen_next = 1'h1;
             M_game_controller_d = BITMASK_game_controller;
           end

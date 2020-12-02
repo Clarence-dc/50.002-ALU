@@ -21,10 +21,6 @@ module controlunit (
     //rand_gen.num = 0;
     rand_gen.rst = 0;
     arr = reg.out[9:1];
-    //arr[5:0] = reg.out[6:1];
-    //arr[6] = reg.out[rand_gen.randint[3:0]+21][4:0];
-    //arr[7] = rand_gen.randint+1;
-    //arr[8] = reg.out[20];
     io_seg = segment.q;
     reg.write_address_1 = 0;
     reg.write_data_1 = 0;
@@ -50,6 +46,7 @@ module controlunit (
           game_controller.d = game_controller.CHECK_WIN;
         }
       game_controller.WIPE:
+        rand_gen.rst = 1;
         reg.rst = 1;   
         game_controller.d = game_controller.START;
       game_controller.IDLE:
@@ -326,7 +323,6 @@ module controlunit (
           1:
           game_controller.d = game_controller.CHECK_LOSE;
           0:
-            rand_gen.rst = 1;
             rand_gen.next = 1; 
             game_controller.d = game_controller.BITMASK;
         }
