@@ -84,37 +84,30 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib {
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_24.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_31.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_12.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/autotester_4.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_25.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/button_conditioner_3.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_27.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/controlunit_22.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_13.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_15.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_16.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_19.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_21.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_30.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_18.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_20.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/add_sub16bit_20.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/adder1b_24.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/alu_19.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/boolean_21.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/button_conditioner_10.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/comparator_23.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/controlunit_13.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_12.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_18.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_5.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/counter_8.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_7.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/decoder_9.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_11.v}
   {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_14.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/edge_detector_2.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/eighteen_seven_seg_8.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_9.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_17.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/manualtester_5.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/multi_seven_seg_7.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_11.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pn_gen_29.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/rand_gen_23.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/randgen_autotester_10.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/regfile_28.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/eighteen_seven_seg_3.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/game_4.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/lut_6.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/multi_seven_seg_2.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pipeline_15.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/pn_gen_17.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/regfile_16.v}
   {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/reset_conditioner_1.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/segtest_6.v}
-  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_26.v}
+  {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/shifter_22.v}
   {D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.srcs/sources_1/imports/verilog/au_top_0.v}
 }
 OPTRACE "Adding files" END { }

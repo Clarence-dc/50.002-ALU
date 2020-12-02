@@ -14,18 +14,13 @@
     <src>shifter.luc</src>
     <component>pipeline.luc</component>
     <src>multi_seven_seg.luc</src>
-    <src>segtest.luc</src>
     <src>lut.luc</src>
     <component>decoder.luc</component>
     <src>game.luc</src>
     <component>reset_conditioner.luc</component>
     <src top="true">au_top.luc</src>
-    <src>autotester.luc</src>
-    <src>manualtester.luc</src>
     <src>add_sub16bit.luc</src>
     <src>adder1b.luc</src>
-    <src>randgen_autotester.luc</src>
-    <src>rand_gen.luc</src>
     <constraint>override.xdc</constraint>
     <constraint>custom.acf</constraint>
   </files>

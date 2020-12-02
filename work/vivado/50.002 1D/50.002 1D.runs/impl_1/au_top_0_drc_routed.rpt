@@ -1,7 +1,7 @@
 Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
-| Date         : Thu Dec  3 00:44:55 2020
+| Date         : Thu Dec  3 01:06:45 2020
 | Host         : Clarencedc running 64-bit major release  (build 9200)
 | Command      : report_drc -file au_top_0_drc_routed.rpt -pb au_top_0_drc_routed.pb -rpx au_top_0_drc_routed.rpx
 | Design       : au_top_0
@@ -24,140 +24,35 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 22
-+-------------+----------+-------------------------------------------------------------+------------+
-| Rule        | Severity | Description                                                 | Violations |
-+-------------+----------+-------------------------------------------------------------+------------+
-| DPIP-1      | Warning  | Input pipelining                                            | 8          |
-| DPOP-1      | Warning  | PREG Output pipelining                                      | 4          |
-| DPOP-2      | Warning  | MREG Output pipelining                                      | 4          |
-| NSTD-1      | Warning  | Unspecified I/O Standard                                    | 1          |
-| PDRC-153    | Warning  | Gated clock check                                           | 2          |
-| PLHOLDVIO-2 | Warning  | Non-Optimal connections which could lead to hold violations | 2          |
-| UCIO-1      | Warning  | Unconstrained Logical Port                                  | 1          |
-+-------------+----------+-------------------------------------------------------------+------------+
+             Violations found: 4
++--------+----------+------------------------+------------+
+| Rule   | Severity | Description            | Violations |
++--------+----------+------------------------+------------+
+| DPIP-1 | Warning  | Input pipelining       | 2          |
+| DPOP-1 | Warning  | PREG Output pipelining | 1          |
+| DPOP-2 | Warning  | MREG Output pipelining | 1          |
++--------+----------+------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
 DPIP-1#1 Warning
 Input pipelining  
-DSP auto/alu/adder/s0 input auto/alu/adder/s0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
+DSP game/control/alu/adder/s0 input game/control/alu/adder/s0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPIP-1#2 Warning
 Input pipelining  
-DSP auto/alu/adder/s0 input auto/alu/adder/s0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#3 Warning
-Input pipelining  
-DSP game/control/alu/adder/s0 input game/control/alu/adder/s0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#4 Warning
-Input pipelining  
 DSP game/control/alu/adder/s0 input game/control/alu/adder/s0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#5 Warning
-Input pipelining  
-DSP manual/alu/adder/s0 input manual/alu/adder/s0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#6 Warning
-Input pipelining  
-DSP manual/alu/adder/s0 input manual/alu/adder/s0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#7 Warning
-Input pipelining  
-DSP rand_auto/rand_gen/alu/adder/s0 input rand_auto/rand_gen/alu/adder/s0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-Related violations: <none>
-
-DPIP-1#8 Warning
-Input pipelining  
-DSP rand_auto/rand_gen/alu/adder/s0 input rand_auto/rand_gen/alu/adder/s0/B[17:0] is not pipelined. Pipelining DSP48 input will improve performance.
 Related violations: <none>
 
 DPOP-1#1 Warning
 PREG Output pipelining  
-DSP auto/alu/adder/s0 output auto/alu/adder/s0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
-Related violations: <none>
-
-DPOP-1#2 Warning
-PREG Output pipelining  
 DSP game/control/alu/adder/s0 output game/control/alu/adder/s0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
-Related violations: <none>
-
-DPOP-1#3 Warning
-PREG Output pipelining  
-DSP manual/alu/adder/s0 output manual/alu/adder/s0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
-Related violations: <none>
-
-DPOP-1#4 Warning
-PREG Output pipelining  
-DSP rand_auto/rand_gen/alu/adder/s0 output rand_auto/rand_gen/alu/adder/s0/P[47:0] is not pipelined (PREG=0). Pipelining the DSP48 output will improve performance and often saves power so it is suggested whenever possible to fully pipeline this function.  If this DSP48 function was inferred, it is suggested to describe an additional register stage after this function.  If the DSP48 was instantiated in the design, it is suggested to set the PREG attribute to 1.
 Related violations: <none>
 
 DPOP-2#1 Warning
 MREG Output pipelining  
-DSP auto/alu/adder/s0 multiplier stage auto/alu/adder/s0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
-Related violations: <none>
-
-DPOP-2#2 Warning
-MREG Output pipelining  
 DSP game/control/alu/adder/s0 multiplier stage game/control/alu/adder/s0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
-Related violations: <none>
-
-DPOP-2#3 Warning
-MREG Output pipelining  
-DSP manual/alu/adder/s0 multiplier stage manual/alu/adder/s0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
-Related violations: <none>
-
-DPOP-2#4 Warning
-MREG Output pipelining  
-DSP rand_auto/rand_gen/alu/adder/s0 multiplier stage rand_auto/rand_gen/alu/adder/s0/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
-Related violations: <none>
-
-NSTD-1#1 Warning
-Unspecified I/O Standard  
-46 out of 106 logical ports use I/O standard (IOSTANDARD) value 'DEFAULT', instead of a user assigned specific value. This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all I/O standards. This design will fail to generate a bitstream unless all logical ports have a user specified I/O standard value defined. To allow bitstream creation with unspecified I/O standard values (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks NSTD-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run. Problem ports: io_dip[21], io_dip[20], io_dip[19], io_dip[18], io_dip[17], io_dip[16],
-io_dip[15], io_dip[14], io_dip[13], io_dip[12], io_dip[11], io_dip[10],
-io_dip[9], io_dip[8], io_dip[7] (the first 15 of 23 listed).
-Related violations: <none>
-
-PDRC-153#1 Warning
-Gated clock check  
-Net auto/slowclk/M_slowclkedge_out is a gated clock net sourced by a combinational pin auto/slowclk/M_last_q_i_2__10/O, cell auto/slowclk/M_last_q_i_2__10. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-Related violations: <none>
-
-PDRC-153#2 Warning
-Gated clock check  
-Net segtest/slowclkedge/M_slowclkedge_out is a gated clock net sourced by a combinational pin segtest/slowclkedge/M_last_q_i_2__4/O, cell segtest/slowclkedge/M_last_q_i_2__4. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-Related violations: <none>
-
-PLHOLDVIO-2#1 Warning
-Non-Optimal connections which could lead to hold violations  
-A LUT auto/slowclk/M_last_q_i_2__10 is driving clock pin of 6 cells. This could lead to large hold time violations. Involved cells are:
-auto/M_auto_controller_q_reg[0], auto/M_auto_controller_q_reg[1],
-auto/M_auto_controller_q_reg[2], auto/M_auto_controller_q_reg[3],
-auto/M_auto_controller_q_reg[4],
-auto/buttondetector_gen_0[1].buttondetector/M_last_q_reg
-Related violations: <none>
-
-PLHOLDVIO-2#2 Warning
-Non-Optimal connections which could lead to hold violations  
-A LUT segtest/slowclkedge/M_last_q_i_2__4 is driving clock pin of 4 cells. This could lead to large hold time violations. Involved cells are:
-segtest/M_auto_controller_q_reg[0], segtest/M_auto_controller_q_reg[1],
-segtest/M_auto_controller_q_reg[2],
-segtest/buttondetector_gen_0[1].buttondetector/M_last_q_reg
-Related violations: <none>
-
-UCIO-1#1 Warning
-Unconstrained Logical Port  
-46 out of 106 logical ports have no user assigned specific location constraint (LOC). This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all pin locations. This design will fail to generate a bitstream unless all logical ports have a user specified site LOC constraint defined.  To allow bitstream creation with unspecified pin locations (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks UCIO-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run.  Problem ports: io_dip[21], io_dip[20], io_dip[19], io_dip[18], io_dip[17], io_dip[16],
-io_dip[15], io_dip[14], io_dip[13], io_dip[12], io_dip[11], io_dip[10],
-io_dip[9], io_dip[8], io_dip[7] (the first 15 of 23 listed).
 Related violations: <none>
 
 

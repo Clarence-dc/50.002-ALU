@@ -1,17 +1,11 @@
 module au_top (
     input clk,              // 100MHz clock
     input rst_n,            // reset button (active low)
-    output led [8],         // 8 user controllable LEDs
-    input usb_rx,           // USB->Serial input
-    output usb_tx,          // USB->Serial output
-    output io_led [3][8],   // LEDs on IO Shield
     output io_seg [8],      // 7-segment LEDs on IO Shield
     output io_sel [4],      // Digit select on IO Shield
     output r[18],
     output sevenseg[8],     // 7-segment LEDs on game
-    input io_button [5],    // 5 buttons on IO Shield
-    input gamebutton[5],    // 5 buttons on Game
-    input io_dip [3][8]     // DIP switches on IO Shield
+    input gamebutton[5]    // 5 buttons on Game
   )  {
   
   sig rst;                  // reset signal
@@ -19,34 +13,15 @@ module au_top (
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
-    edge_detector buttondetector[5](#RISE(1), #FALL(0)); //detect on rising edge only
-    button_conditioner buttoncond[5];
-    
     .rst(rst){
-    fsm mode_controller = {GAME,RANDINT,AUTO,MANUAL,SEGTEST};
-    autotester auto;
-    manualtester manual;  
-    segtest segtest;
     multi_seven_seg seg;
     eighteen_seven_seg seg18;
     game game;
-      
-      
-    randgen_autotester rand_auto;
-    
     }
   }
-  // slow the clock so that the fsm will not function too quickly
-  
   always {
     reset_cond.in = ~rst_n; // input raw inverted reset signal
     rst = reset_cond.out;   // conditioned reset
-    
-    usb_tx = usb_rx;        // loop serial port
-    
-    led = 8h00;             // turn LEDs off
-    
-    io_led = 3x{{8h00}};    // turn LEDs off
     io_seg = 8hff;          // turn segments off
     io_sel = 4hf;           // select no digits
     
@@ -54,72 +29,11 @@ module au_top (
     sevenseg = seg18.seg;
     r = ~seg18.sel;
     seg18.values = 9x{{16,16}};
-    
     seg.values = {16,16,16,16};
-    buttoncond.in = io_button[4:0];
-    buttondetector.in = buttoncond.out;
-    manual.io_dip = 3x{{8h00}};
-    manual.button = 5x{b0};
-    segtest.button = 5x{b0};
-    auto.button = 5x{b0};
-    game.button = 5x{b0};
-    rand_auto.button = 5x{b0};
     io_seg = ~seg.seg;   // connect segments to counter
     io_sel = ~seg.sel; // connect digit select to counter
-    
-    case (mode_controller.q){
-      mode_controller.GAME:// game
-      game.button = gamebutton;
-      seg.values = game.io_seg;
-      seg18.values = game.seg18;
-      if (buttondetector.out[0]){
-        mode_controller.d = mode_controller.AUTO;
-      }else if (buttondetector.out[2]){
-        mode_controller.d = mode_controller.RANDINT;
-      }
-      mode_controller.RANDINT: //randint
-        rand_auto.button = buttondetector.out;
-        seg.values = rand_auto.seg;
-        if (buttondetector.out[0]){
-        mode_controller.d = mode_controller.GAME;
-      } else if (buttondetector.out[2]){
-        mode_controller.d = mode_controller.MANUAL;
-      }
-      mode_controller.MANUAL:// manual
-      manual.io_dip = io_dip;
-      manual.button = buttondetector.out;
-      io_led[2][5:0]  = io_dip[2][5:0];
-      io_led = manual.io_led;
-      seg.values = manual.seg;
-      if (buttondetector.out[0]){
-        mode_controller.d = mode_controller.RANDINT;
-      } else if (buttondetector.out[2]){
-        mode_controller.d = mode_controller.AUTO;
-      }
-      
-      mode_controller.AUTO:// auto 
-      auto.button = io_button;
-      if (buttondetector.out[0]){
-        mode_controller.d = mode_controller.MANUAL;
-      } else if (buttondetector.out[2]){
-        mode_controller.d = mode_controller.SEGTEST;
-      }
-      
-      io_led[1] = auto.out[15:8];
-      io_led[0] = auto.out[7:0];
-      seg.values = auto.seg;
-      io_led = auto.io_led;
-        
-      mode_controller.SEGTEST:// segtest
-      segtest.button = io_button;
-      if (buttondetector.out[0]){
-        mode_controller.d = mode_controller.AUTO;
-      } else if (buttondetector.out[2]){
-        mode_controller.d = mode_controller.GAME;
-      }
-      seg.values = segtest.seg;
-      
-      
-    }
+    game.button = gamebutton;
+    seg.values = game.io_seg;
+    seg18.values = game.seg18;
   }
 }
