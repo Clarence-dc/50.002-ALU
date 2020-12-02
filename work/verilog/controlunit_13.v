@@ -699,7 +699,7 @@ module controlunit_13 (
               M_game_controller_d = IDLE_game_controller;
             end
           end else begin
-            if (M_game_controller_q == RESTORE1_game_controller || M_game_controller_q == RESTORE2_game_controller || M_game_controller_q == RESTORE3_game_controller) begin
+            if (M_game_controller_q == RESTORE1_game_controller || M_game_controller_q == RESTORE2_game_controller || M_game_controller_q == RESTORE3_game_controller || M_game_controller_q == WIN_game_controller || M_game_controller_q == LOSE_game_controller || M_game_controller_q == WIPE_game_controller) begin
               
             end else begin
               M_game_controller_d = RESTORE1_game_controller;

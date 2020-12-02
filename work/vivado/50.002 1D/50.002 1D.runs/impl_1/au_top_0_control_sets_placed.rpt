@@ -1,0 +1,138 @@
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
+| Date         : Thu Dec  3 06:58:44 2020
+| Host         : Clarencedc running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file au_top_0_control_sets_placed.rpt
+| Design       : au_top_0
+| Device       : xc7a35t
+-------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Total control sets                                       |    60 |
+|    Minimum number of control sets                        |    60 |
+|    Addition due to synthesis replication                 |     0 |
+|    Addition due to physical synthesis replication        |     0 |
+| Unused register locations in slices containing registers |    65 |
++----------------------------------------------------------+-------+
+* Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
+** Run report_qor_suggestions for automated merging and remapping suggestions
+
+
+2. Histogram
+------------
+
++--------------------+-------+
+|       Fanout       | Count |
++--------------------+-------+
+| Total control sets |    60 |
+| >= 0 to < 4        |     0 |
+| >= 4 to < 6        |     1 |
+| >= 6 to < 8        |     0 |
+| >= 8 to < 10       |     0 |
+| >= 10 to < 12      |     1 |
+| >= 12 to < 14      |     0 |
+| >= 14 to < 16      |     0 |
+| >= 16              |    58 |
++--------------------+-------+
+* Control sets can be remapped at either synth_design or opt_design
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |              49 |           19 |
+| No           | No                    | Yes                    |               0 |            0 |
+| No           | Yes                   | No                     |              62 |           17 |
+| Yes          | No                    | No                     |              70 |           26 |
+| Yes          | No                    | Yes                    |               0 |            0 |
+| Yes          | Yes                   | No                     |             954 |          537 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++--------------------+-----------------------------------------------------------+------------------------------------------------------------+------------------+----------------+--------------+
+|    Clock Signal    |                       Enable Signal                       |                      Set/Reset Signal                      | Slice Load Count | Bel Load Count | Bels / Slice |
++--------------------+-----------------------------------------------------------+------------------------------------------------------------+------------------+----------------+--------------+
+|  clk_IBUF_BUFG     |                                                           | reset_cond/M_reset_cond_in                                 |                3 |              4 |         1.33 |
+|  clk_IBUF_BUFG     |                                                           |                                                            |                5 |             11 |         2.20 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[399]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                7 |             16 |         2.29 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[415]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               14 |             16 |         1.14 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[431]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[463]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               13 |             16 |         1.23 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[767]_i_2_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[575]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               12 |             16 |         1.33 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[79]_i_1_n_0              | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[495]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[511]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               12 |             16 |         1.33 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[527]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               13 |             16 |         1.23 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[543]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[559]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[95]_i_1_n_0              | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               12 |             16 |         1.33 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[591]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[607]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[623]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[639]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               12 |             16 |         1.33 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[63]_i_1_n_0              | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[655]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[671]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[687]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[703]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[719]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               12 |             16 |         1.33 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[735]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[751]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[479]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[47]_i_1_n_0              | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[111]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                8 |             16 |         2.00 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[447]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               12 |             16 |         1.33 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[143]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[127]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[159]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[175]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[191]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[207]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[223]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             16 |         1.45 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[271]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[287]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                8 |             16 |         2.00 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[303]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[31]_i_1_n_0              | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[335]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             16 |         1.60 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[351]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                7 |             16 |         2.29 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[367]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |                9 |             16 |         1.78 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[383]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               14 |             16 |         1.14 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[319]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               14 |             18 |         1.29 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[255]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               11 |             18 |         1.64 |
+|  M_slowclkedge_out | game/control/L_reg/M_registers_q[239]_i_1_n_0             | game/control/L_reg/M_registers_q[767]_i_1_n_0              |               10 |             18 |         1.80 |
+|  M_slowclkedge_out | game/control/L_reg/M_game_controller_q_reg[4]_rep_1       |                                                            |                7 |             19 |         2.71 |
+|  M_slowclkedge_out | game/control/M_segment_q[19]_i_1_n_0                      |                                                            |                9 |             19 |         2.11 |
+|  clk_IBUF_BUFG     | game/buttoncond_gen_0[0].buttoncond/M_ctr_q[0]_i_2__1_n_0 | game/buttoncond_gen_0[0].buttoncond/sync/M_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG     | game/buttoncond_gen_0[1].buttoncond/M_ctr_q[0]_i_2__2_n_0 | game/buttoncond_gen_0[1].buttoncond/sync/M_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG     | game/buttoncond_gen_0[2].buttoncond/M_ctr_q[0]_i_2__3_n_0 | game/buttoncond_gen_0[2].buttoncond/sync/M_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG     | game/buttoncond_gen_0[3].buttoncond/M_ctr_q[0]_i_2__4_n_0 | game/buttoncond_gen_0[3].buttoncond/sync/M_pipe_q_reg[1]_0 |                5 |             20 |         4.00 |
+|  clk_IBUF_BUFG     | game/buttoncond_gen_0[4].buttoncond/sel                   | game/buttoncond_gen_0[4].buttoncond/sync/clear             |                5 |             20 |         4.00 |
+|  M_slowclkedge_out | game/control/L_reg/E[0]                                   |                                                            |               10 |             32 |         3.20 |
+|  M_slowclkedge_out |                                                           |                                                            |               14 |             38 |         2.71 |
+|  clk_IBUF_BUFG     |                                                           | reset_cond/Q[0]                                            |               14 |             58 |         4.14 |
+|  M_slowclkedge_out | game/control/L_reg/M_game_controller_q_reg[4]_rep_0[0]    | game/control/rand_gen/M_rand_gen_rst                       |               18 |             96 |         5.33 |
++--------------------+-----------------------------------------------------------+------------------------------------------------------------+------------------+----------------+--------------+
+
+

@@ -379,7 +379,7 @@ module controlunit (
             rand_gen.next = 1; 
             game_controller.d = game_controller.BITMASK;
         }
-       game_controller.BITMASK: // Bitmask out upper 4 bits of PRNG.
+       game_controller.BITMASK: // Mask the upper 4 bits of PRNG.
          alu.a = rand_gen.num[15:0];
          alu.b = 16b0000111111111111;
          alu.alufn = Alufn.AND;
@@ -388,7 +388,7 @@ module controlunit (
          reg.write_enable_1 = 1;
          game_controller.d = game_controller.MULTIPLY;
                 
-       game_controller.MULTIPLY: // Multiply by number of empty_slots.
+       game_controller.MULTIPLY: // Multiply by number of R20 (empty slots)
          alu.a = reg.out[5d30];
          alu.b = reg.out[5d20];
          alu.alufn = Alufn.MUL;
@@ -397,7 +397,7 @@ module controlunit (
          reg.write_enable_1 = 1;
          game_controller.d = game_controller.EXTRACT;
                 
-       game_controller.EXTRACT: // Extract randint by shifting.  
+       game_controller.EXTRACT: // Extract randint by shifting right 12 bits.  
          alu.a = reg.out[5d30];
          alu.b = 16d12;  
          alu.alufn = Alufn.SHR;    
@@ -444,7 +444,7 @@ module controlunit (
           game_controller.d = game_controller.LOSE;
          
           }  
-      if (reg.out[40]==100){
+      if (reg.out[40]==100){ //lose if 100 moves are made
             game_controller.d = game_controller.LOSE;
             }
     }
@@ -515,7 +515,7 @@ module controlunit (
           reg.write_enable_4 = 1;
           game_controller.d = game_controller.IDLE;
         }
-        }else if (game_controller.q == game_controller.RESTORE1 || game_controller.q == game_controller.RESTORE2 || game_controller.q == game_controller.RESTORE3){
+        }else if (game_controller.q == game_controller.RESTORE1 || game_controller.q == game_controller.RESTORE2 || game_controller.q == game_controller.RESTORE3 || game_controller.q == game_controller.WIN || game_controller.q == game_controller.LOSE || game_controller.q == game_controller.WIPE){
         }else{
         game_controller.d = game_controller.RESTORE1;
         }
