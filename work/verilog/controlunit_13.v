@@ -94,6 +94,8 @@ module controlunit_13 (
   );
   
   reg [15:0] temp;
+  reg [4:0] i0;
+  reg [4:0] i1;
   
   wire [16-1:0] M_alu_out;
   wire [3-1:0] M_alu_zvn;
@@ -196,7 +198,10 @@ module controlunit_13 (
         end
       end
       IDLE_game_controller: begin
-        M_segment_d = 20'ha992e;
+        i1 = M_reg_out[640+15-:16] / 4'ha;
+        i0 = M_reg_out[640+15-:16] - i1 * 4'ha + 5'h14;
+        i1 = i1 + 5'h14;
+        M_segment_d = {5'h0d, 5'h10, i1, i0};
         if ((^button)) begin
           M_reg_write_address_1 = 5'h0b;
           M_reg_write_enable_1 = 1'h1;
@@ -222,6 +227,9 @@ module controlunit_13 (
           M_reg_write_address_2 = 5'h0d;
           M_reg_write_enable_2 = 1'h1;
           M_reg_write_data_2 = M_reg_out[0+15-:16];
+          M_reg_write_address_3 = 6'h28;
+          M_reg_write_data_3 = M_reg_out[640+15-:16] + 1'h1;
+          M_reg_write_enable_3 = 1'h1;
           M_game_controller_d = SAVE1_game_controller;
           if (button[1+0-:1]) begin
             M_game_controller_d = WIPE_game_controller;
@@ -588,7 +596,7 @@ module controlunit_13 (
             M_reg_write_address_1 = M_reg_out[464+0+4-:5];
           end
         endcase
-        M_reg_write_data_1 = 2'h2;
+        M_reg_write_data_1 = 1'h1;
         M_reg_write_enable_1 = 1'h1;
         M_reg_write_address_2 = 5'h14;
         M_reg_write_data_2 = M_reg_out[320+15-:16] - 1'h1;
@@ -609,6 +617,9 @@ module controlunit_13 (
             if (M_reg_out[16+15-:16] == M_reg_out[64+15-:16] || M_reg_out[16+15-:16] == M_reg_out[32+15-:16] || M_reg_out[32+15-:16] == M_reg_out[48+15-:16] || M_reg_out[32+15-:16] == M_reg_out[80+15-:16] || M_reg_out[64+15-:16] == M_reg_out[80+15-:16] || M_reg_out[64+15-:16] == M_reg_out[112+15-:16] || M_reg_out[80+15-:16] == M_reg_out[96+15-:16] || M_reg_out[80+15-:16] == M_reg_out[128+15-:16] || M_reg_out[48+15-:16] == M_reg_out[96+15-:16] || M_reg_out[96+15-:16] == M_reg_out[144+15-:16] || M_reg_out[112+15-:16] == M_reg_out[128+15-:16] || M_reg_out[128+15-:16] == M_reg_out[144+15-:16]) begin
               M_game_controller_d = IDLE_game_controller;
             end else begin
+              M_game_controller_d = LOSE_game_controller;
+            end
+            if (M_reg_out[640+15-:16] == 7'h64) begin
               M_game_controller_d = LOSE_game_controller;
             end
           end
@@ -666,6 +677,9 @@ module controlunit_13 (
         if (M_reg_out[176+15-:16] == 1'h0) begin
           M_game_controller_d = START_game_controller;
         end else begin
+          M_reg_write_address_4 = 6'h28;
+          M_reg_write_data_4 = M_reg_out[640+15-:16] - 1'h1;
+          M_reg_write_enable_4 = 1'h1;
           M_game_controller_d = IDLE_game_controller;
         end
       end
@@ -676,7 +690,14 @@ module controlunit_13 (
       end else begin
         if (M_game_controller_q != IDLE_game_controller && M_game_controller_q != START_game_controller) begin
           if (M_game_controller_q == SAVE1_game_controller || M_game_controller_q == SAVE2_game_controller || M_game_controller_q == SAVE3_game_controller) begin
-            M_game_controller_d = IDLE_game_controller;
+            if (M_reg_out[176+15-:16] == 1'h0) begin
+              M_game_controller_d = START_game_controller;
+            end else begin
+              M_reg_write_address_4 = 6'h28;
+              M_reg_write_data_4 = M_reg_out[640+15-:16] - 1'h1;
+              M_reg_write_enable_4 = 1'h1;
+              M_game_controller_d = IDLE_game_controller;
+            end
           end else begin
             if (M_game_controller_q == RESTORE1_game_controller || M_game_controller_q == RESTORE2_game_controller || M_game_controller_q == RESTORE3_game_controller) begin
               

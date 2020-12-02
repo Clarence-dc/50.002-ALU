@@ -11,7 +11,7 @@ module controlunit (
   pn_gen rand_gen;
   counter randseed(.rst(0), #SIZE(32));
   }
-  sig temp[16];
+  sig temp[16],i0[5],i1[5];
   alu alu;
   always{
     rand_gen.next = 0;
@@ -91,7 +91,10 @@ module controlunit (
           game_controller.d = game_controller.SET_RXYZ;
         }
       game_controller.IDLE:
-        segment.d =  {21,b00110,b01001,b01110};
+        i1 = reg.out[40]/10;
+        i0 = reg.out[40]-i1*10+20;
+        i1 = i1+20;
+        segment.d =  {5d13,5d16,i1,i0};
         if (^button){
           reg.write_address_1 = 5d11;//R11
           reg.write_enable_1 = 1;
@@ -111,6 +114,9 @@ module controlunit (
           reg.write_address_2 = 5d13; //R13
           reg.write_enable_2 = 1;
           reg.write_data_2 = reg.out[0];
+          reg.write_address_3 = 6d40;
+          reg.write_data_3 = reg.out[40]+1;
+          reg.write_enable_3 = 1;
           game_controller.d = game_controller.SAVE1;
           if (button[1]){
             game_controller.d = game_controller.WIPE;
@@ -438,6 +444,9 @@ module controlunit (
           game_controller.d = game_controller.LOSE;
          
           }  
+      if (reg.out[40]==100){
+            game_controller.d = game_controller.LOSE;
+            }
     }
       game_controller.WIN:
       segment.d = {29,5d2,5d2,5d6};
@@ -487,6 +496,9 @@ module controlunit (
         if (reg.out[11] == 0){
           game_controller.d = game_controller.START;
         }else{
+          reg.write_address_4 = 6d40;
+          reg.write_data_4 = reg.out[40]-1;
+          reg.write_enable_4 = 1;
           game_controller.d = game_controller.IDLE;
         }
   }
@@ -495,7 +507,14 @@ module controlunit (
         game_controller.d = game_controller.WIPE; //reset
       }else if (game_controller.q != game_controller.IDLE && game_controller.q != game_controller.START){
         if (game_controller.q == game_controller.SAVE1 || game_controller.q == game_controller.SAVE2 || game_controller.q == game_controller.SAVE3){
-        game_controller.d = game_controller.IDLE;
+        if (reg.out[11] == 0){
+          game_controller.d = game_controller.START;
+        }else{
+          reg.write_address_4 = 6d40;
+          reg.write_data_4 = reg.out[40]-1;
+          reg.write_enable_4 = 1;
+          game_controller.d = game_controller.IDLE;
+        }
         }else if (game_controller.q == game_controller.RESTORE1 || game_controller.q == game_controller.RESTORE2 || game_controller.q == game_controller.RESTORE3){
         }else{
         game_controller.d = game_controller.RESTORE1;

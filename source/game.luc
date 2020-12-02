@@ -12,7 +12,7 @@ module game (
     button_conditioner buttoncond[5];
     edge_detector slowclkedge;
     .rst(rst){
-    counter slowclk(#SIZE(1),#DIV(24));
+    counter slowclk(#SIZE(1),#DIV(21));
     }
   } 
     controlunit control(.clk(slowclkedge.out));
