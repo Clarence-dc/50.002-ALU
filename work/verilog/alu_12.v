@@ -22,7 +22,7 @@ module alu_12 (
   reg [16-1:0] M_adder_a;
   reg [16-1:0] M_adder_b;
   reg [6-1:0] M_adder_alufn;
-  add_sub16bit_23 adder (
+  add_sub16bit_24 adder (
     .a(M_adder_a),
     .b(M_adder_b),
     .alufn(M_adder_alufn),
@@ -36,7 +36,7 @@ module alu_12 (
   reg [16-1:0] M_bool_a;
   reg [16-1:0] M_bool_b;
   reg [6-1:0] M_bool_alufn;
-  boolean_24 bool (
+  boolean_25 bool (
     .a(M_bool_a),
     .b(M_bool_b),
     .alufn(M_bool_alufn),
@@ -47,7 +47,7 @@ module alu_12 (
   reg [16-1:0] M_shift_a;
   reg [16-1:0] M_shift_b;
   reg [6-1:0] M_shift_alufn;
-  shifter_25 shift (
+  shifter_26 shift (
     .a(M_shift_a),
     .b(M_shift_b),
     .alufn(M_shift_alufn),
@@ -59,7 +59,7 @@ module alu_12 (
   reg [1-1:0] M_comp_v;
   reg [1-1:0] M_comp_n;
   reg [6-1:0] M_comp_alufn;
-  comparator_26 comp (
+  comparator_27 comp (
     .z(M_comp_z),
     .v(M_comp_v),
     .n(M_comp_n),

@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module rand_gen_22 (
+module rand_gen_23 (
     input clk,
     input rst,
     input [3:0] num,
@@ -29,7 +29,7 @@ module rand_gen_22 (
   );
   
   wire [32-1:0] M_randseed_value;
-  counter_29 randseed (
+  counter_30 randseed (
     .clk(clk),
     .rst(rst),
     .value(M_randseed_value)
@@ -49,7 +49,7 @@ module rand_gen_22 (
   wire [32-1:0] M_rand_gen_num;
   reg [1-1:0] M_rand_gen_next;
   reg [32-1:0] M_rand_gen_seed;
-  pn_gen_28 rand_gen (
+  pn_gen_29 rand_gen (
     .clk(clk),
     .rst(rst),
     .next(M_rand_gen_next),

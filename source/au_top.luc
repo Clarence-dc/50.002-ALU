@@ -80,7 +80,6 @@ module au_top (
       mode_controller.RANDINT: //randint
         rand_auto.button = buttondetector.out;
         seg.values = rand_auto.seg;
-        //seg.values = rand_auto.seg;
         if (buttondetector.out[0]){
         mode_controller.d = mode_controller.GAME;
       } else if (buttondetector.out[2]){

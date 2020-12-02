@@ -6,15 +6,13 @@ module game (
     output arr[9][16],
     output io_seg[4][5]
   ) {
-                  // reset signal
     .clk(clk) {
     // The reset conditioner is used to synchronize the reset signal to the FPGA
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     button_conditioner buttoncond[5];
     edge_detector slowclkedge;
     .rst(rst){
-    
-    counter slowclk(#SIZE(1),#DIV(24));
+    counter slowclk(#SIZE(1),#DIV(22));
     }
   } 
     controlunit control(.clk(slowclkedge.out));
@@ -56,8 +54,6 @@ module game (
     r11 = control.arr[0]/10;
     r10 = control.arr[0]-r11*10+20;
     r11 = r11 + 20;
-    //seg18 = {29,29,28,28,27,27,26,26,25,25,24,24,23,23,22,22,21,21};
     seg18 = {r91,r90,r81,r80,r71,r70,r61,r60,r51,r50,r41,r40,r31,r30,r21,r20,r11,r10};
-    //seg18 = {{r91+20,r90[4:0]+20},{r81+20,r80[4:0]+20},{r71+20,r70[4:0]+20},{r61+20,r60[4:0]+20},{r51+20,r50[4:0]+20},{r41+20,r40[4:0]+20},{r31+20,r30[4:0]+20},{r21+20,r20[4:0]+20},{r11+20,r10[4:0]+20}};
 }
 }

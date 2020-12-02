@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module add_sub16bit_23 (
+module add_sub16bit_24 (
     input [15:0] a,
     input [15:0] b,
     input [5:0] alufn,
@@ -25,7 +25,7 @@ module add_sub16bit_23 (
   genvar GEN_adder0;
   generate
   for (GEN_adder0=0;GEN_adder0<5'h10;GEN_adder0=GEN_adder0+1) begin: adder_gen_0
-    adder1b_30 adder (
+    adder1b_31 adder (
       .x(M_adder_x[GEN_adder0*(1)+(1)-1-:(1)]),
       .y(M_adder_y[GEN_adder0*(1)+(1)-1-:(1)]),
       .cin(M_adder_cin[GEN_adder0*(1)+(1)-1-:(1)]),

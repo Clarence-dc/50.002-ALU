@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module controlunit_21 (
+module controlunit_22 (
     input clk,
     input [4:0] button,
     output reg [143:0] arr,
@@ -28,7 +28,7 @@ module controlunit_21 (
   reg [5-1:0] M_reg_write_address_4;
   reg [16-1:0] M_reg_write_data_4;
   reg [1-1:0] M_reg_write_enable_4;
-  regfile_27 L_reg (
+  regfile_28 L_reg (
     .clk(clk),
     .rst(M_reg_rst),
     .write_address_1(M_reg_write_address_1),
@@ -74,7 +74,7 @@ module controlunit_21 (
   reg [1-1:0] M_rand_gen_rst;
   reg [1-1:0] M_rand_gen_next;
   reg [32-1:0] M_rand_gen_seed;
-  pn_gen_28 rand_gen (
+  pn_gen_29 rand_gen (
     .clk(clk),
     .rst(M_rand_gen_rst),
     .next(M_rand_gen_next),
@@ -82,7 +82,7 @@ module controlunit_21 (
     .num(M_rand_gen_num)
   );
   wire [32-1:0] M_randseed_value;
-  counter_29 randseed (
+  counter_30 randseed (
     .clk(clk),
     .rst(1'h0),
     .value(M_randseed_value)
@@ -146,7 +146,7 @@ module controlunit_21 (
       end
       IDLE_game_controller: begin
         M_segment_d = 20'ha992e;
-        if ((^button) && button[1+0-:1] != 1'h1) begin
+        if ((^button)) begin
           M_reg_write_address_1 = 5'h0b;
           M_reg_write_enable_1 = 1'h1;
           if (button[0+0-:1]) begin
@@ -169,6 +169,9 @@ module controlunit_21 (
             end
           end
           M_game_controller_d = SET_RXYZ_game_controller;
+          if (button[1+0-:1]) begin
+            M_game_controller_d = WIPE_game_controller;
+          end
         end
       end
       SET_RXYZ_game_controller: begin

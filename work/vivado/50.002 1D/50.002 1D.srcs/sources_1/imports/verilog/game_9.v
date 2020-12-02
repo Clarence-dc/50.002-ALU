@@ -36,7 +36,7 @@ module game_9 (
     .out(M_slowclkedge_out)
   );
   wire [1-1:0] M_slowclk_value;
-  counter_13 slowclk (
+  counter_21 slowclk (
     .clk(clk),
     .rst(rst),
     .value(M_slowclk_value)
@@ -45,7 +45,7 @@ module game_9 (
   wire [144-1:0] M_control_arr;
   wire [20-1:0] M_control_io_seg;
   reg [5-1:0] M_control_button;
-  controlunit_21 control (
+  controlunit_22 control (
     .clk(M_slowclkedge_out),
     .button(M_control_button),
     .arr(M_control_arr),

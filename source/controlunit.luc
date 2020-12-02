@@ -8,17 +8,14 @@ module controlunit (
   dff segment[4][5](#INIT(4x{{16}}));
   regfile reg;
   fsm game_controller = {START,WIPE,IDLE,ERROR,SET_RXYZ,CHECK1_2,CHECK2_3,CHECK1_3,CHECK2,MERGE_ADD_CLEAR,ALIGN1_2,ALIGN2_3,ALIGN1_3,CHECK_WIN,MAKE_LIST,ADD_NUM,BITMASK,MULTIPLY,EXTRACT,CHECK_LOSE,LOSE,WIN,GAMEOVER};
-  //rand_gen rand_gen;
   pn_gen rand_gen;
   counter randseed(.rst(0), #SIZE(32));
-    }
-  
-  sig temp[16];//,temp2[5];
+  }
+  sig temp[16];
   alu alu;
   always{
     rand_gen.next = 0;
     rand_gen.seed = randseed.value;
-    //rand_gen.num = 0;
     rand_gen.rst = 0;
     arr = reg.out[9:1];
     io_seg = segment.q;
@@ -51,7 +48,7 @@ module controlunit (
         game_controller.d = game_controller.START;
       game_controller.IDLE:
         segment.d =  {21,b00110,b01001,b01110};
-        if (^button && button[1] != 1){
+        if (^button){
           reg.write_address_1 = 5d11;//R11
           reg.write_enable_1 = 1;
           if (button[0]){
@@ -68,7 +65,11 @@ module controlunit (
             reg.write_data_1 = 16b101; // right
           }
           game_controller.d = game_controller.SET_RXYZ;
+          if (button[1]){
+            game_controller.d = game_controller.WIPE;
+          }
         }
+         
       game_controller.SET_RXYZ:
         segment.d = {5d4,5d11,5d16,5d16};
         reg.write_address_1 = 5d14; //R14

@@ -16,7 +16,7 @@ module randgen_autotester_10 (
   
   wire [5-1:0] M_rand_gen_randint;
   reg [4-1:0] M_rand_gen_num;
-  rand_gen_22 rand_gen (
+  rand_gen_23 rand_gen (
     .clk(clk),
     .rst(button[1+0-:1]),
     .num(M_rand_gen_num),
