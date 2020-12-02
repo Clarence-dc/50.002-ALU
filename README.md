@@ -1,30 +1,16 @@
-# 50.002-Checkoff 1
-## Instructions
-- io_button [1] is used to switch between manual and auto testing modes
-- io_button[4] (next) and io_button[3] (back) are used to switch between states in the fsm input_controller during manual testing
-- io_led[1:0] is used to display the inputs A, B and corresponding outputs depending on the current state.
-- io_led[2][5:0] is used to display the current input of alufn
-- io_led[2][7:6] is used to display the current input state
-- The 7 segment display is used to reduce confusion by displaying information on the current state
-## Manual Testing
-- The ALU will start in manual testing mode with initial state S0
-### In state S0,
-- io_led [2][7] will be turned on while io_led[2][6] will be switched off
-- io_dip[1:0] dip switches are used to input 16-bit A which will be fed into and saved by a dff called a_mem
-- the state will change to S1 once io_button[4] is pressed
-### In state S1,
-- io_led [2][6] will be turned on while io_led[2][7] will be switched off
-- io_dip[1:0] dip switches are used to input 16-bit A which will be fed into and saved by a dff called b_mem
-- the state will change to S2 once io_button[4] is pressed
-### In state S2,
-- io_led [2][7:6] will both be turned on
-- a mux is used to switch between the different modes as specified by alufn
-- together with current alufn, the values of a and b saved in the previous clock cycle by dffs a_mem and b_mem respectively are fed accordingly into the selected module
-- the output obtained is displayed on io_led[1:0]
-- the state will return back to S0 once io_button[4] is pressed
+# The 64
+# 50.002 Team 13-4
 
-## Auto Testing
-- The ALU will procedurally input and check if the output of each module is correct
-- All test cases will result in a correct answer except for the 15th one where an incorrect output is intentionally compared
-- In this case, the fsm will enter ERROR state and display it on the 7 segments diplay
-- The fsm will then return back to its initial state automatically and retry the test
+## Description
+
+This game of 64 is a modified version of the popular 2048 mobile game. The gameboard consists of a 3x3 2-digit grid, 4 directional buttons, 1 reset button and the 7-segment LED of the FPGA used to display the number of moves the player has made. The player starts by pressing one of the directional buttons to randomly pick a grid to spawn the number ‘1’. The player must then merge numbers of equal value until they reach the number ‘64’. The player loses if the entire grid is filled (no zeroes) and there are no numbers of equal value that are adjacent to one another.
+
+## How to play
+
+1. To start, press any of the buttons except the reset button
+2. Move the tiles by pressing the up,down left or right button once
+3. Upon moving, a random tile pops up anywhere
+4. When two tiles with the same number on them collide with one another as you move them, they will merge into one tile with the sum of the numbers written on them initially. 
+5. To win, you will need to merge the tiles until u get the tile with 64 
+6.  Player loses once tiles cannot merge and move around.
+7.  To restart the game, press the restart button (Yellow button)
