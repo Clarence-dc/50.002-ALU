@@ -7,24 +7,24 @@
 module regfile_16 (
     input rst,
     input clk,
-    input [4:0] write_address_1,
+    input [5:0] write_address_1,
     input [15:0] write_data_1,
     input write_enable_1,
-    input [4:0] write_address_2,
+    input [5:0] write_address_2,
     input [15:0] write_data_2,
     input write_enable_2,
-    input [4:0] write_address_3,
+    input [5:0] write_address_3,
     input [15:0] write_data_3,
     input write_enable_3,
-    input [4:0] write_address_4,
+    input [5:0] write_address_4,
     input [15:0] write_data_4,
     input write_enable_4,
-    output reg [511:0] out
+    output reg [767:0] out
   );
   
   
   
-  reg [511:0] M_registers_d, M_registers_q = 1'h0;
+  reg [767:0] M_registers_d, M_registers_q = 1'h0;
   
   always @* begin
     M_registers_d = M_registers_q;
@@ -43,7 +43,7 @@ module regfile_16 (
     end
     out = M_registers_q;
     if (rst) begin
-      M_registers_d = 512'h00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+      M_registers_d = 768'h000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
     end
   end
   

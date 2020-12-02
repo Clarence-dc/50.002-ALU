@@ -14,18 +14,18 @@ module controlunit_13 (
   
   
   reg [19:0] M_segment_d, M_segment_q = 20'h84210;
-  wire [512-1:0] M_reg_out;
+  wire [768-1:0] M_reg_out;
   reg [1-1:0] M_reg_rst;
-  reg [5-1:0] M_reg_write_address_1;
+  reg [6-1:0] M_reg_write_address_1;
   reg [16-1:0] M_reg_write_data_1;
   reg [1-1:0] M_reg_write_enable_1;
-  reg [5-1:0] M_reg_write_address_2;
+  reg [6-1:0] M_reg_write_address_2;
   reg [16-1:0] M_reg_write_data_2;
   reg [1-1:0] M_reg_write_enable_2;
-  reg [5-1:0] M_reg_write_address_3;
+  reg [6-1:0] M_reg_write_address_3;
   reg [16-1:0] M_reg_write_data_3;
   reg [1-1:0] M_reg_write_enable_3;
-  reg [5-1:0] M_reg_write_address_4;
+  reg [6-1:0] M_reg_write_address_4;
   reg [16-1:0] M_reg_write_data_4;
   reg [1-1:0] M_reg_write_enable_4;
   regfile_16 L_reg (
@@ -48,26 +48,31 @@ module controlunit_13 (
   localparam START_game_controller = 5'd0;
   localparam WIPE_game_controller = 5'd1;
   localparam IDLE_game_controller = 5'd2;
-  localparam ERROR_game_controller = 5'd3;
-  localparam SET_RXYZ_game_controller = 5'd4;
-  localparam CHECK1_2_game_controller = 5'd5;
-  localparam CHECK2_3_game_controller = 5'd6;
-  localparam CHECK1_3_game_controller = 5'd7;
-  localparam CHECK2_game_controller = 5'd8;
-  localparam MERGE_ADD_CLEAR_game_controller = 5'd9;
-  localparam ALIGN1_2_game_controller = 5'd10;
-  localparam ALIGN2_3_game_controller = 5'd11;
-  localparam ALIGN1_3_game_controller = 5'd12;
-  localparam CHECK_WIN_game_controller = 5'd13;
-  localparam MAKE_LIST_game_controller = 5'd14;
-  localparam ADD_NUM_game_controller = 5'd15;
-  localparam BITMASK_game_controller = 5'd16;
-  localparam MULTIPLY_game_controller = 5'd17;
-  localparam EXTRACT_game_controller = 5'd18;
-  localparam CHECK_LOSE_game_controller = 5'd19;
-  localparam LOSE_game_controller = 5'd20;
-  localparam WIN_game_controller = 5'd21;
-  localparam GAMEOVER_game_controller = 5'd22;
+  localparam SAVE1_game_controller = 5'd3;
+  localparam SAVE2_game_controller = 5'd4;
+  localparam SAVE3_game_controller = 5'd5;
+  localparam SET_RXYZ_game_controller = 5'd6;
+  localparam CHECK1_2_game_controller = 5'd7;
+  localparam CHECK2_3_game_controller = 5'd8;
+  localparam CHECK1_3_game_controller = 5'd9;
+  localparam CHECK2_game_controller = 5'd10;
+  localparam MERGE_ADD_CLEAR_game_controller = 5'd11;
+  localparam ALIGN1_2_game_controller = 5'd12;
+  localparam ALIGN2_3_game_controller = 5'd13;
+  localparam ALIGN1_3_game_controller = 5'd14;
+  localparam CHECK_WIN_game_controller = 5'd15;
+  localparam MAKE_LIST_game_controller = 5'd16;
+  localparam ADD_NUM_game_controller = 5'd17;
+  localparam BITMASK_game_controller = 5'd18;
+  localparam MULTIPLY_game_controller = 5'd19;
+  localparam EXTRACT_game_controller = 5'd20;
+  localparam CHECK_LOSE_game_controller = 5'd21;
+  localparam LOSE_game_controller = 5'd22;
+  localparam WIN_game_controller = 5'd23;
+  localparam GAMEOVER_game_controller = 5'd24;
+  localparam RESTORE1_game_controller = 5'd25;
+  localparam RESTORE2_game_controller = 5'd26;
+  localparam RESTORE3_game_controller = 5'd27;
   
   reg [4:0] M_game_controller_d, M_game_controller_q = START_game_controller;
   wire [32-1:0] M_rand_gen_num;
@@ -133,16 +138,62 @@ module controlunit_13 (
     
     case (M_game_controller_q)
       START_game_controller: begin
-        M_segment_d = 20'h21084;
+        M_segment_d = 20'h21210;
         if ((^button)) begin
-          M_segment_d = 20'h0ca10;
-          M_game_controller_d = CHECK_WIN_game_controller;
+          M_rand_gen_rst = 1'h1;
+          M_reg_write_address_1 = 5'h13;
+          M_reg_write_data_1 = 1'h1;
+          M_reg_write_enable_1 = 1'h1;
+          M_game_controller_d = SAVE1_game_controller;
         end
       end
       WIPE_game_controller: begin
         M_rand_gen_rst = 1'h1;
         M_reg_rst = 1'h1;
         M_game_controller_d = START_game_controller;
+      end
+      SAVE1_game_controller: begin
+        M_segment_d = 20'h25610;
+        M_reg_write_address_1 = 6'h1f;
+        M_reg_write_enable_1 = 1'h1;
+        M_reg_write_address_2 = 6'h20;
+        M_reg_write_enable_2 = 1'h1;
+        M_reg_write_address_3 = 6'h21;
+        M_reg_write_enable_3 = 1'h1;
+        M_reg_write_data_1 = M_reg_out[16+15-:16];
+        M_reg_write_data_2 = M_reg_out[32+15-:16];
+        M_reg_write_data_3 = M_reg_out[48+15-:16];
+        M_game_controller_d = SAVE2_game_controller;
+      end
+      SAVE2_game_controller: begin
+        M_segment_d = 20'h25a10;
+        M_reg_write_address_1 = 6'h22;
+        M_reg_write_enable_1 = 1'h1;
+        M_reg_write_address_2 = 6'h23;
+        M_reg_write_enable_2 = 1'h1;
+        M_reg_write_address_3 = 6'h24;
+        M_reg_write_enable_3 = 1'h1;
+        M_reg_write_data_1 = M_reg_out[64+15-:16];
+        M_reg_write_data_2 = M_reg_out[80+15-:16];
+        M_reg_write_data_3 = M_reg_out[96+15-:16];
+        M_game_controller_d = SAVE3_game_controller;
+      end
+      SAVE3_game_controller: begin
+        M_segment_d = 20'h25e10;
+        M_reg_write_address_1 = 6'h25;
+        M_reg_write_enable_1 = 1'h1;
+        M_reg_write_address_2 = 6'h26;
+        M_reg_write_enable_2 = 1'h1;
+        M_reg_write_address_3 = 6'h27;
+        M_reg_write_enable_3 = 1'h1;
+        M_reg_write_data_1 = M_reg_out[112+15-:16];
+        M_reg_write_data_2 = M_reg_out[128+15-:16];
+        M_reg_write_data_3 = M_reg_out[144+15-:16];
+        if (M_reg_out[176+15-:16] == 1'h0) begin
+          M_game_controller_d = CHECK_WIN_game_controller;
+        end else begin
+          M_game_controller_d = SET_RXYZ_game_controller;
+        end
       end
       IDLE_game_controller: begin
         M_segment_d = 20'ha992e;
@@ -168,7 +219,10 @@ module controlunit_13 (
               end
             end
           end
-          M_game_controller_d = SET_RXYZ_game_controller;
+          M_reg_write_address_2 = 5'h0d;
+          M_reg_write_enable_2 = 1'h1;
+          M_reg_write_data_2 = M_reg_out[0+15-:16];
+          M_game_controller_d = SAVE1_game_controller;
           if (button[1+0-:1]) begin
             M_game_controller_d = WIPE_game_controller;
           end
@@ -572,10 +626,65 @@ module controlunit_13 (
           M_game_controller_d = WIPE_game_controller;
         end
       end
+      RESTORE1_game_controller: begin
+        M_segment_d = 20'h72d70;
+        M_reg_write_address_1 = 6'h01;
+        M_reg_write_enable_1 = 1'h1;
+        M_reg_write_address_2 = 6'h02;
+        M_reg_write_enable_2 = 1'h1;
+        M_reg_write_address_3 = 6'h03;
+        M_reg_write_enable_3 = 1'h1;
+        M_reg_write_data_1 = M_reg_out[496+15-:16];
+        M_reg_write_data_2 = M_reg_out[512+15-:16];
+        M_reg_write_data_3 = M_reg_out[528+15-:16];
+        M_game_controller_d = RESTORE2_game_controller;
+      end
+      RESTORE2_game_controller: begin
+        M_segment_d = 20'h72d70;
+        M_reg_write_address_1 = 6'h04;
+        M_reg_write_enable_1 = 1'h1;
+        M_reg_write_address_2 = 6'h05;
+        M_reg_write_enable_2 = 1'h1;
+        M_reg_write_address_3 = 6'h06;
+        M_reg_write_enable_3 = 1'h1;
+        M_reg_write_data_1 = M_reg_out[544+15-:16];
+        M_reg_write_data_2 = M_reg_out[560+15-:16];
+        M_reg_write_data_3 = M_reg_out[576+15-:16];
+        M_game_controller_d = RESTORE3_game_controller;
+      end
+      RESTORE3_game_controller: begin
+        M_segment_d = 20'h72d70;
+        M_reg_write_address_1 = 6'h07;
+        M_reg_write_enable_1 = 1'h1;
+        M_reg_write_address_2 = 6'h08;
+        M_reg_write_enable_2 = 1'h1;
+        M_reg_write_address_3 = 6'h09;
+        M_reg_write_enable_3 = 1'h1;
+        M_reg_write_data_1 = M_reg_out[592+15-:16];
+        M_reg_write_data_2 = M_reg_out[608+15-:16];
+        M_reg_write_data_3 = M_reg_out[624+15-:16];
+        if (M_reg_out[176+15-:16] == 1'h0) begin
+          M_game_controller_d = START_game_controller;
+        end else begin
+          M_game_controller_d = IDLE_game_controller;
+        end
+      end
     endcase
-    if (button[1+0-:1]) begin
-      if ((^button)) begin
+    if ((|button)) begin
+      if (button[1+0-:1]) begin
         M_game_controller_d = WIPE_game_controller;
+      end else begin
+        if (M_game_controller_q != IDLE_game_controller && M_game_controller_q != START_game_controller) begin
+          if (M_game_controller_q == SAVE1_game_controller || M_game_controller_q == SAVE2_game_controller || M_game_controller_q == SAVE3_game_controller) begin
+            M_game_controller_d = IDLE_game_controller;
+          end else begin
+            if (M_game_controller_q == RESTORE1_game_controller || M_game_controller_q == RESTORE2_game_controller || M_game_controller_q == RESTORE3_game_controller) begin
+              
+            end else begin
+              M_game_controller_d = RESTORE1_game_controller;
+            end
+          end
+        end
       end
     end
   end
