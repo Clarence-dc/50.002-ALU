@@ -1,0 +1,524 @@
+module controlunit (
+    input clk,  // clock
+    input button[5],
+    output arr[9][16],
+    output io_seg[4][5]
+  ) {
+  .clk(clk) {
+  dff segment[4][5](#INIT(4x{{16}}));
+  regfile reg;
+  fsm game_controller = {START,WIPE,IDLE,SAVE1,SAVE2,SAVE3,SET_RXYZ,CHECK1_2,CHECK2_3,CHECK1_3,CHECK2,MERGE_ADD_CLEAR,ALIGN1_2,ALIGN2_3,ALIGN1_3,CHECK_WIN,MAKE_LIST,ADD_NUM,BITMASK,MULTIPLY,EXTRACT,CHECK_LOSE,LOSE,WIN,GAMEOVER,RESTORE1,RESTORE2,RESTORE3};
+  pn_gen rand_gen;
+  counter randseed(.rst(0), #SIZE(32));
+  }
+  sig temp[16],i0[5],i1[5];
+  alu alu;
+  always{
+    rand_gen.next = 0;
+    rand_gen.seed = randseed.value;
+    rand_gen.rst = 0;
+    arr = reg.out[9:1];
+    io_seg = segment.q;
+    reg.write_address_1 = 0;
+    reg.write_data_1 = 0;
+    reg.write_enable_1 = 0;
+    reg.write_address_2 = 0;
+    reg.write_data_2 = 0;
+    reg.write_enable_2 = 0;
+    reg.write_address_3 = 0;
+    reg.write_data_3 = 0;
+    reg.write_enable_3 = 0;
+    reg.write_address_4 = 0;
+    reg.write_data_4 = 0;
+    reg.write_enable_4 = 0;
+    reg.rst = 0;
+    alu.a = 0;
+    alu.b = 0;
+    alu.alufn = 6b111111; //nothing
+    
+  case(game_controller.q){
+      game_controller.START:
+        segment.d = {5d4,5d4,5d16,5d16};
+        if (^button){
+          rand_gen.rst = 1;
+          reg.write_address_1 = 5d19;
+          reg.write_data_1 = 1;
+          reg.write_enable_1 = 1;
+          game_controller.d = game_controller.SAVE1;
+        }
+      game_controller.WIPE:
+        rand_gen.rst = 1;
+        reg.rst = 1;   
+        game_controller.d = game_controller.START;
+      game_controller.SAVE1:
+        //segment.d = {5d4,5d21,5d16,5d16};
+        reg.write_address_1 = 6d31; //R31
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 6d32; //R32
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 6d33; //R33
+        reg.write_enable_3 = 1;
+        reg.write_data_1 = reg.out[1];
+        reg.write_data_2 = reg.out[2];
+        reg.write_data_3 = reg.out[3];
+        game_controller.d = game_controller.SAVE2;
+      game_controller.SAVE2:
+        //segment.d = {5d4,5d22,5d16,5d16};
+        reg.write_address_1 = 6d34; //R34
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 6d35; //R35
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 6d36; //R36
+        reg.write_enable_3 = 1;
+        reg.write_data_1 = reg.out[4];
+        reg.write_data_2 = reg.out[5];
+        reg.write_data_3 = reg.out[6];
+        game_controller.d = game_controller.SAVE3;
+      game_controller.SAVE3:
+        //segment.d = {5d4,5d23,5d16,5d16};
+        reg.write_address_1 = 6d37; //R37
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 6d38; //R38
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 6d39; //R39
+        reg.write_enable_3 = 1;
+        reg.write_data_1 = reg.out[7];
+        reg.write_data_2 = reg.out[8];
+        reg.write_data_3 = reg.out[9];
+        if (reg.out[11] == 0){
+          game_controller.d = game_controller.CHECK_WIN;
+        }else{
+          game_controller.d = game_controller.SET_RXYZ;
+        }
+      game_controller.IDLE:
+        i1 = reg.out[40]/10;
+        i0 = reg.out[40]-i1*10+20;
+        i1 = i1+20;
+        segment.d =  {5d13,5d16,i1,i0};
+        if (^button){
+          reg.write_address_1 = 5d11;//R11
+          reg.write_enable_1 = 1;
+          if (button[0]){
+            segment.d = {5d18,5d16,5d16,5d16};
+            reg.write_data_1 = 16b110; // up
+          } else if (button[2]){
+            segment.d = {5d6,5d16,5d16,5d16};
+            reg.write_data_1 = 16b111; // down
+          } else if (button[3]){
+            segment.d = {5d9,5d16,5d16,5d16};
+            reg.write_data_1 = 16b100; // left
+          } else if (button[4]){
+            segment.d = {5d11,5d16,5d16,5d16};
+            reg.write_data_1 = 16b101; // right
+          }
+          reg.write_address_2 = 5d13; //R13
+          reg.write_enable_2 = 1;
+          reg.write_data_2 = reg.out[0];
+          reg.write_address_3 = 6d40;
+          reg.write_data_3 = reg.out[40]+1;
+          reg.write_enable_3 = 1;
+          game_controller.d = game_controller.SAVE1;
+          if (button[1]){
+            game_controller.d = game_controller.WIPE;
+          }
+        }
+      game_controller.SET_RXYZ:
+        //segment.d = {5d4,5d11,5d16,5d16};
+        reg.write_address_1 = 5d14; //R14
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 5d15; //R15
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 5d16; //R16
+        reg.write_enable_3 = 1;
+        case(reg.out[5d13]){
+          16d0:
+            case(reg.out[5d11]){
+              16b110: // up
+                reg.write_data_1 = 16d1;
+                reg.write_data_2 = 16d4;
+                reg.write_data_3 = 16d7;
+              16b111: // down
+                reg.write_data_1 = 16d7;
+                reg.write_data_2 = 16d4;
+                reg.write_data_3 = 16d1;
+              16b100: // left
+                reg.write_data_1 = 16d1;
+                reg.write_data_2 = 16d2;
+                reg.write_data_3 = 16d3;
+              16b101: // right
+                reg.write_data_1 = 16d3;
+                reg.write_data_2 = 16d2;
+                reg.write_data_3 = 16d1;
+            }
+          16d1:
+            case(reg.out[5d11]){
+              16b110: // up
+                reg.write_data_1 = 16d2;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d8;
+              16b111: // down
+                reg.write_data_1 = 16d8;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d2;
+              16b100: // left
+                reg.write_data_1 = 16d4;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d6;
+              16b101: // right
+                reg.write_data_1 = 16d6;
+                reg.write_data_2 = 16d5;
+                reg.write_data_3 = 16d4;
+            }
+          16d2:
+            case(reg.out[5d11]){
+              16b110: // up
+                reg.write_data_1 = 16d3;
+                reg.write_data_2 = 16d6;
+                reg.write_data_3 = 16d9;
+              16b111: // down
+                reg.write_data_1 = 16d9;
+                reg.write_data_2 = 16d6;
+                reg.write_data_3 = 16d3;
+              16b100: // left
+                reg.write_data_1 = 16d7;
+                reg.write_data_2 = 16d8;
+                reg.write_data_3 = 16d9;
+              16b101: // right
+                reg.write_data_1 = 16d9;
+                reg.write_data_2 = 16d8;
+                reg.write_data_3 = 16d7;
+           16d3:
+              reg.write_data_1 = 16d0;
+              reg.write_data_2 = 16d0;
+              reg.write_data_3 = 16d0;
+            }
+            }
+        alu.a = reg.out[5d13];
+        alu.b = 16d2;
+        alu.alufn = Alufn.CMPLE;
+        case(alu.out){
+          0:
+            reg.write_address_4 = 5d19; //R19
+            reg.write_enable_4 = 1;
+            reg.write_data_4 = 1;
+            game_controller.d = game_controller.CHECK_WIN;
+          1:
+            reg.write_address_4 = 5d13; //R13
+            reg.write_enable_4 = 1;
+            reg.write_data_4 = reg.out[5d13]+1;
+            game_controller.d = game_controller.CHECK1_2;
+           
+        }
+      game_controller.CHECK1_2:
+         //segment.d = {5d13,5d21,5d22,5d16};
+         alu.a = reg.out[reg.out[5d14]]; //R[R14]
+         alu.b = reg.out[reg.out[5d15]]; //R[R15]
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         reg.write_address_1 = 5d17; //R17
+         reg.write_address_2 = 5d18; //R18
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.CHECK2_3;
+          1:
+            reg.write_enable_1 = 1;
+            reg.write_enable_2 = 1;
+            reg.write_data_1 = reg.out[5d14];
+            reg.write_data_2 = reg.out[5d15];
+            game_controller.d = game_controller.MERGE_ADD_CLEAR;
+        }
+      game_controller.CHECK2_3:
+         //segment.d = {5d13,5d22,5d23,5d16};
+         alu.a = reg.out[reg.out[5d15]]; //R[R15]
+         alu.b = reg.out[reg.out[5d16]]; //R[R16]
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         reg.write_address_1 = 5d17; //R17
+         reg.write_address_2 = 5d18; //R18
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.CHECK1_3;
+          1:
+            reg.write_enable_1 = 1;
+            reg.write_enable_2 = 1;
+            reg.write_data_1 = reg.out[5d15];
+            reg.write_data_2 = reg.out[5d16];
+            game_controller.d = game_controller.MERGE_ADD_CLEAR;
+        }
+      game_controller.CHECK1_3:
+         //segment.d = {5d13,5d21,5d23,5d16};
+         alu.a = reg.out[reg.out[5d14]]; //R[R14]
+         alu.b = reg.out[reg.out[5d16]]; //R[R16]
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.ALIGN1_2;
+          1:
+            game_controller.d = game_controller.CHECK2;
+        }
+      game_controller.CHECK2:
+         //segment.d = {5d13,5d22,5d16,5d16};
+         alu.a = reg.out[reg.out[5d15]]; //R[R15]
+         alu.b = reg.out[5d0];
+         alu.alufn = Alufn.CMPEQ; //CMPEQ
+         reg.write_address_1 = 5d17; //R17
+         reg.write_address_2 = 5d18; //R18
+         case(alu.out[0]){
+          0:
+            game_controller.d = game_controller.ALIGN1_2;
+          1:
+            reg.write_enable_1 = 1;
+            reg.write_enable_2 = 1;
+            reg.write_data_1 = reg.out[5d14];
+            reg.write_data_2 = reg.out[5d16];
+            game_controller.d = game_controller.MERGE_ADD_CLEAR;
+        }
+      game_controller.MERGE_ADD_CLEAR:
+         //segment.d = {5d3,5d13,5d16,5d16};
+         alu.a = reg.out[reg.out[5d17]];
+         alu.b = reg.out[reg.out[5d18]];
+         alu.alufn = Alufn.ADD; //ADD
+         reg.write_address_1 = reg.out[5d17][4:0];
+         reg.write_data_1 = alu.out;
+         reg.write_enable_1 = 1;
+         reg.write_address_2 = reg.out[5d18][4:0];
+         reg.write_data_2 = reg.out[0]; // R0 = 0
+         reg.write_enable_2 = 1;
+         reg.write_address_3 = 5d17;
+         reg.write_data_3 = reg.out[0];
+         reg.write_enable_3 = 1;
+         reg.write_address_4 = 5d18;
+         reg.write_data_4 = reg.out[0]; // R0 = 0
+         reg.write_enable_4 = 1;
+         game_controller.d = game_controller.ALIGN1_2;
+      game_controller.ALIGN1_2:
+         //segment.d = {5d3,5d21,5d22,5d16};
+         if (reg.out[reg.out[5d14]] == 0 && reg.out[reg.out[5d15]]!=0){
+           reg.write_address_1 = reg.out[5d14][4:0];
+           reg.write_data_1 = reg.out[reg.out[5d15]];
+           reg.write_enable_1 = 1;
+           reg.write_address_2 = reg.out[5d15][4:0];
+           reg.write_data_2 = reg.out[0]; // R0 = 0
+           reg.write_enable_2 = 1;
+         }
+         game_controller.d = game_controller.ALIGN2_3;
+      game_controller.ALIGN2_3:
+        //segment.d = {5d3,5d22,5d23,5d16};
+        if (reg.out[reg.out[5d15]] == 0 && reg.out[reg.out[5d16]]!=0){
+           reg.write_address_1 = reg.out[5d15][4:0];
+           reg.write_data_1 = reg.out[reg.out[5d16]];
+           reg.write_enable_1 = 1;
+           reg.write_address_2 = reg.out[5d16][4:0];
+           reg.write_data_2 = reg.out[0]; // R0 = 0
+           reg.write_enable_2 = 1;
+         }
+         game_controller.d = game_controller.ALIGN1_3;
+      game_controller.ALIGN1_3:
+         //segment.d = {5d3,5d21,5d23,5d16};
+         if (reg.out[reg.out[5d14]] == 0 && reg.out[reg.out[5d15]]!=0){
+           reg.write_address_1 = reg.out[5d14][4:0];
+           reg.write_data_1 = reg.out[reg.out[5d15]];
+           reg.write_enable_1 = 1;
+           reg.write_address_2 = reg.out[5d15][4:0];
+           reg.write_data_2 = reg.out[0]; // R0 = 0
+           reg.write_enable_2 = 1;
+         }
+         game_controller.d = game_controller.SET_RXYZ;
+      game_controller.CHECK_WIN:
+        //segment.d = {5d13,5d29,5d16,5d16};
+        alu.a = reg.out[reg.out[5d19]];
+        alu.b = 64;
+        alu.alufn = Alufn.CMPEQ;
+        reg.write_address_3 = 5d13;
+        reg.write_data_3 = reg.out[0];
+        reg.write_enable_3 = 1;
+        if(alu.out){
+        game_controller.d = game_controller.WIN;
+        }else if(reg.out[5d19]>=9){
+        reg.write_address_1 = 5d19;
+        reg.write_data_1 = 1;
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 5d20;
+        reg.write_data_2 = reg.out[0];
+        reg.write_enable_2 = 1;
+        game_controller.d = game_controller.MAKE_LIST;
+        }else{
+        reg.write_address_1 = 5d19;
+        reg.write_data_1 = reg.out[5d19]+1;
+        reg.write_enable_1 = 1;
+        }
+      game_controller.MAKE_LIST:
+       //segment.d = {5d9,5d21,5d16,5d16};
+       alu.a = reg.out[reg.out[5d19]];
+       alu.b = reg.out[0];
+       alu.alufn = Alufn.CMPEQ;
+       reg.write_address_1 = 5d20;
+       if (alu.out){
+       temp = reg.out[5d20]+1;
+       reg.write_data_1 = temp;
+       reg.write_enable_1 = 1;
+       reg.write_address_3 = temp[4:0]+20;
+       reg.write_data_3 = reg.out[5d19];
+       reg.write_enable_3 = 1;
+       }
+       reg.write_address_2 = 5d19;
+       reg.write_enable_2 = 1;
+       if(reg.out[5d19]>=9){
+       reg.write_data_2 = 1;
+       game_controller.d = game_controller.ADD_NUM;
+       }else{
+       reg.write_data_2 = reg.out[5d19]+1;
+       }
+       game_controller.ADD_NUM:
+       //segment.d = {5d0,5d6,5d6,5d21};
+       alu.a = reg.out[5d20];
+       alu.b = reg.out[5d0];
+       alu.alufn = Alufn.CMPEQ;
+       case (alu.out){
+          1:
+            game_controller.d = game_controller.CHECK_LOSE;
+          0:
+            rand_gen.next = 1; 
+            game_controller.d = game_controller.BITMASK;
+        }
+       game_controller.BITMASK: // Mask the upper 4 bits of PRNG.
+         alu.a = rand_gen.num[15:0];
+         alu.b = 16b0000111111111111;
+         alu.alufn = Alufn.AND;
+         reg.write_data_1 = alu.out[15:0];
+         reg.write_address_1 = 5d30;
+         reg.write_enable_1 = 1;
+         game_controller.d = game_controller.MULTIPLY;
+                
+       game_controller.MULTIPLY: // Multiply by number of R20 (empty slots)
+         alu.a = reg.out[5d30];
+         alu.b = reg.out[5d20];
+         alu.alufn = Alufn.MUL;
+         reg.write_data_1 = alu.out[15:0];
+         reg.write_address_1 = 5d30;
+         reg.write_enable_1 = 1;
+         game_controller.d = game_controller.EXTRACT;
+                
+       game_controller.EXTRACT: // Extract randint by shifting right 12 bits.  
+         alu.a = reg.out[5d30];
+         alu.b = 16d12;  
+         alu.alufn = Alufn.SHR;    
+         case(alu.out[3:0]){
+          0:
+          reg.write_address_1 = reg.out[21][4:0];
+          1:
+          reg.write_address_1 = reg.out[22][4:0];
+          2:
+          reg.write_address_1 = reg.out[23][4:0];
+          3:
+          reg.write_address_1 = reg.out[24][4:0];
+          4:
+          reg.write_address_1 = reg.out[25][4:0];
+          5:
+          reg.write_address_1 = reg.out[26][4:0];
+          6:
+          reg.write_address_1 = reg.out[27][4:0];
+          7:
+          reg.write_address_1 = reg.out[28][4:0];
+          8:
+          reg.write_address_1 = reg.out[29][4:0];
+        }
+         reg.write_data_1 = 1;
+         reg.write_enable_1 = 1;
+         reg.write_address_2 = 5d20;
+         reg.write_data_2 = reg.out[5d20]-1;
+         reg.write_enable_2 = 1;
+         game_controller.d = game_controller.CHECK_LOSE;     
+    
+      game_controller.CHECK_LOSE:
+      //segment.d = {5d13,5d9,5d16,5d16};
+      alu.a = reg.out[5d20];
+      alu.b = reg.out[5d0];
+      alu.alufn = Alufn.CMPEQ;
+      case (alu.out){
+          0:
+          game_controller.d = game_controller.IDLE;
+          1:
+          if (reg.out[1] == reg.out[4] || reg.out[1] == reg.out[2] || reg.out[2] == reg.out[3] || reg.out[2] == reg.out[5] || reg.out[4] == reg.out[5] || reg.out[4] == reg.out[7] || reg.out[5] == reg.out[6] || reg.out[5] == reg.out[8] || reg.out[3] == reg.out[6] || reg.out[6] == reg.out[9] || reg.out[7] == reg.out[8] || reg.out[8] == reg.out[9]){
+          game_controller.d = game_controller.IDLE;
+        
+          }else{
+          game_controller.d = game_controller.LOSE;
+         
+          }  
+      if (reg.out[40]==100){ //lose if 100 moves are made
+            game_controller.d = game_controller.LOSE;
+            }
+    }
+      game_controller.WIN:
+      segment.d = {29,5d2,5d2,5d6};
+      if (button[1]){
+         game_controller.d = game_controller.WIPE;
+          }
+      game_controller.LOSE:
+      segment.d = {5d9,5d2,5d4,5d14};
+      if (button[1]){
+         game_controller.d = game_controller.WIPE;
+          }
+      game_controller.RESTORE1:
+        segment.d = {b01110,b01011,b01011,16}; // E r r
+        reg.write_address_1 = 6d1; //R1
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 6d2; //R2
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 6d3; //R3
+        reg.write_enable_3 = 1;
+        reg.write_data_1 = reg.out[31];
+        reg.write_data_2 = reg.out[32];
+        reg.write_data_3 = reg.out[33];
+        game_controller.d = game_controller.RESTORE2;
+      game_controller.RESTORE2:
+        segment.d = {b01110,b01011,b01011,16}; // E r r
+        reg.write_address_1 = 6d4; //R4
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 6d5; //R5
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 6d6; //R6
+        reg.write_enable_3 = 1;
+        reg.write_data_1 = reg.out[34];
+        reg.write_data_2 = reg.out[35];
+        reg.write_data_3 = reg.out[36];
+        game_controller.d = game_controller.RESTORE3;
+      game_controller.RESTORE3:
+        segment.d = {b01110,b01011,b01011,16}; // E r r
+        reg.write_address_1 = 6d7; //R7
+        reg.write_enable_1 = 1;
+        reg.write_address_2 = 6d8; //R8
+        reg.write_enable_2 = 1;
+        reg.write_address_3 = 6d9; //R9
+        reg.write_enable_3 = 1;
+        reg.write_data_1 = reg.out[37];
+        reg.write_data_2 = reg.out[38];
+        reg.write_data_3 = reg.out[39];
+        if (reg.out[11] == 0){
+          game_controller.d = game_controller.START;
+        }else{
+          reg.write_address_4 = 6d40;
+          reg.write_data_4 = reg.out[40]-1;
+          reg.write_enable_4 = 1;
+          game_controller.d = game_controller.IDLE;
+        }
+  }
+  if (|button){
+      if(button[1]){
+        game_controller.d = game_controller.WIPE; //reset
+      }else if (game_controller.q != game_controller.IDLE && game_controller.q != game_controller.START){
+        if (game_controller.q == game_controller.SAVE1 || game_controller.q == game_controller.SAVE2 || game_controller.q == game_controller.SAVE3){
+        if (reg.out[11] == 0){
+          game_controller.d = game_controller.START;
+        }else{
+          reg.write_address_4 = 6d40;
+          reg.write_data_4 = reg.out[40]-1;
+          reg.write_enable_4 = 1;
+          game_controller.d = game_controller.IDLE;
+        }
+        }else if (game_controller.q == game_controller.RESTORE1 || game_controller.q == game_controller.RESTORE2 || game_controller.q == game_controller.RESTORE3 || game_controller.q == game_controller.WIN || game_controller.q == game_controller.LOSE || game_controller.q == game_controller.WIPE){
+        }else{
+        game_controller.d = game_controller.RESTORE1;
+        }
+      }
+   }
+}

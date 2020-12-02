@@ -1,0 +1,58 @@
+// alchitry
+
+pin clk CLOCK;
+clock clk 100MHz;
+
+pin rst_n RESET;
+
+// io 
+
+pin io_sel[0] A9;
+pin io_sel[1] A8;
+pin io_sel[2] A42;
+pin io_sel[3] A43;
+
+pin io_seg[0] A5;
+pin io_seg[1] A6;
+pin io_seg[2] A48;
+pin io_seg[3] A46;
+pin io_seg[4] A45;
+pin io_seg[5] A3;
+pin io_seg[6] A2;
+pin io_seg[7] A49;
+
+// custom
+
+pin sevenseg[0] C28 pulldown;
+pin sevenseg[1] C31 pulldown;
+pin sevenseg[2] C34 pulldown;
+pin sevenseg[3] C37 pulldown;
+pin sevenseg[4] C40 pulldown; 
+pin sevenseg[5] C43 pulldown;
+pin sevenseg[6] C46 pulldown;
+pin sevenseg[7] C49 pulldown;
+
+pin gamebutton[0] B40 pulldown;
+pin gamebutton[1] B12 pulldown;
+pin gamebutton[2] B11 pulldown;
+pin gamebutton[3] B15 pulldown;
+pin gamebutton[4] B9 pulldown;
+
+pin r[1] C27 pullup;
+pin r[0] C30 pullup;
+pin r[3] C33 pullup;
+pin r[2] C36 pullup;
+pin r[5] C39 pullup;
+pin r[4] C42 pullup;
+pin r[7] C23 pullup;
+pin r[6] C20 pullup;
+pin r[9] C17 pullup;
+pin r[8] C14 pullup;
+pin r[11] C11 pullup;
+pin r[10] C8 pullup;
+pin r[13] C24 pullup;
+pin r[12] C21 pullup;
+pin r[15] C18 pullup;
+pin r[14] C15 pullup;
+pin r[17] C12 pullup;
+pin r[16] C9 pullup;

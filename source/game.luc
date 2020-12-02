@@ -1,0 +1,59 @@
+module game (
+    input clk,  // clock
+    input rst,  // reset
+    input button[5],
+    output seg18[18][5],
+    output arr[9][16],
+    output io_seg[4][5]
+  ) {
+    .clk(clk) {
+    // The reset conditioner is used to synchronize the reset signal to the FPGA
+    // clock. This ensures the entire FPGA comes out of reset at the same time.
+    button_conditioner buttoncond[5];
+    edge_detector slowclkedge;
+    .rst(rst){
+    counter slowclk(#SIZE(1),#DIV(19));
+    }
+  } 
+    controlunit control(.clk(slowclkedge.out));
+    edge_detector buttondetector[5](.clk(slowclkedge.out), #RISE(1), #FALL(0)); //detect on rising edge only
+    sig r91[5],r90[5],r81[5],r80[5],r71[5],r70[5],r61[5],r60[5],r51[5],r50[5],r41[5],r40[5],r31[5],r30[5],r21[5],r20[5],r11[5],r10[5];
+    
+  always {
+    // initialise all inputs
+    slowclkedge.in = slowclk.value;
+    buttoncond.in = button;
+    buttondetector.in = buttoncond.out;
+    control.button = buttondetector.out;
+    arr = control.arr;
+    io_seg = control.io_seg;
+    r91 = control.arr[8]/10;
+    r90 = control.arr[8]-r91*10+20;
+    r91 = r91 + 20;
+    r81 = control.arr[7]/10;
+    r80 = control.arr[7]-r81*10+20;
+    r81 = r81 + 20;
+    r71 = control.arr[6]/10;
+    r70 = control.arr[6]-r71*10+20;
+    r71 = r71 + 20;
+    r61 = control.arr[5]/10;
+    r60 = control.arr[5]-r61*10+20;
+    r61 = r61 + 20;
+    r51 = control.arr[4]/10;
+    r50 = control.arr[4]-r51*10+20;
+    r51 = r51 + 20;
+    r41 = control.arr[3]/10;
+    r40 = control.arr[3]-r41*10+20;
+    r41 = r41 + 20;
+    r31 = control.arr[2]/10;
+    r30 = control.arr[2]-r31*10+20;
+    r31 = r31 + 20;
+    r21 = control.arr[1]/10;
+    r20 = control.arr[1]-r21*10+20;
+    r21 = r21 + 20;
+    r11 = control.arr[0]/10;
+    r10 = control.arr[0]-r11*10+20;
+    r11 = r11 + 20;
+    seg18 = {r91,r90,r81,r80,r71,r70,r61,r60,r51,r50,r41,r40,r31,r30,r21,r20,r11,r10};
+}
+}
