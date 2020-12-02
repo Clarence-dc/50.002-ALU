@@ -79,7 +79,7 @@ module randgen_autotester_10 (
       end
     endcase
     if (M_rand_gen_randint >= 5'h10) begin
-      j = M_rand_gen_randint[0+3-:4] + 5'h14;
+      j = M_rand_gen_randint[0+3-:4] + 5'h15;
       seg = {s, 5'h10, 5'h10, j};
     end
   end

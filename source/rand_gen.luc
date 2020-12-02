@@ -1,20 +1,3 @@
-global Alufn{
-  const ADD   = 6b000000;
-  const SUB   = 6b000001;
-  const MUL   = 6b000010;
-  const DIV   = 6b000011;
-  const AND   = 6b011000;
-  const OR    = 6b011110;
-  const XOR   = 6b010110;
-  const A     = 6b011010;
-  const SHL   = 6b100000;
-  const SHR   = 6b100001;
-  const SRA   = 6b100011;
-  const CMPEQ = 6b110101;
-  const CMPLT = 6b111001;
-  const CMPLE = 6b111101;
-}
-
 module rand_gen (
     input clk,  // clock
     input rst,  // reset
@@ -38,7 +21,7 @@ module rand_gen (
     MULTIPLY,
     EXTRACT
     };
-   dff randint1[4];
+   dff randint1[5](#INIT(0));
    dff randint_temp[16];
    pn_gen rand_gen;   
     }
@@ -87,7 +70,7 @@ module rand_gen (
             game_step.d = game_step.DONE;       
         }
       game_step.DONE:
-      randint = randint1.q+b10000;
+            randint = randint1.q+b10000;
             if(rst){
             game_step.d = game_step.START;
             }

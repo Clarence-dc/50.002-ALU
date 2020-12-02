@@ -57,13 +57,13 @@ module au_top_0 (
     );
   end
   endgenerate
-  localparam S0_mode_controller = 3'd0;
-  localparam S1_mode_controller = 3'd1;
-  localparam S2_mode_controller = 3'd2;
-  localparam S3_mode_controller = 3'd3;
-  localparam S4_mode_controller = 3'd4;
+  localparam GAME_mode_controller = 3'd0;
+  localparam RANDINT_mode_controller = 3'd1;
+  localparam AUTO_mode_controller = 3'd2;
+  localparam MANUAL_mode_controller = 3'd3;
+  localparam SEGTEST_mode_controller = 3'd4;
   
-  reg [2:0] M_mode_controller_d, M_mode_controller_q = S0_mode_controller;
+  reg [2:0] M_mode_controller_d, M_mode_controller_q = GAME_mode_controller;
   wire [16-1:0] M_auto_out;
   wire [20-1:0] M_auto_seg;
   wire [24-1:0] M_auto_io_led;
@@ -163,27 +163,50 @@ module au_top_0 (
     io_sel = ~M_seg_sel;
     
     case (M_mode_controller_q)
-      S0_mode_controller: begin
+      GAME_mode_controller: begin
+        M_game_button = gamebutton;
+        M_seg_values = M_game_io_seg;
+        M_seg18_values = M_game_seg18;
+        if (M_buttondetector_out[0+0-:1]) begin
+          M_mode_controller_d = AUTO_mode_controller;
+        end else begin
+          if (M_buttondetector_out[2+0-:1]) begin
+            M_mode_controller_d = RANDINT_mode_controller;
+          end
+        end
+      end
+      RANDINT_mode_controller: begin
+        M_rand_auto_button = M_buttondetector_out;
+        M_seg_values = M_rand_auto_seg;
+        if (M_buttondetector_out[0+0-:1]) begin
+          M_mode_controller_d = GAME_mode_controller;
+        end else begin
+          if (M_buttondetector_out[2+0-:1]) begin
+            M_mode_controller_d = MANUAL_mode_controller;
+          end
+        end
+      end
+      MANUAL_mode_controller: begin
         M_manual_io_dip = io_dip;
         M_manual_button = M_buttondetector_out;
         io_led[16+0+5-:6] = io_dip[16+0+5-:6];
         io_led = M_manual_io_led;
         M_seg_values = M_manual_seg;
         if (M_buttondetector_out[0+0-:1]) begin
-          M_mode_controller_d = S4_mode_controller;
+          M_mode_controller_d = RANDINT_mode_controller;
         end else begin
           if (M_buttondetector_out[2+0-:1]) begin
-            M_mode_controller_d = S1_mode_controller;
+            M_mode_controller_d = AUTO_mode_controller;
           end
         end
       end
-      S1_mode_controller: begin
+      AUTO_mode_controller: begin
         M_auto_button = io_button;
         if (M_buttondetector_out[0+0-:1]) begin
-          M_mode_controller_d = S0_mode_controller;
+          M_mode_controller_d = MANUAL_mode_controller;
         end else begin
           if (M_buttondetector_out[2+0-:1]) begin
-            M_mode_controller_d = S2_mode_controller;
+            M_mode_controller_d = SEGTEST_mode_controller;
           end
         end
         io_led[8+7-:8] = M_auto_out[8+7-:8];
@@ -191,43 +214,16 @@ module au_top_0 (
         M_seg_values = M_auto_seg;
         io_led = M_auto_io_led;
       end
-      S2_mode_controller: begin
+      SEGTEST_mode_controller: begin
         M_segtest_button = io_button;
         if (M_buttondetector_out[0+0-:1]) begin
-          M_mode_controller_d = S1_mode_controller;
+          M_mode_controller_d = AUTO_mode_controller;
         end else begin
           if (M_buttondetector_out[2+0-:1]) begin
-            M_mode_controller_d = S3_mode_controller;
+            M_mode_controller_d = GAME_mode_controller;
           end
         end
         M_seg_values = M_segtest_seg;
-      end
-      S3_mode_controller: begin
-        M_game_button = gamebutton;
-        M_seg_values = M_game_io_seg;
-        M_seg18_values = M_game_seg18;
-        if (M_game_arr != 144'h000000000000000000000000000000000000) begin
-          M_mode_controller_d = S3_mode_controller;
-        end else begin
-          if (M_buttondetector_out[0+0-:1]) begin
-            M_mode_controller_d = S2_mode_controller;
-          end else begin
-            if (M_buttondetector_out[2+0-:1]) begin
-              M_mode_controller_d = S4_mode_controller;
-            end
-          end
-        end
-      end
-      S4_mode_controller: begin
-        M_rand_auto_button = M_buttondetector_out;
-        M_seg_values = M_rand_auto_seg;
-        if (M_buttondetector_out[0+0-:1]) begin
-          M_mode_controller_d = S3_mode_controller;
-        end else begin
-          if (M_buttondetector_out[2+0-:1]) begin
-            M_mode_controller_d = S0_mode_controller;
-          end
-        end
       end
     endcase
   end

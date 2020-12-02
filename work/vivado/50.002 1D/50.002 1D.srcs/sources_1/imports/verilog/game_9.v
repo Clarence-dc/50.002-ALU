@@ -88,7 +88,6 @@ module game_9 (
   always @* begin
     M_slowclkedge_in = M_slowclk_value;
     M_buttoncond_in = button;
-    M_buttoncond_in = button[0+4-:5];
     M_buttondetector_in = M_buttoncond_out;
     M_control_button = M_buttondetector_out;
     arr = M_control_arr;

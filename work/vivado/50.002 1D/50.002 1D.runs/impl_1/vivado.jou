@@ -2,8 +2,8 @@
 # Vivado v2020.1 (64-bit)
 # SW Build 2902540 on Wed May 27 19:54:49 MDT 2020
 # IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
-# Start of session at: Tue Dec  1 23:11:39 2020
-# Process ID: 20280
+# Start of session at: Wed Dec  2 20:46:57 2020
+# Process ID: 20556
 # Current directory: D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/impl_1
 # Command line: vivado.exe -log au_top_0.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source au_top_0.tcl -notrace
 # Log file: D:/GitHub/50.002-ALU/work/vivado/50.002 1D/50.002 1D.runs/impl_1/au_top_0.vdi

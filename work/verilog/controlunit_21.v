@@ -61,20 +61,31 @@ module controlunit_21 (
   localparam CHECK_WIN_game_controller = 5'd13;
   localparam MAKE_LIST_game_controller = 5'd14;
   localparam ADD_NUM_game_controller = 5'd15;
-  localparam CHECK_LOSE_game_controller = 5'd16;
-  localparam LOSE_game_controller = 5'd17;
-  localparam WIN_game_controller = 5'd18;
-  localparam GAMEOVER_game_controller = 5'd19;
+  localparam BITMASK_game_controller = 5'd16;
+  localparam MULTIPLY_game_controller = 5'd17;
+  localparam EXTRACT_game_controller = 5'd18;
+  localparam CHECK_LOSE_game_controller = 5'd19;
+  localparam LOSE_game_controller = 5'd20;
+  localparam WIN_game_controller = 5'd21;
+  localparam GAMEOVER_game_controller = 5'd22;
   
   reg [4:0] M_game_controller_d, M_game_controller_q = START_game_controller;
-  wire [5-1:0] M_rand_gen_randint;
+  wire [32-1:0] M_rand_gen_num;
   reg [1-1:0] M_rand_gen_rst;
-  reg [4-1:0] M_rand_gen_num;
-  rand_gen_22 rand_gen (
+  reg [1-1:0] M_rand_gen_next;
+  reg [32-1:0] M_rand_gen_seed;
+  pn_gen_28 rand_gen (
     .clk(clk),
     .rst(M_rand_gen_rst),
-    .num(M_rand_gen_num),
-    .randint(M_rand_gen_randint)
+    .next(M_rand_gen_next),
+    .seed(M_rand_gen_seed),
+    .num(M_rand_gen_num)
+  );
+  wire [32-1:0] M_randseed_value;
+  counter_29 randseed (
+    .clk(clk),
+    .rst(1'h0),
+    .value(M_randseed_value)
   );
   
   reg [15:0] temp;
@@ -98,7 +109,8 @@ module controlunit_21 (
     M_game_controller_d = M_game_controller_q;
     M_segment_d = M_segment_q;
     
-    M_rand_gen_num = 1'h0;
+    M_rand_gen_next = 1'h0;
+    M_rand_gen_seed = M_randseed_value;
     M_rand_gen_rst = 1'h0;
     arr = M_reg_out[16+143-:144];
     io_seg = M_segment_q;
@@ -133,7 +145,7 @@ module controlunit_21 (
       end
       IDLE_game_controller: begin
         M_segment_d = 20'ha992e;
-        if ((^button)) begin
+        if ((^button) && button[1+0-:1] != 1'h1) begin
           M_reg_write_address_1 = 5'h0b;
           M_reg_write_enable_1 = 1'h1;
           if (button[0+0-:1]) begin
@@ -451,7 +463,7 @@ module controlunit_21 (
         end
       end
       ADD_NUM_game_controller: begin
-        M_segment_d = 20'h018d0;
+        M_segment_d = 20'h018d5;
         M_alu_a = M_reg_out[320+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
@@ -461,19 +473,70 @@ module controlunit_21 (
             M_game_controller_d = CHECK_LOSE_game_controller;
           end
           1'h0: begin
-            M_rand_gen_num = M_reg_out[320+0+3-:4];
             M_rand_gen_rst = 1'h1;
-            if (M_rand_gen_randint >= 5'h10) begin
-              M_reg_write_address_1 = M_reg_out[(M_rand_gen_randint[0+3-:4] + 5'h15)*16+0+4-:5];
-              M_reg_write_data_1 = 2'h2;
-              M_reg_write_enable_1 = 1'h1;
-              M_reg_write_address_2 = 5'h14;
-              M_reg_write_data_2 = M_reg_out[320+15-:16] - 1'h1;
-              M_reg_write_enable_2 = 1'h1;
-              M_game_controller_d = CHECK_LOSE_game_controller;
-            end
+            M_rand_gen_next = 1'h1;
+            M_game_controller_d = BITMASK_game_controller;
           end
         endcase
+      end
+      BITMASK_game_controller: begin
+        M_alu_a = M_rand_gen_num[0+15-:16];
+        M_alu_b = 16'h0fff;
+        M_alu_alufn = 6'h18;
+        M_reg_write_data_1 = M_alu_out[0+15-:16];
+        M_reg_write_address_1 = 5'h1e;
+        M_reg_write_enable_1 = 1'h1;
+        M_game_controller_d = MULTIPLY_game_controller;
+      end
+      MULTIPLY_game_controller: begin
+        M_alu_a = M_reg_out[480+15-:16];
+        M_alu_b = M_reg_out[320+15-:16];
+        M_alu_alufn = 6'h02;
+        M_reg_write_data_1 = M_alu_out[0+15-:16];
+        M_reg_write_address_1 = 5'h1e;
+        M_reg_write_enable_1 = 1'h1;
+        M_game_controller_d = EXTRACT_game_controller;
+      end
+      EXTRACT_game_controller: begin
+        M_alu_a = M_reg_out[480+15-:16];
+        M_alu_b = 16'h000c;
+        M_alu_alufn = 6'h21;
+        
+        case (M_alu_out[0+3-:4])
+          1'h0: begin
+            M_reg_write_address_1 = M_reg_out[336+0+4-:5];
+          end
+          1'h1: begin
+            M_reg_write_address_1 = M_reg_out[352+0+4-:5];
+          end
+          2'h2: begin
+            M_reg_write_address_1 = M_reg_out[368+0+4-:5];
+          end
+          2'h3: begin
+            M_reg_write_address_1 = M_reg_out[384+0+4-:5];
+          end
+          3'h4: begin
+            M_reg_write_address_1 = M_reg_out[400+0+4-:5];
+          end
+          3'h5: begin
+            M_reg_write_address_1 = M_reg_out[416+0+4-:5];
+          end
+          3'h6: begin
+            M_reg_write_address_1 = M_reg_out[432+0+4-:5];
+          end
+          3'h7: begin
+            M_reg_write_address_1 = M_reg_out[448+0+4-:5];
+          end
+          4'h8: begin
+            M_reg_write_address_1 = M_reg_out[464+0+4-:5];
+          end
+        endcase
+        M_reg_write_data_1 = 2'h2;
+        M_reg_write_enable_1 = 1'h1;
+        M_reg_write_address_2 = 5'h14;
+        M_reg_write_data_2 = M_reg_out[320+15-:16] - 1'h1;
+        M_reg_write_enable_2 = 1'h1;
+        M_game_controller_d = CHECK_LOSE_game_controller;
       end
       CHECK_LOSE_game_controller: begin
         M_segment_d = 20'h6a610;
@@ -508,7 +571,7 @@ module controlunit_21 (
       end
     endcase
     if (button[1+0-:1]) begin
-      if (M_game_controller_q != IDLE_game_controller && (^button)) begin
+      if ((^button)) begin
         M_game_controller_d = WIPE_game_controller;
       end
     end

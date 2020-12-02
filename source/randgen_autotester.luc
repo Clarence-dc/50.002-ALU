@@ -58,7 +58,7 @@ module randgen_autotester (
         } 
     }
         if (rand_gen.randint>=b10000){
-        j = rand_gen.randint[3:0]+20;
+        j = rand_gen.randint[3:0]+21;
         seg = {s,16,16,j};
         }
     

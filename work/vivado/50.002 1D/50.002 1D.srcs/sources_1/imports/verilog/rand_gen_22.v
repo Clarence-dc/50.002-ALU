@@ -29,7 +29,7 @@ module rand_gen_22 (
   );
   
   wire [32-1:0] M_randseed_value;
-  counter_28 randseed (
+  counter_29 randseed (
     .clk(clk),
     .rst(rst),
     .value(M_randseed_value)
@@ -44,12 +44,12 @@ module rand_gen_22 (
   localparam EXTRACT_rand_step = 2'd2;
   
   reg [1:0] M_rand_step_d, M_rand_step_q = BITMASK_rand_step;
-  reg [3:0] M_randint1_d, M_randint1_q = 1'h0;
+  reg [4:0] M_randint1_d, M_randint1_q = 1'h0;
   reg [15:0] M_randint_temp_d, M_randint_temp_q = 1'h0;
   wire [32-1:0] M_rand_gen_num;
   reg [1-1:0] M_rand_gen_next;
   reg [32-1:0] M_rand_gen_seed;
-  pn_gen_29 rand_gen (
+  pn_gen_28 rand_gen (
     .clk(clk),
     .rst(rst),
     .next(M_rand_gen_next),

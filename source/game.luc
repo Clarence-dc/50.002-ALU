@@ -25,7 +25,6 @@ module game (
     // initialise all inputs
     slowclkedge.in = slowclk.value;
     buttoncond.in = button;
-    buttoncond.in = button[4:0];
     buttondetector.in = buttoncond.out;
     control.button = buttondetector.out;
     arr = control.arr;

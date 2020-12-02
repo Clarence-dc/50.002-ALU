@@ -18,28 +18,28 @@ module counter_19 (
   );
   
   localparam SIZE = 3'h5;
-  localparam DIV = 4'hd;
+  localparam DIV = 4'hf;
   localparam TOP = 6'h11;
   localparam UP = 1'h1;
   
   
-  reg [17:0] M_ctr_d, M_ctr_q = 1'h0;
+  reg [19:0] M_ctr_d, M_ctr_q = 1'h0;
   
-  localparam MAX_VALUE = 19'h23fff;
+  localparam MAX_VALUE = 21'h08ffff;
   
   always @* begin
     M_ctr_d = M_ctr_q;
     
-    value = M_ctr_q[13+4-:5];
+    value = M_ctr_q[15+4-:5];
     if (1'h1) begin
       M_ctr_d = M_ctr_q + 1'h1;
-      if (1'h1 && M_ctr_q == 19'h23fff) begin
+      if (1'h1 && M_ctr_q == 21'h08ffff) begin
         M_ctr_d = 1'h0;
       end
     end else begin
       M_ctr_d = M_ctr_q - 1'h1;
       if (1'h1 && M_ctr_q == 1'h0) begin
-        M_ctr_d = 19'h23fff;
+        M_ctr_d = 21'h08ffff;
       end
     end
   end

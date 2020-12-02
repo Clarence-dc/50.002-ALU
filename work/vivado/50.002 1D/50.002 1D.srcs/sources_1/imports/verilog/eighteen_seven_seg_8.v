@@ -7,7 +7,7 @@
 /*
    Parameters:
      DIGITS = 18
-     DIV = 13
+     DIV = 15
 */
 module eighteen_seven_seg_8 (
     input clk,
@@ -18,7 +18,7 @@ module eighteen_seven_seg_8 (
   );
   
   localparam DIGITS = 5'h12;
-  localparam DIV = 4'hd;
+  localparam DIV = 4'hf;
   
   
   localparam DIGIT_BITS = 3'h5;

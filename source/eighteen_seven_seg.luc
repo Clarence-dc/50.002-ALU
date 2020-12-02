@@ -1,6 +1,6 @@
 module eighteen_seven_seg #(
 DIGITS = 18 : DIGITS > 0,
-DIV = 13 : DIV >= 0
+DIV = 15 : DIV >= 0
 )(
 input clk, // clock
 input rst, // reset

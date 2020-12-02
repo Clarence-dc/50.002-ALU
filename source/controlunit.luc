@@ -7,15 +7,24 @@ module controlunit (
   .clk(clk) {
   dff segment[4][5](#INIT(4x{{16}}));
   regfile reg;
-  fsm game_controller = {START,WIPE,IDLE,ERROR,SET_RXYZ,CHECK1_2,CHECK2_3,CHECK1_3,CHECK2,MERGE_ADD_CLEAR,ALIGN1_2,ALIGN2_3,ALIGN1_3,CHECK_WIN,MAKE_LIST,ADD_NUM,CHECK_LOSE,LOSE,WIN,GAMEOVER};
-  rand_gen rand_gen;
+  fsm game_controller = {START,WIPE,IDLE,ERROR,SET_RXYZ,CHECK1_2,CHECK2_3,CHECK1_3,CHECK2,MERGE_ADD_CLEAR,ALIGN1_2,ALIGN2_3,ALIGN1_3,CHECK_WIN,MAKE_LIST,ADD_NUM,BITMASK,MULTIPLY,EXTRACT,CHECK_LOSE,LOSE,WIN,GAMEOVER};
+  //rand_gen rand_gen;
+  pn_gen rand_gen;
+  counter randseed(.rst(0), #SIZE(32));
     }
-  sig temp[16];
+  
+  sig temp[16];//,temp2[5];
   alu alu;
   always{
-    rand_gen.num = 0;
+    rand_gen.next = 0;
+    rand_gen.seed = randseed.value;
+    //rand_gen.num = 0;
     rand_gen.rst = 0;
     arr = reg.out[9:1];
+    //arr[5:0] = reg.out[6:1];
+    //arr[6] = reg.out[rand_gen.randint[3:0]+21][4:0];
+    //arr[7] = rand_gen.randint+1;
+    //arr[8] = reg.out[20];
     io_seg = segment.q;
     reg.write_address_1 = 0;
     reg.write_data_1 = 0;
@@ -45,7 +54,7 @@ module controlunit (
         game_controller.d = game_controller.START;
       game_controller.IDLE:
         segment.d =  {21,b00110,b01001,b01110};
-        if (^button){
+        if (^button && button[1] != 1){
           reg.write_address_1 = 5d11;//R11
           reg.write_enable_1 = 1;
           if (button[0]){
@@ -309,7 +318,7 @@ module controlunit (
        reg.write_data_2 = reg.out[5d19]+1;
        }
        game_controller.ADD_NUM:
-       segment.d = {5d0,5d6,5d6,5d16};
+       segment.d = {5d0,5d6,5d6,5d21};
        alu.a = reg.out[5d20];
        alu.b = reg.out[5d0];
        alu.alufn = Alufn.CMPEQ;
@@ -317,18 +326,59 @@ module controlunit (
           1:
           game_controller.d = game_controller.CHECK_LOSE;
           0:
-          rand_gen.num = reg.out[5d20][3:0];
-          rand_gen.rst = 1;
-          if (rand_gen.randint>=b10000){
-            reg.write_address_1 = reg.out[rand_gen.randint[3:0]+21][4:0];
-            reg.write_data_1 = 2;
-            reg.write_enable_1 = 1;
-            reg.write_address_2 = 5d20;
-            reg.write_data_2 = reg.out[5d20]-1;
-            reg.write_enable_2 = 1;
-            game_controller.d = game_controller.CHECK_LOSE;
-            }
-       }
+            rand_gen.rst = 1;
+            rand_gen.next = 1; 
+            game_controller.d = game_controller.BITMASK;
+        }
+       game_controller.BITMASK: // Bitmask out upper 4 bits of PRNG.
+         alu.a = rand_gen.num[15:0];
+         alu.b = 16b0000111111111111;
+         alu.alufn = Alufn.AND;
+         reg.write_data_1 = alu.out[15:0];
+         reg.write_address_1 = 5d30;
+         reg.write_enable_1 = 1;
+         game_controller.d = game_controller.MULTIPLY;
+                
+       game_controller.MULTIPLY: // Multiply by number of empty_slots.
+         alu.a = reg.out[5d30];
+         alu.b = reg.out[5d20];
+         alu.alufn = Alufn.MUL;
+         reg.write_data_1 = alu.out[15:0];
+         reg.write_address_1 = 5d30;
+         reg.write_enable_1 = 1;
+         game_controller.d = game_controller.EXTRACT;
+                
+       game_controller.EXTRACT: // Extract randint by shifting.  
+         alu.a = reg.out[5d30];
+         alu.b = 16d12;  
+         alu.alufn = Alufn.SHR;    
+         case(alu.out[3:0]){
+          0:
+          reg.write_address_1 = reg.out[21][4:0];
+          1:
+          reg.write_address_1 = reg.out[22][4:0];
+          2:
+          reg.write_address_1 = reg.out[23][4:0];
+          3:
+          reg.write_address_1 = reg.out[24][4:0];
+          4:
+          reg.write_address_1 = reg.out[25][4:0];
+          5:
+          reg.write_address_1 = reg.out[26][4:0];
+          6:
+          reg.write_address_1 = reg.out[27][4:0];
+          7:
+          reg.write_address_1 = reg.out[28][4:0];
+          8:
+          reg.write_address_1 = reg.out[29][4:0];
+        }
+         reg.write_data_1 = 2;
+         reg.write_enable_1 = 1;
+         reg.write_address_2 = 5d20;
+         reg.write_data_2 = reg.out[5d20]-1;
+         reg.write_enable_2 = 1;
+         game_controller.d = game_controller.CHECK_LOSE;     
+    
       game_controller.CHECK_LOSE:
       segment.d = {5d13,5d9,5d16,5d16};
       alu.a = reg.out[5d20];
@@ -358,7 +408,7 @@ module controlunit (
           }
   }
   if (button[1]){
-      if(game_controller.q!=game_controller.IDLE && ^button){
+      if(^button){
         game_controller.d = game_controller.WIPE; //reset
       }
     }
