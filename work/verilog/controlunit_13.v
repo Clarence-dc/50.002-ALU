@@ -155,7 +155,6 @@ module controlunit_13 (
         M_game_controller_d = START_game_controller;
       end
       SAVE1_game_controller: begin
-        M_segment_d = 20'h25610;
         M_reg_write_address_1 = 6'h1f;
         M_reg_write_enable_1 = 1'h1;
         M_reg_write_address_2 = 6'h20;
@@ -168,7 +167,6 @@ module controlunit_13 (
         M_game_controller_d = SAVE2_game_controller;
       end
       SAVE2_game_controller: begin
-        M_segment_d = 20'h25a10;
         M_reg_write_address_1 = 6'h22;
         M_reg_write_enable_1 = 1'h1;
         M_reg_write_address_2 = 6'h23;
@@ -181,7 +179,6 @@ module controlunit_13 (
         M_game_controller_d = SAVE3_game_controller;
       end
       SAVE3_game_controller: begin
-        M_segment_d = 20'h25e10;
         M_reg_write_address_1 = 6'h25;
         M_reg_write_enable_1 = 1'h1;
         M_reg_write_address_2 = 6'h26;
@@ -237,7 +234,6 @@ module controlunit_13 (
         end
       end
       SET_RXYZ_game_controller: begin
-        M_segment_d = 20'h22e10;
         M_reg_write_address_1 = 5'h0e;
         M_reg_write_enable_1 = 1'h1;
         M_reg_write_address_2 = 5'h0f;
@@ -347,7 +343,6 @@ module controlunit_13 (
         endcase
       end
       CHECK1_2_game_controller: begin
-        M_segment_d = 20'h6d6d0;
         M_alu_a = M_reg_out[(M_reg_out[224+15-:16])*16+15-:16];
         M_alu_b = M_reg_out[(M_reg_out[240+15-:16])*16+15-:16];
         M_alu_alufn = 6'h35;
@@ -368,7 +363,6 @@ module controlunit_13 (
         endcase
       end
       CHECK2_3_game_controller: begin
-        M_segment_d = 20'h6daf0;
         M_alu_a = M_reg_out[(M_reg_out[240+15-:16])*16+15-:16];
         M_alu_b = M_reg_out[(M_reg_out[256+15-:16])*16+15-:16];
         M_alu_alufn = 6'h35;
@@ -389,7 +383,6 @@ module controlunit_13 (
         endcase
       end
       CHECK1_3_game_controller: begin
-        M_segment_d = 20'h6d6f0;
         M_alu_a = M_reg_out[(M_reg_out[224+15-:16])*16+15-:16];
         M_alu_b = M_reg_out[(M_reg_out[256+15-:16])*16+15-:16];
         M_alu_alufn = 6'h35;
@@ -404,7 +397,6 @@ module controlunit_13 (
         endcase
       end
       CHECK2_game_controller: begin
-        M_segment_d = 20'h6da10;
         M_alu_a = M_reg_out[(M_reg_out[240+15-:16])*16+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
@@ -425,7 +417,6 @@ module controlunit_13 (
         endcase
       end
       MERGE_ADD_CLEAR_game_controller: begin
-        M_segment_d = 20'h1b610;
         M_alu_a = M_reg_out[(M_reg_out[272+15-:16])*16+15-:16];
         M_alu_b = M_reg_out[(M_reg_out[288+15-:16])*16+15-:16];
         M_alu_alufn = 6'h00;
@@ -444,7 +435,6 @@ module controlunit_13 (
         M_game_controller_d = ALIGN1_2_game_controller;
       end
       ALIGN1_2_game_controller: begin
-        M_segment_d = 20'h1d6d0;
         if (M_reg_out[(M_reg_out[224+15-:16])*16+15-:16] == 1'h0 && M_reg_out[(M_reg_out[240+15-:16])*16+15-:16] != 1'h0) begin
           M_reg_write_address_1 = M_reg_out[224+0+4-:5];
           M_reg_write_data_1 = M_reg_out[(M_reg_out[240+15-:16])*16+15-:16];
@@ -456,7 +446,6 @@ module controlunit_13 (
         M_game_controller_d = ALIGN2_3_game_controller;
       end
       ALIGN2_3_game_controller: begin
-        M_segment_d = 20'h1daf0;
         if (M_reg_out[(M_reg_out[240+15-:16])*16+15-:16] == 1'h0 && M_reg_out[(M_reg_out[256+15-:16])*16+15-:16] != 1'h0) begin
           M_reg_write_address_1 = M_reg_out[240+0+4-:5];
           M_reg_write_data_1 = M_reg_out[(M_reg_out[256+15-:16])*16+15-:16];
@@ -468,7 +457,6 @@ module controlunit_13 (
         M_game_controller_d = ALIGN1_3_game_controller;
       end
       ALIGN1_3_game_controller: begin
-        M_segment_d = 20'h1d6f0;
         if (M_reg_out[(M_reg_out[224+15-:16])*16+15-:16] == 1'h0 && M_reg_out[(M_reg_out[240+15-:16])*16+15-:16] != 1'h0) begin
           M_reg_write_address_1 = M_reg_out[224+0+4-:5];
           M_reg_write_data_1 = M_reg_out[(M_reg_out[240+15-:16])*16+15-:16];
@@ -480,7 +468,6 @@ module controlunit_13 (
         M_game_controller_d = SET_RXYZ_game_controller;
       end
       CHECK_WIN_game_controller: begin
-        M_segment_d = 20'h6f610;
         M_alu_a = M_reg_out[(M_reg_out[304+15-:16])*16+15-:16];
         M_alu_b = 7'h40;
         M_alu_alufn = 6'h35;
@@ -506,7 +493,6 @@ module controlunit_13 (
         end
       end
       MAKE_LIST_game_controller: begin
-        M_segment_d = 20'h4d610;
         M_alu_a = M_reg_out[(M_reg_out[304+15-:16])*16+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
@@ -529,7 +515,6 @@ module controlunit_13 (
         end
       end
       ADD_NUM_game_controller: begin
-        M_segment_d = 20'h018d5;
         M_alu_a = M_reg_out[320+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
@@ -604,7 +589,6 @@ module controlunit_13 (
         M_game_controller_d = CHECK_LOSE_game_controller;
       end
       CHECK_LOSE_game_controller: begin
-        M_segment_d = 20'h6a610;
         M_alu_a = M_reg_out[320+15-:16];
         M_alu_b = M_reg_out[0+15-:16];
         M_alu_alufn = 6'h35;
